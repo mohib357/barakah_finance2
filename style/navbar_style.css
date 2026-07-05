@@ -1,0 +1,593 @@
+/* C:\Project\Barakah_Finance\style\navbar_style.css */
+/* FIXED & IMPROVED VERSION:
+     - Removed all duplicate style blocks (merged into single definitions)
+     - Fixed :has() selector with fallback for cross-browser support
+     - Unified dark mode with .dark-mode class
+     - Fixed mobile responsive issues
+     - Added proper touch device support for dropdown
+     - Added aria support for accessibility
+     - Improved hamburger menu animation
+     - Added reduced motion support
+     - Consolidated logo styles
+*/
+
+/* ════════ ROOT VARIABLES ════════ */
+:root {
+    --gold: #C9A227;
+    --gold-light: #F5D061;
+    --dark-green: #0A2A1A;
+    --nav-bg: rgba(13, 43, 26, 0.95);
+    --nav-height: 80px;
+    --nav-height-mobile: 70px;
+    --nav-shadow: rgba(0, 0, 0, 0.2);
+    --nav-border: rgba(201, 162, 39, 0.3);
+    --nav-transition: 0.3s ease;
+}
+
+/* ════════ NAVBAR MAIN ════════ */
+nav {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    background: var(--nav-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--nav-border);
+    padding: 0 5%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: var(--nav-height);
+    box-shadow: 0 8px 20px var(--nav-shadow);
+    transition: background var(--nav-transition), box-shadow var(--nav-transition);
+    will-change: transform;
+}
+
+/* ── Dark Mode ── */
+body.dark-mode nav {
+    background: rgba(2, 44, 34, 0.97);
+    border-bottom-color: rgba(201, 162, 39, 0.15);
+}
+
+/* ════════ LOGO CONTAINER ════════ */
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    transition: transform var(--nav-transition);
+}
+
+.logo:hover {
+    transform: translateY(-2px);
+}
+
+/* ════════ LOGO ICON ════════ */
+.logo-icon {
+    width: 80px;
+    height: 80px;
+    background: #E8F0E8;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow:
+        9px 9px 16px rgba(0, 0, 0, 0.15),
+        -9px -9px 16px rgba(255, 255, 255, 0.2),
+        inset 0px 0px 0px rgba(0, 0, 0, 0.05);
+    transition: all var(--nav-transition);
+    border: 1px solid rgba(201, 162, 39, 0.2);
+    position: relative;
+    flex-shrink: 0;
+}
+
+.logo-icon:hover {
+    box-shadow:
+        inset 6px 6px 12px rgba(0, 0, 0, 0.1),
+        inset -6px -6px 12px rgba(255, 255, 255, 0.15),
+        2px 2px 4px rgba(0, 0, 0, 0.05);
+    transform: scale(0.98);
+}
+
+.logo-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    padding: 6px;
+    transition: all var(--nav-transition);
+}
+
+/* ── Fallback for missing image ── */
+.logo-icon img[src=""],
+.logo-icon img:not([src]) {
+    display: none;
+}
+
+/* Cross-browser fallback for :has() selector */
+.logo-icon:not(:has(img[src]:not([src=""]))) {
+    background: linear-gradient(135deg, var(--gold), #A67C00);
+}
+
+.logo-icon:not(:has(img[src]:not([src=""])))::after {
+    content: "ব";
+    font-family: 'Noto Serif Bengali', serif;
+    font-size: 40px;
+    font-weight: bold;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+/* ── Dark Mode ── */
+body.dark-mode .logo-icon {
+    background: #1a3a2a;
+    border-color: rgba(201, 162, 39, 0.15);
+}
+
+body.dark-mode .logo-icon:not(:has(img[src]:not([src=""]))) {
+    background: linear-gradient(135deg, var(--gold), #8a6d00);
+}
+
+/* ════════ LOGO TEXT ════════ */
+.logo-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+}
+
+.logo-text strong {
+    font-family: 'Noto Serif Bengali', 'SolaimanLipi', serif;
+    font-size: 20px;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--gold-light), var(--gold));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    letter-spacing: 0.5px;
+}
+
+.logo-text span {
+    font-family: 'Poppins', 'Segoe UI', sans-serif;
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.6);
+    letter-spacing: 1px;
+}
+
+/* ── Dark Mode ── */
+body.dark-mode .logo-text span {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+/* ════════ NAV LINKS ════════ */
+.nav-links {
+    display: flex;
+    gap: 32px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    align-items: center;
+}
+
+.nav-links li a {
+    color: rgba(255, 255, 255, 0.85);
+    text-decoration: none;
+    font-family: 'Noto Serif Bengali', 'SolaimanLipi', serif;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all var(--nav-transition);
+    position: relative;
+    padding: 5px 0;
+}
+
+.nav-links li a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0%;
+    height: 2px;
+    background: linear-gradient(90deg, var(--gold), var(--gold-light));
+    transition: width var(--nav-transition);
+    border-radius: 2px;
+}
+
+.nav-links li a:hover::after {
+    width: 100%;
+}
+
+.nav-links li a:hover {
+    color: var(--gold-light);
+}
+
+/* ── Dark Mode ── */
+body.dark-mode .nav-links li a {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+body.dark-mode .nav-links li a:hover {
+    color: var(--gold-light);
+}
+
+/* ════════ NAV CTA BUTTON ════════ */
+.nav-cta {
+    background: linear-gradient(135deg, var(--gold), #A67C00);
+    padding: 8px 24px;
+    border-radius: 50px;
+    color: #fff;
+    font-weight: 600;
+    transition: all var(--nav-transition);
+    box-shadow: 0 4px 15px rgba(201, 162, 39, 0.3);
+    display: inline-block;
+    text-decoration: none;
+    font-family: 'Noto Serif Bengali', 'SolaimanLipi', serif;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+}
+
+.nav-cta::after {
+    display: none !important;
+}
+
+.nav-cta:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(201, 162, 39, 0.4);
+    background: linear-gradient(135deg, #D9B237, #B88D00);
+    color: #fff;
+}
+
+/* ── Dark Mode ── */
+body.dark-mode .nav-cta {
+    box-shadow: 0 4px 15px rgba(201, 162, 39, 0.2);
+}
+
+body.dark-mode .nav-cta:hover {
+    box-shadow: 0 6px 20px rgba(201, 162, 39, 0.3);
+}
+
+/* ════════ HAMBURGER MENU ════════ */
+.hamburger {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+    gap: 6px;
+    z-index: 1001;
+    background: none;
+    border: none;
+    padding: 4px;
+}
+
+.hamburger span {
+    width: 30px;
+    height: 3px;
+    background: var(--gold-light);
+    border-radius: 3px;
+    transition: all var(--nav-transition);
+    transform-origin: center;
+}
+
+.hamburger.active span:nth-child(1) {
+    transform: rotate(45deg) translate(8px, 8px);
+}
+
+.hamburger.active span:nth-child(2) {
+    opacity: 0;
+    transform: scaleX(0);
+}
+
+.hamburger.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(8px, -8px);
+}
+
+/* ── Dark Mode ── */
+body.dark-mode .hamburger span {
+    background: var(--gold-light);
+}
+
+/* ════════ MOBILE MENU ════════ */
+.nav-mobile {
+    position: fixed;
+    top: var(--nav-height);
+    left: -100%;
+    width: 80%;
+    max-width: 320px;
+    height: calc(100vh - var(--nav-height));
+    background: rgba(13, 43, 26, 0.98);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    flex-direction: column;
+    z-index: 999;
+    transition: left 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+    padding: 30px 20px;
+    gap: 15px;
+    border-right: 1px solid rgba(201, 162, 39, 0.3);
+    box-shadow: 10px 0 30px rgba(0, 0, 0, 0.3);
+    display: flex;
+    overflow-y: auto;
+}
+
+.nav-mobile.active {
+    left: 0;
+}
+
+.nav-mobile a {
+    color: rgba(255, 255, 255, 0.9);
+    text-decoration: none;
+    font-family: 'Noto Serif Bengali', 'SolaimanLipi', serif;
+    font-size: 18px;
+    padding: 12px 20px;
+    border-radius: 12px;
+    transition: all var(--nav-transition);
+    text-align: center;
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+}
+
+.nav-mobile a:hover {
+    background: linear-gradient(135deg, rgba(201, 162, 39, 0.2), rgba(165, 124, 0, 0.2));
+    color: var(--gold-light);
+    transform: translateX(5px);
+}
+
+/* ── Dark Mode ── */
+body.dark-mode .nav-mobile {
+    background: rgba(5, 20, 12, 0.98);
+    border-right-color: rgba(201, 162, 39, 0.15);
+}
+
+body.dark-mode .nav-mobile a {
+    color: rgba(255, 255, 255, 0.85);
+}
+
+body.dark-mode .nav-mobile a:hover {
+    background: linear-gradient(135deg, rgba(201, 162, 39, 0.15), rgba(165, 124, 0, 0.15));
+}
+
+/* ════════ USER DROPDOWN ════════ */
+.nav-user-wrap {
+    position: relative;
+}
+
+.nav-user-btn {
+    background: rgba(201, 162, 39, 0.15);
+    border: 1px solid rgba(201, 162, 39, 0.4);
+    color: var(--gold-light);
+    padding: 6px 14px;
+    border-radius: 50px;
+    font-size: 13px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-family: 'Noto Serif Bengali', serif;
+    transition: all var(--nav-transition);
+}
+
+.nav-user-btn:hover {
+    background: rgba(201, 162, 39, 0.25);
+}
+
+/* ── Dark Mode ── */
+body.dark-mode .nav-user-btn {
+    background: rgba(201, 162, 39, 0.1);
+    border-color: rgba(201, 162, 39, 0.25);
+}
+
+/* ── Dropdown ── */
+.nav-dropdown {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    background: #fff;
+    border: 1px solid #d1fae5;
+    border-radius: 10px;
+    min-width: 170px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    z-index: 100;
+    display: none;
+    padding: 4px 0;
+}
+
+/* Show dropdown on hover (desktop) and click (mobile) */
+.nav-user-wrap:hover .nav-dropdown,
+.nav-user-wrap:focus-within .nav-dropdown,
+.nav-user-wrap.show-dropdown .nav-dropdown {
+    display: block;
+}
+
+body.dark-mode .nav-dropdown {
+    background: #112318;
+    border-color: #1a3a2a;
+}
+
+.nav-dropdown a,
+.nav-dropdown button {
+    display: block;
+    width: 100%;
+    padding: 9px 15px;
+    font-size: 13px;
+    color: #064E3B;
+    text-decoration: none;
+    background: none;
+    border: none;
+    text-align: left;
+    cursor: pointer;
+    font-family: 'Noto Serif Bengali', serif;
+    transition: background 0.15s ease;
+}
+
+.nav-dropdown a:hover,
+.nav-dropdown button:hover {
+    background: #f0fdf4;
+}
+
+body.dark-mode .nav-dropdown a,
+body.dark-mode .nav-dropdown button {
+    color: #a7f3d0;
+}
+
+body.dark-mode .nav-dropdown a:hover,
+body.dark-mode .nav-dropdown button:hover {
+    background: #0d2218;
+}
+
+.nav-dropdown hr {
+    border: none;
+    border-top: 1px solid #d1fae5;
+    margin: 3px 0;
+}
+
+body.dark-mode .nav-dropdown hr {
+    border-color: #1a3a2a;
+}
+
+/* ════════ RESPONSIVE DESIGN ════════ */
+@media (max-width: 992px) {
+    .nav-links {
+        gap: 20px;
+    }
+
+    .nav-links li a {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 768px) {
+    nav {
+        padding: 0 6%;
+        height: var(--nav-height-mobile);
+    }
+
+    .nav-links {
+        display: none;
+    }
+
+    .hamburger {
+        display: flex;
+    }
+
+    .logo-icon {
+        width: 45px;
+        height: 45px;
+    }
+
+    .logo-icon:not(:has(img[src]:not([src=""])))::after {
+        font-size: 24px;
+    }
+
+    .logo-text strong {
+        font-size: 16px;
+    }
+
+    .logo-text span {
+        font-size: 9px;
+    }
+
+    .nav-mobile {
+        top: var(--nav-height-mobile);
+        height: calc(100vh - var(--nav-height-mobile));
+    }
+}
+
+@media (max-width: 480px) {
+    .logo-text {
+        display: none;
+    }
+
+    .logo-icon {
+        width: 40px;
+        height: 40px;
+    }
+
+    .logo-icon:not(:has(img[src]:not([src=""])))::after {
+        font-size: 20px;
+    }
+
+    .nav-mobile {
+        width: 85%;
+        padding: 20px 16px;
+    }
+
+    .nav-mobile a {
+        font-size: 16px;
+        padding: 10px 16px;
+    }
+}
+
+/* ════════ TOUCH DEVICE SUPPORT ════════ */
+@media (hover: none) {
+    .nav-user-wrap .nav-dropdown {
+        display: none;
+    }
+
+    .nav-user-wrap.show-dropdown .nav-dropdown {
+        display: block;
+    }
+}
+
+/* ════════ ACCESSIBILITY ════════ */
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+
+    .nav-mobile {
+        transition: none !important;
+    }
+
+    .hamburger span {
+        transition: none !important;
+    }
+
+    .nav-links li a::after {
+        transition: none !important;
+    }
+}
+
+/* Focus visible for keyboard users */
+.hamburger:focus-visible,
+.nav-cta:focus-visible,
+.nav-user-btn:focus-visible,
+.nav-mobile a:focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: 2px;
+}
+
+.nav-links li a:focus-visible {
+    outline: none;
+}
+
+.nav-links li a:focus-visible::after {
+    width: 100%;
+}
+
+/* ── Skip to content (accessibility) ── */
+.skip-to-content {
+    position: absolute;
+    top: -100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--gold);
+    color: #0A2A1A;
+    padding: 8px 16px;
+    border-radius: 0 0 8px 8px;
+    z-index: 10000;
+    font-weight: 700;
+    transition: top 0.3s ease;
+}
+
+.skip-to-content:focus {
+    top: 0;
+}

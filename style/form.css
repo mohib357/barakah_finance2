@@ -1,0 +1,686 @@
+/* C:\Project\Barakah_Finance\style\form.css */
+/* FIXED & IMPROVED VERSION:
+     - Unified dark mode class: now uses .dark-mode (consistent with other files)
+     - Added complete dark mode support for all elements
+     - Added CSS variables for all colors
+     - Improved responsive design for mobile
+     - Fixed phone input responsiveness
+     - Added proper focus states for accessibility
+     - Added reduced motion support
+     - Improved cropper container styling
+     - Added print styles for PDF generation
+*/
+
+/* ════════ ROOT VARIABLES ════════ */
+:root {
+    --gold: #C9A227;
+    --gold-light: #F5D061;
+    --emerald-dark: #064E3B;
+    --emerald-mid: #065F46;
+    --emerald-light: #D1FAE5;
+    --text-dark: #1a1a1a;
+    --text-light: #f5f5f5;
+    --bg-light: #f0f4f0;
+    --bg-dark: #0f1a15;
+    --card-bg: #fff;
+    --card-bg-dark: #112318;
+    --border-color: #d1fae5;
+    --border-color-dark: #1a3a2a;
+    --input-bg: #f0fdf4;
+    --input-bg-dark: #0d2218;
+    --input-border: #a7f3d0;
+    --input-border-dark: #1a4a30;
+    --shadow-color: rgba(6, 78, 59, 0.08);
+    --shadow-color-dark: rgba(0, 0, 0, 0.3);
+    --radius: 10px;
+    --transition: 0.3s ease;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+/* ════════ BODY ════════ */
+body {
+    font-family: 'Noto Serif Bengali', serif;
+    background: var(--bg-light);
+    color: var(--text-dark);
+    transition: background var(--transition), color var(--transition);
+}
+
+body.dark-mode {
+    background: var(--bg-dark);
+    color: #e8f5e9;
+}
+
+/* ════════ RTL SUPPORT ════════ */
+body.lang-ar {
+    direction: rtl;
+}
+
+/* ════════ HEADER ════════ */
+.site-header {
+    background: linear-gradient(135deg, #064E3B 0%, #065F46 50%, #047857 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.site-header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* ════════ GOLD LINE ════════ */
+.gold-line {
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+
+/* ════════ FORM CARD ════════ */
+.form-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    box-shadow: 0 4px 24px var(--shadow-color);
+    transition: background var(--transition), border var(--transition), box-shadow var(--transition);
+}
+
+body.dark-mode .form-card {
+    background: var(--card-bg-dark);
+    border-color: var(--border-color-dark);
+    box-shadow: 0 4px 24px var(--shadow-color-dark);
+}
+
+/* ════════ SECTION HEADER ════════ */
+.section-header {
+    background: linear-gradient(90deg, #065F46, #047857);
+    color: #fff;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+body.dark-mode .section-header {
+    background: linear-gradient(90deg, #022c22, #064E3B);
+}
+
+/* ════════ FIELD LABEL ════════ */
+.field-label {
+    display: block;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--emerald-mid);
+    margin-bottom: 4px;
+    transition: color var(--transition);
+}
+
+body.dark-mode .field-label {
+    color: #6ee7b7;
+}
+
+/* ════════ FORM INPUTS ════════ */
+.form-input {
+    width: 100%;
+    padding: 9px 12px;
+    border: 1.5px solid var(--input-border);
+    border-radius: 7px;
+    font-family: inherit;
+    font-size: 0.88rem;
+    background: var(--input-bg);
+    color: var(--text-dark);
+    transition: border var(--transition), box-shadow var(--transition), background var(--transition);
+    outline: none;
+    min-height: 44px;
+}
+
+.form-input:focus {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px rgba(201, 162, 39, 0.15);
+    background: var(--card-bg);
+}
+
+.form-input:disabled {
+    background: #f9fafb;
+    color: #888;
+    cursor: not-allowed;
+}
+
+body.dark-mode .form-input {
+    background: var(--input-bg-dark);
+    border-color: var(--input-border-dark);
+    color: #e8f5e9;
+}
+
+body.dark-mode .form-input:focus {
+    background: #0f2a1c;
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px rgba(201, 162, 39, 0.2);
+}
+
+body.dark-mode .form-input:disabled {
+    background: #1a2a1a;
+    color: #666;
+}
+
+/* ════════ UPLOAD ZONES ════════ */
+.upload-zone {
+    border: 2px dashed var(--input-border);
+    border-radius: var(--radius);
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: all var(--transition);
+    background: var(--input-bg);
+    position: relative;
+}
+
+.upload-zone:hover,
+.upload-zone.dragover {
+    border-color: var(--gold);
+    background: #fffbeb;
+}
+
+body.dark-mode .upload-zone {
+    border-color: var(--input-border-dark);
+    background: var(--input-bg-dark);
+}
+
+body.dark-mode .upload-zone:hover,
+body.dark-mode .upload-zone.dragover {
+    border-color: var(--gold);
+    background: #111f16;
+}
+
+/* ════════ IMAGE PREVIEW ════════ */
+.img-preview {
+    max-width: 100%;
+    border-radius: 6px;
+    border: 2px solid var(--gold);
+    margin-top: 8px;
+}
+
+.nid-preview-thumb {
+    width: 80px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 4px;
+    border: 1px solid var(--gold);
+}
+
+body.dark-mode .nid-preview-thumb {
+    border-color: var(--gold);
+}
+
+/* ════════ SUBMIT BUTTON ════════ */
+.btn-submit {
+    background: linear-gradient(135deg, var(--emerald-dark), #047857);
+    color: #fff;
+    border: none;
+    padding: 14px 40px;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all var(--transition);
+    box-shadow: 0 4px 12px rgba(6, 78, 59, 0.3);
+}
+
+.btn-submit:hover {
+    background: linear-gradient(135deg, #047857, #059669);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(6, 78, 59, 0.4);
+}
+
+.btn-submit:active {
+    transform: translateY(0);
+}
+
+.btn-submit:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+body.dark-mode .btn-submit {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+body.dark-mode .btn-submit:hover {
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5);
+}
+
+/* ════════ MODAL ════════ */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.75);
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    backdrop-filter: blur(2px);
+}
+
+.modal-box {
+    background: var(--card-bg);
+    border-radius: 14px;
+    padding: 24px;
+    max-width: 540px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    animation: modalSlide 0.3s ease;
+}
+
+@keyframes modalSlide {
+    from {
+        opacity: 0;
+        transform: translateY(30px) scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+body.dark-mode .modal-box {
+    background: var(--card-bg-dark);
+    color: #e8f5e9;
+    border: 1px solid var(--border-color-dark);
+}
+
+/* ════════ CROPPER CONTAINER ════════ */
+.cropper-container-box {
+    max-height: 60vh;
+    overflow: auto;
+    border-radius: 8px;
+    background: #000;
+    position: relative;
+}
+
+.cropper-container-box img {
+    max-width: 100%;
+    display: block;
+}
+
+/* ════════ PHONE INPUT ════════ */
+.phone-row {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.phone-row .form-input {
+    flex: 1;
+    min-width: 120px;
+}
+
+.country-code-sel {
+    width: 105px;
+    flex-shrink: 0;
+    padding: 9px 6px;
+    border: 1.5px solid var(--input-border);
+    border-radius: 7px;
+    background: var(--input-bg);
+    font-size: 0.82rem;
+    font-family: inherit;
+    color: var(--text-dark);
+    outline: none;
+    transition: border var(--transition), background var(--transition);
+    min-height: 44px;
+}
+
+.country-code-sel:focus {
+    border-color: var(--gold);
+}
+
+body.dark-mode .country-code-sel {
+    background: var(--input-bg-dark);
+    border-color: var(--input-border-dark);
+    color: #e8f5e9;
+}
+
+body.dark-mode .country-code-sel:focus {
+    border-color: var(--gold);
+}
+
+/* ════════ THEME TOGGLE ════════ */
+.theme-toggle {
+    width: 48px;
+    height: 26px;
+    border-radius: 13px;
+    background: var(--input-border);
+    position: relative;
+    cursor: pointer;
+    transition: background var(--transition);
+    border: none;
+    flex-shrink: 0;
+}
+
+.theme-toggle.active {
+    background: var(--input-border-dark);
+}
+
+.theme-toggle::after {
+    content: '';
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--emerald-mid);
+    transition: left var(--transition), background var(--transition);
+}
+
+.theme-toggle.active::after {
+    left: 25px;
+    background: var(--gold);
+}
+
+/* ════════ TERMS BOX ════════ */
+.terms-box {
+    background: var(--input-bg);
+    border: 1px solid var(--input-border);
+    border-radius: 8px;
+    padding: 14px;
+    font-size: 0.85rem;
+    line-height: 1.8;
+    transition: background var(--transition), border var(--transition);
+}
+
+body.dark-mode .terms-box {
+    background: var(--input-bg-dark);
+    border-color: var(--input-border-dark);
+}
+
+/* ════════ OCCUPATION SEARCH ════════ */
+.occ-search-wrap {
+    position: relative;
+}
+
+.occ-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--card-bg);
+    border: 1.5px solid var(--input-border);
+    border-radius: 7px;
+    z-index: 100;
+    max-height: 180px;
+    overflow-y: auto;
+    display: none;
+}
+
+.occ-dropdown.show {
+    display: block;
+}
+
+body.dark-mode .occ-dropdown {
+    background: var(--card-bg-dark);
+    border-color: var(--input-border-dark);
+}
+
+.occ-item {
+    padding: 8px 12px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: background var(--transition);
+}
+
+.occ-item:hover {
+    background: var(--input-bg);
+}
+
+body.dark-mode .occ-item:hover {
+    background: var(--input-bg-dark);
+}
+
+/* ════════ STEP INDICATOR ════════ */
+.step-bar {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 24px;
+}
+
+.step-dot {
+    height: 4px;
+    flex: 1;
+    border-radius: 2px;
+    background: var(--input-border);
+    transition: background var(--transition);
+}
+
+.step-dot.done {
+    background: var(--gold);
+}
+
+.step-dot.active {
+    background: var(--emerald-mid);
+}
+
+body.dark-mode .step-dot {
+    background: var(--input-border-dark);
+}
+
+body.dark-mode .step-dot.done {
+    background: var(--gold);
+}
+
+body.dark-mode .step-dot.active {
+    background: #6ee7b7;
+}
+
+/* ════════ DIVIDER ════════ */
+hr.gold {
+    border: none;
+    border-top: 1px solid var(--gold);
+    margin: 20px 0;
+    opacity: 0.4;
+}
+
+/* ════════ FACE GUIDE OVERLAY ════════ */
+.face-guide-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    opacity: 0.35;
+}
+
+/* ════════ TOAST ════════ */
+.toast {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: var(--emerald-mid);
+    color: #fff;
+    padding: 14px 22px;
+    border-radius: var(--radius);
+    font-size: 0.9rem;
+    font-family: 'Noto Serif Bengali', serif;
+    z-index: 9999;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+    animation: toastSlide 0.3s ease;
+    max-width: 320px;
+}
+
+@keyframes toastSlide {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+body.dark-mode .toast {
+    background: var(--emerald-dark);
+}
+
+/* ════════ SCROLLBAR ════════ */
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--input-border);
+    border-radius: 3px;
+}
+
+body.dark-mode ::-webkit-scrollbar-thumb {
+    background: var(--input-border-dark);
+}
+
+/* ════════ RESPONSIVE DESIGN ════════ */
+@media (max-width: 768px) {
+    .phone-row {
+        flex-wrap: wrap;
+    }
+
+    .country-code-sel {
+        width: 100%;
+    }
+
+    .phone-row .form-input {
+        width: 100%;
+        flex: none;
+    }
+
+    .modal-box {
+        padding: 18px;
+        max-width: 95%;
+    }
+
+    .section-header {
+        font-size: 0.85rem;
+        padding: 6px 12px;
+    }
+
+    .btn-submit {
+        padding: 12px 24px;
+        font-size: 0.9rem;
+        width: 100%;
+    }
+
+    .upload-zone {
+        padding: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .site-header {
+        padding: 12px 16px;
+    }
+
+    .form-card {
+        padding: 16px !important;
+    }
+
+    .section-header {
+        font-size: 0.8rem;
+        flex-wrap: wrap;
+    }
+
+    .field-label {
+        font-size: 0.75rem;
+    }
+
+    .form-input {
+        font-size: 0.8rem;
+        padding: 8px 10px;
+        min-height: 40px;
+    }
+
+    .theme-toggle {
+        width: 40px;
+        height: 22px;
+    }
+
+    .theme-toggle::after {
+        width: 16px;
+        height: 16px;
+        top: 3px;
+        left: 3px;
+    }
+
+    .theme-toggle.active::after {
+        left: 21px;
+    }
+
+    .modal-box {
+        padding: 14px;
+        border-radius: 10px;
+    }
+}
+
+/* ════════ ACCESSIBILITY ════════ */
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* Focus visible for keyboard users */
+.form-input:focus-visible,
+.country-code-sel:focus-visible,
+.btn-submit:focus-visible,
+.upload-zone:focus-visible,
+.theme-toggle:focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: 2px;
+}
+
+/* ════════ PRINT STYLES ════════ */
+@media print {
+
+    .site-header,
+    .theme-toggle,
+    #langSel,
+    .btn-submit,
+    .modal-overlay,
+    .toast {
+        display: none !important;
+    }
+
+    .form-card {
+        box-shadow: none !important;
+        border: 1px solid #ddd !important;
+        break-inside: avoid;
+    }
+
+    body {
+        background: #fff !important;
+        color: #000 !important;
+    }
+
+    .form-input {
+        border-color: #ccc !important;
+        background: #fff !important;
+    }
+}

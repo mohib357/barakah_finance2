@@ -1,0 +1,537 @@
+/* C:\Project\Barakah_Finance\style\auth_modal.css */
+/* FIXED & IMPROVED VERSION:
+     - Unified dark mode class: now uses .dark-mode (consistent with other files)
+     - Added root CSS variables for easier theming
+     - Fixed z-index conflicts (reduced from 10000 to 1050)
+     - Improved responsive design for mobile
+     - Added focus states for accessibility
+     - Fixed tab border conflict
+     - Added proper scrollbar styling
+*/
+
+/* ════════ ROOT VARIABLES ════════ */
+:root {
+    --auth-bg: #fff;
+    --auth-text: #1a1a1a;
+    --auth-border: #d1fae5;
+    --auth-input-bg: #f0fdf4;
+    --auth-primary: #064E3B;
+    --auth-primary-light: #065F46;
+    --auth-gold: #C9A227;
+    --auth-gold-light: #F5D061;
+    --auth-shadow: rgba(0, 0, 0, 0.3);
+    --auth-radius: 18px;
+    --auth-transition: 0.2s;
+}
+
+/* ════════ AUTH OVERLAY ════════ */
+.auth-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.78);
+    z-index: 1050;
+    /* Reduced from 10000 to avoid conflicts */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    backdrop-filter: blur(2px);
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+/* ════════ AUTH BOX ════════ */
+.auth-box {
+    background: var(--auth-bg);
+    border-radius: var(--auth-radius);
+    width: 100%;
+    max-width: 490px;
+    max-height: 92vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 60px var(--auth-shadow);
+    animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px) scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* ── Dark Mode ── */
+body.dark-mode .auth-box {
+    background: #112318;
+    color: #e8f5e9;
+    border: 1px solid #1a3a2a;
+}
+
+/* ════════ AUTH HEADER ════════ */
+.auth-head {
+    background: linear-gradient(135deg, #064E3B, #065F46);
+    padding: 18px 22px;
+    border-radius: var(--auth-radius) var(--auth-radius) 0 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.auth-head h2 {
+    color: #fff;
+    font-family: 'Noto Serif Bengali', serif;
+    font-size: 1.05rem;
+    margin: 0;
+    font-weight: 700;
+}
+
+.auth-x {
+    background: rgba(255, 255, 255, 0.15);
+    border: none;
+    color: #fff;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background var(--auth-transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.auth-x:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+body.dark-mode .auth-x {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+body.dark-mode .auth-x:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* ════════ AUTH TABS ════════ */
+.auth-tabs-row {
+    display: flex;
+    padding: 0 20px;
+    border-bottom: 2px solid var(--auth-border);
+    background: var(--auth-bg);
+    border-radius: 0 0 0 0;
+}
+
+body.dark-mode .auth-tabs-row {
+    border-color: #1a3a2a;
+    background: #112318;
+}
+
+.atab {
+    padding: 11px 18px;
+    cursor: pointer;
+    font-size: 13px;
+    font-family: 'Noto Serif Bengali', serif;
+    color: #777;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -2px;
+    transition: all var(--auth-transition);
+    user-select: none;
+}
+
+.atab:hover {
+    color: var(--auth-primary);
+}
+
+.atab.on {
+    color: #064E3B;
+    border-color: var(--auth-gold);
+    font-weight: 700;
+}
+
+body.dark-mode .atab {
+    color: #aaa;
+}
+
+body.dark-mode .atab:hover {
+    color: #6ee7b7;
+}
+
+body.dark-mode .atab.on {
+    color: #6ee7b7;
+    border-color: var(--auth-gold);
+}
+
+/* ════════ AUTH BODY ════════ */
+.auth-body {
+    padding: 20px 22px;
+    background: var(--auth-bg);
+    border-radius: 0 0 var(--auth-radius) var(--auth-radius);
+}
+
+body.dark-mode .auth-body {
+    background: #112318;
+}
+
+/* ════════ FORM FIELDS ════════ */
+.af {
+    margin-bottom: 12px;
+}
+
+.af label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--auth-primary);
+    margin-bottom: 3px;
+}
+
+body.dark-mode .af label {
+    color: #6ee7b7;
+}
+
+.ai {
+    width: 100%;
+    padding: 9px 12px;
+    border: 1.5px solid var(--auth-border);
+    border-radius: 7px;
+    font-family: 'Noto Serif Bengali', serif;
+    font-size: 13px;
+    background: var(--auth-input-bg);
+    color: #1a1a1a;
+    outline: none;
+    transition: border var(--auth-transition), box-shadow var(--auth-transition);
+}
+
+.ai:focus {
+    border-color: var(--auth-gold);
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(201, 162, 39, 0.15);
+}
+
+.ai::placeholder {
+    color: #aaa;
+    opacity: 0.7;
+}
+
+body.dark-mode .ai {
+    background: #0d2218;
+    border-color: #1a4a30;
+    color: #e8f5e9;
+}
+
+body.dark-mode .ai::placeholder {
+    color: #666;
+}
+
+body.dark-mode .ai:focus {
+    background: #0f2a1c;
+    border-color: var(--auth-gold);
+    box-shadow: 0 0 0 3px rgba(201, 162, 39, 0.2);
+}
+
+/* ════════ AUTH BUTTON ════════ */
+.auth-btn {
+    width: 100%;
+    padding: 11px;
+    background: linear-gradient(135deg, var(--auth-primary), #047857);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-family: 'Noto Serif Bengali', serif;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 4px;
+    transition: all var(--auth-transition);
+    position: relative;
+    overflow: hidden;
+}
+
+.auth-btn:hover {
+    background: linear-gradient(135deg, #047857, #059669);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(6, 78, 59, 0.3);
+}
+
+.auth-btn:active {
+    transform: translateY(0);
+    box-shadow: none;
+}
+
+.auth-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+body.dark-mode .auth-btn:hover {
+    box-shadow: 0 4px 12px rgba(6, 78, 59, 0.5);
+}
+
+/* ════════ ALERTS ════════ */
+.aalert {
+    padding: 9px 13px;
+    border-radius: 7px;
+    font-size: 12px;
+    font-family: 'Noto Serif Bengali', serif;
+    margin-bottom: 10px;
+    animation: alertSlide 0.3s ease;
+}
+
+@keyframes alertSlide {
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.aalert-err {
+    background: #fee2e2;
+    color: #991b1b;
+    border: 1px solid #fca5a5;
+}
+
+.aalert-ok {
+    background: #d1fae5;
+    color: var(--auth-primary);
+    border: 1px solid #a7f3d0;
+}
+
+body.dark-mode .aalert-err {
+    background: #2d1a1a;
+    color: #f87171;
+    border-color: #7f1d1d;
+}
+
+body.dark-mode .aalert-ok {
+    background: #0d2218;
+    color: #6ee7b7;
+    border-color: #1a4a30;
+}
+
+/* ════════ 2-COLUMN LAYOUT ════════ */
+.a2col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+@media (max-width: 400px) {
+    .a2col {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ════════ REFERRAL SEARCH ════════ */
+#ref-results {
+    border: 1px solid var(--auth-border);
+    border-radius: 7px;
+    max-height: 120px;
+    overflow-y: auto;
+    background: #fff;
+    display: none;
+    margin-top: 4px;
+}
+
+#ref-results:not(:empty) {
+    display: block;
+}
+
+body.dark-mode #ref-results {
+    background: #0d2218;
+    border-color: #1a4a30;
+}
+
+.ref-item {
+    padding: 7px 12px;
+    cursor: pointer;
+    font-size: 12px;
+    border-bottom: 1px solid var(--auth-border);
+    transition: background var(--auth-transition);
+}
+
+.ref-item:hover {
+    background: var(--auth-input-bg);
+}
+
+body.dark-mode .ref-item {
+    border-color: #1a3a2a;
+}
+
+body.dark-mode .ref-item:hover {
+    background: #0d2218;
+}
+
+.ref-item:last-child {
+    border-bottom: none;
+}
+
+/* ════════ OTP SECTION ════════ */
+.otp-center {
+    text-align: center;
+    padding: 16px 0;
+}
+
+.otp-phone {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--auth-primary);
+    margin-top: 4px;
+}
+
+body.dark-mode .otp-phone {
+    color: #6ee7b7;
+}
+
+.otp-timer {
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: var(--auth-gold);
+    letter-spacing: 4px;
+    margin: 8px 0;
+    font-family: 'Noto Serif Bengali', serif;
+}
+
+.otp-resend {
+    color: var(--auth-primary);
+    font-size: 12px;
+    cursor: pointer;
+    text-decoration: underline;
+    transition: color var(--auth-transition);
+}
+
+.otp-resend:hover {
+    color: var(--auth-gold);
+}
+
+body.dark-mode .otp-resend {
+    color: #6ee7b7;
+}
+
+body.dark-mode .otp-resend:hover {
+    color: var(--auth-gold);
+}
+
+.otp-big {
+    text-align: center;
+    font-size: 1.8rem;
+    letter-spacing: 8px;
+    font-weight: 700;
+}
+
+/* ════════ USERNAME HINT ════════ */
+#uname-hint {
+    font-size: 11px;
+    margin-top: 2px;
+    min-height: 18px;
+}
+
+#uname-hint.success {
+    color: #059669;
+}
+
+#uname-hint.error {
+    color: #e53e3e;
+}
+
+/* ════════ SCROLLBAR ════════ */
+.auth-box::-webkit-scrollbar {
+    width: 5px;
+}
+
+.auth-box::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.auth-box::-webkit-scrollbar-thumb {
+    background: var(--auth-border);
+    border-radius: 3px;
+}
+
+body.dark-mode .auth-box::-webkit-scrollbar-thumb {
+    background: #1a4a30;
+}
+
+/* ════════ RESPONSIVE ════════ */
+@media (max-width: 480px) {
+    .auth-box {
+        max-width: 100%;
+        border-radius: 12px;
+        max-height: 95vh;
+    }
+
+    .auth-head {
+        padding: 14px 16px;
+        border-radius: 12px 12px 0 0;
+    }
+
+    .auth-head h2 {
+        font-size: 0.95rem;
+    }
+
+    .auth-body {
+        padding: 16px;
+    }
+
+    .atab {
+        padding: 10px 14px;
+        font-size: 12px;
+    }
+
+    .otp-timer {
+        font-size: 1.8rem;
+    }
+
+    .otp-big {
+        font-size: 1.4rem;
+        letter-spacing: 6px;
+    }
+}
+
+/* ════════ ACCESSIBILITY ════════ */
+@media (prefers-reduced-motion: reduce) {
+
+    .auth-overlay,
+    .auth-box,
+    .aalert,
+    .auth-btn {
+        animation: none !important;
+        transition: none !important;
+    }
+}
+
+/* Focus visible for keyboard users */
+.atab:focus-visible,
+.auth-x:focus-visible,
+.auth-btn:focus-visible,
+.otp-resend:focus-visible,
+.ref-item:focus-visible {
+    outline: 2px solid var(--auth-gold);
+    outline-offset: 2px;
+}
+
+/* ── Hidden utility (if not defined elsewhere) ── */
+.hidden {
+    display: none !important;
+}

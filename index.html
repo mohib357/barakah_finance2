@@ -1,0 +1,570 @@
+<!-- C:\Project\Barakah_Finance\index.html -->
+<!-- FIXED VERSION: Duplicate toasts removed, missing functions added (stubs), dark mode class unified, scroll functions fixed -->
+
+<!DOCTYPE html>
+<html lang="bn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>বারাকাহ ফাইন্যান্স - সুদমুক্ত লেনদেনে সমৃদ্ধি সবার</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Serif+Bengali:wght@400;600;700&family=Noto+Sans+Bengali:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+
+    <!-- CSS (Fixed paths, unified dark mode will be handled by JS) -->
+    <link rel="stylesheet" href="style/style.css" />
+    <link rel="stylesheet" href="style/navbar_style.css" />
+    <link rel="stylesheet" href="style/hero_style.css" />
+    <link rel="stylesheet" href="style/notice_bar.css" />
+    <link rel="stylesheet" href="style/badges.css" />
+    <link rel="stylesheet" href="style/auth_modal.css" />
+</head>
+
+<body>
+
+    <!-- ══════ NAV ══════ -->
+    <nav id="mainNav">
+        <a href="index.html" class="logo">
+            <div class="logo-icon">
+                <img src="image/logo.png" alt="logo"
+                    onerror="this.parentElement.innerHTML='<span style=font-size:22px;font-weight:700;color:#C9A227>ব</span>'" />
+            </div>
+            <div class="logo-text">
+                <strong>বারাকাহ ফাইন্যান্স</strong>
+                <span>Barakah Finance</span>
+            </div>
+        </a>
+
+        <ul class="nav-links" id="navLinks">
+            <li><a onclick="smScroll('about')">আমাদের সম্পর্কে</a></li>
+            <li><a onclick="smScroll('calculator')">ক্যালকুলেটর</a></li>
+            <li><a onclick="smScroll('members')">সদস্যবৃন্দ</a></li>
+            <li><a onclick="smScroll('panels')">প্যানেল</a></li>
+            <li><a href="form.html">আবেদন ফরম</a></li>
+            <!-- Logged in user menu -->
+            <li class="nav-user-wrap" id="nav-user-menu" style="display:none;">
+                <button class="nav-user-btn">👤 <span id="nav-user-name">আমি</span> ▾</button>
+                <div class="nav-dropdown">
+                    <a href="pages/profile.html">📋 প্রোফাইল</a>
+                    <a href="pages/dashboard.html">📊 ড্যাশবোর্ড</a>
+                    <hr />
+                    <button onclick="doLogout()">🚪 লগআউট</button>
+                </div>
+            </li>
+            <!-- Login button -->
+            <li id="nav-login-btn">
+                <a onclick="openAuthModal('login')" class="nav-cta">লগইন করুন</a>
+            </li>
+            <!-- Dark toggle (fixed) -->
+            <li style="display:flex;align-items:center;">
+                <div class="dk-tog" id="dkTog" onclick="toggleDarkMode()" title="ডার্ক/লাইট মোড"></div>
+            </li>
+        </ul>
+
+        <button class="hamburger" id="hamburger" onclick="toggleMob()" aria-label="মেনু">
+            <span></span><span></span><span></span>
+        </button>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div class="nav-mobile" id="mobileMenu">
+        <a onclick="smScroll('about');toggleMob()">আমাদের সম্পর্কে</a>
+        <a onclick="smScroll('calculator');toggleMob()">ক্যালকুলেটর</a>
+        <a onclick="smScroll('members');toggleMob()">সদস্যবৃন্দ</a>
+        <a href="form.html">আবেদন ফরম</a>
+        <a id="mnav-user" style="display:none;" href="pages/profile.html">📋 আমার প্রোফাইল</a>
+        <a id="mnav-login" onclick="openAuthModal('login');toggleMob()">🔑 লগইন / নিবন্ধন</a>
+        <a href="admin/admin.html">🛡️ অ্যাডমিন প্যানেল</a>
+    </div>
+
+    <!-- ══════ NOTICE BAR (Fixed: animation will be applied by JS) ══════ -->
+    <div class="notice-bar" style="position:sticky;top:80px;z-index:997;">
+        <div class="notice-label">📢 নোটিশ</div>
+        <div class="notice-scroll-wrap">
+            <div id="notice-track">লোড হচ্ছে...</div>
+        </div>
+    </div>
+
+    <!-- ══════ HERO ══════ -->
+    <section class="hero" id="home">
+        <div class="hero-pattern"></div>
+        <div class="hero-content reveal">
+            <div class="hero-badge">🕌 শরিয়াহসম্মত আর্থিক প্রতিষ্ঠান</div>
+            <h1>সুদমুক্ত লেনদেনে<br><em>সমৃদ্ধি সবার</em></h1>
+            <p class="slogan">ইসলামী অর্থনীতির আলোকে সমাজ থেকে সুদের অভিশাপ দূর করে<br>
+                হালাল উপায়ে আর্থিক সহায়তা ও সমৃদ্ধি নিশ্চিত করা আমাদের অঙ্গীকার।</p>
+            <div class="hero-actions">
+                <button class="btn-primary" onclick="location.href='form.html'">সদস্য হতে আবেদন করুন</button>
+                <button class="btn-primary" style="background:linear-gradient(135deg,#C9A227,#A67C00);color:#0A2A1A;"
+                    onclick="location.href='pages/shop.html'">🛒 পণ্য কিনুন</button>
+                <button class="btn-outline" onclick="smScroll('about')">আরও জানুন</button>
+            </div>
+        </div>
+        <div class="badges-section">
+            <div id="badges-container"></div>
+        </div>
+    </section>
+
+    <!-- ══════ ABOUT ══════ -->
+    <section class="features" id="about">
+        <div class="section-header reveal">
+            <span class="section-eyebrow">আমাদের লক্ষ্য ও উদ্দেশ্য</span>
+            <h2 class="section-title">কেন বারাকাহ ফাইন্যান্স?</h2>
+            <p class="section-sub">শরিয়াহ মোতাবেক পরিচালিত এই প্রতিষ্ঠান আপনার আর্থিক প্রয়োজন পূরণ করবে সম্পূর্ণ হালাল
+                পথে।
+            </p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card reveal">
+                <div class="feature-icon">🕌</div>
+                <h3>সুদমুক্ত অর্থনীতি</h3>
+                <p>শরিয়াহসম্মত ও হালাল উপায়ে সকল আর্থিক লেনদেন নিশ্চিত করা।</p>
+            </div>
+            <div class="feature-card reveal">
+                <div class="feature-icon">🤝</div>
+                <h3>করজে হাসানা</h3>
+                <p>আপদকালীন প্রয়োজনে বিনা সুদে সর্বোচ্চ ১৫,০০০ টাকা পর্যন্ত করজে হাসানা।</p>
+            </div>
+            <div class="feature-card reveal">
+                <div class="feature-icon">📦</div>
+                <h3>সহজ কিস্তি সুবিধা</h3>
+                <p>মাত্র ১০% লাভে ৬ কিস্তিতে যেকোনো পণ্য ক্রয়ের সুবিধা।</p>
+            </div>
+            <div class="feature-card reveal">
+                <div class="feature-icon">💰</div>
+                <h3>সঞ্চয় ও বিনিয়োগ</h3>
+                <p>মাসিক মাত্র ২,০০০ টাকা সঞ্চয়ে হালাল বিনিয়োগের সুযোগ।</p>
+            </div>
+            <div class="feature-card reveal">
+                <div class="feature-icon">🔒</div>
+                <h3>স্বচ্ছতা ও নিরাপত্তা</h3>
+                <p>ডিজিটাল KYC যাচাই ও সম্পূর্ণ সুরক্ষিত পরিচালনা।</p>
+            </div>
+            <div class="feature-card reveal">
+                <div class="feature-icon">📱</div>
+                <h3>স্মার্ট নোটিফিকেশন</h3>
+                <p>কিস্তির তারিখের আগে SMS ও নোটিফিকেশন — কোনো কিস্তি মিস নেই।</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ══════ CALCULATOR ══════ -->
+    <section class="calculator" id="calculator">
+        <div class="section-header reveal"><span class="section-eyebrow">আর্থিক হিসাব</span>
+            <h2 class="section-title">কিস্তি ক্যালকুলেটর</h2>
+            <p class="section-sub">পণ্যের মূল্য দিন, স্বয়ংক্রিয়ভাবে ১০% লাভে কিস্তির পরিমাণ জানুন।</p>
+        </div>
+        <div class="calc-container reveal">
+            <div class="calc-row"><label class="calc-label">পণ্যের বাজারমূল্য (টাকা)</label><input type="number"
+                    class="calc-input" id="productPrice" placeholder="যেমন: ৫০০০০" oninput="calculateInstallment()">
+            </div>
+            <div class="calc-row"><label class="calc-label">যাতায়াত খরচ (টাকা)</label><input type="number"
+                    class="calc-input" id="travelCost" value="0" oninput="calculateInstallment()"></div>
+            <button class="calc-btn" onclick="calculateInstallment()">হিসাব করুন</button>
+            <div class="calc-result" id="calcResult" style="display:none">
+                <div class="calc-grid">
+                    <div class="calc-item">
+                        <div class="val" id="totalPrice">-</div>
+                        <div class="lbl">মোট বিক্রয়মূল্য (১০% লাভ)</div>
+                    </div>
+                    <div class="calc-item">
+                        <div class="val" id="downPayment">-</div>
+                        <div class="lbl">১ম কিস্তি (ডাউনপেমেন্ট)</div>
+                    </div>
+                    <div class="calc-item">
+                        <div class="val" id="monthlyInstall">-</div>
+                        <div class="lbl">প্রতি মাসিক কিস্তি (× ৫)</div>
+                    </div>
+                    <div class="calc-item">
+                        <div class="val" id="profit">-</div>
+                        <div class="lbl">সংস্থার লাভ</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ══════ HOW IT WORKS ══════ -->
+    <section class="how" id="how">
+        <div class="section-header reveal"><span class="section-eyebrow">প্রক্রিয়া</span>
+            <h2 class="section-title">কীভাবে কাজ করে?</h2>
+        </div>
+        <div class="steps">
+            <div class="step reveal">
+                <div class="step-num">১</div>
+                <h3>আবেদন</h3>
+                <p>অনলাইনে ফরম পূরণ করুন</p>
+            </div>
+            <div class="step reveal">
+                <div class="step-num">২</div>
+                <h3>যাচাই</h3>
+                <p>কমিটি পর্যালোচনা করবেন</p>
+            </div>
+            <div class="step reveal">
+                <div class="step-num">৩</div>
+                <h3>অনুমোদন</h3>
+                <p>পণ্য বাজার থেকে ক্রয়</p>
+            </div>
+            <div class="step reveal">
+                <div class="step-num">৪</div>
+                <h3>ডাউনপেমেন্ট</h3>
+                <p>মোট মূল্যের ১/৬ জমা</p>
+            </div>
+            <div class="step reveal">
+                <div class="step-num">৫</div>
+                <h3>কিস্তি পরিশোধ</h3>
+                <p>৫ মাসে সমান কিস্তিতে</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ══════ PANELS ══════ -->
+    <section class="panels" id="panels">
+        <div class="section-header reveal"><span class="section-eyebrow">ব্যবহারকারী পোর্টাল</span>
+            <h2 class="section-title">তিনটি প্যানেল, তিনটি সেবা</h2>
+        </div>
+        <div class="panels-grid">
+            <div class="panel-card panel-admin reveal"><span class="panel-badge">Admin</span>
+                <div class="panel-icon">🛡️</div>
+                <h3>অ্যাডমিন প্যানেল</h3>
+                <ul>
+                    <li>রিয়েল-টাইম ড্যাশবোর্ড</li>
+                    <li>সদস্য ব্যবস্থাপনা</li>
+                    <li>পণ্য অনুমোদন ও বাতিল</li>
+                    <li>আর্থিক রিপোর্ট</li>
+                    <li>নোটিশ ও ব্যাজ নিয়ন্ত্রণ</li>
+                </ul><button class="panel-btn" onclick="openAuthModal('login','admin')">অ্যাডমিন লগইন</button>
+            </div>
+            <div class="panel-card panel-member reveal"><span class="panel-badge">Member</span>
+                <div class="panel-icon">👥</div>
+                <h3>সদস্য প্যানেল</h3>
+                <ul>
+                    <li>ব্যক্তিগত সঞ্চয় প্রোফাইল</li>
+                    <li>লভ্যাংশের হিসাব</li>
+                    <li>ডিজিটাল ভোট প্রদান</li>
+                    <li>করজে হাসানা আবেদন</li>
+                    <li>মাসিক সঞ্চয় স্ট্যাটাস</li>
+                </ul><button class="panel-btn" onclick="openAuthModal('login','member')">সদস্য লগইন</button>
+            </div>
+            <div class="panel-card panel-customer reveal"><span class="panel-badge">Customer</span>
+                <div class="panel-icon">🛒</div>
+                <h3>গ্রাহক প্যানেল</h3>
+                <ul>
+                    <li>পণ্য রিকোয়েস্ট পাঠান</li>
+                    <li>কিস্তি ট্র্যাকার</li>
+                    <li>আবেদনের অবস্থা</li>
+                    <li>পেমেন্ট ইতিহাস</li>
+                    <li>ডকুমেন্ট আপলোড</li>
+                </ul><button class="panel-btn" onclick="openAuthModal('login','customer')">গ্রাহক লগইন</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ══════ MEMBERS ══════ -->
+    <section class="members" id="members">
+        <div class="section-header reveal"><span class="section-eyebrow">প্রতিষ্ঠাতা সদস্যবৃন্দ</span>
+            <h2 class="section-title">আমাদের দলের পরিচয়</h2>
+        </div>
+        <div class="members-grid" id="membersGrid"></div>
+    </section>
+
+    <!-- ══════ APPLY ══════ -->
+    <section class="apply" id="apply">
+        <div class="section-header reveal"><span class="section-eyebrow">অনলাইন আবেদন</span>
+            <h2 class="section-title">আজই আবেদন করুন</h2>
+        </div>
+        <div class="apply-container reveal">
+            <div class="form-tabs"><button class="form-tab active" onclick="switchFormTab('tab-member')">নতুন
+                    সদস্য</button><button class="form-tab" onclick="switchFormTab('tab-product')">পণ্য
+                    রিকোয়েস্ট</button><button class="form-tab" onclick="switchFormTab('tab-qard')">করজে হাসানা</button>
+            </div>
+            <div class="form-section active" id="tab-member">
+                <div id="alert-member" class="alert"></div>
+                <div class="form-row">
+                    <div class="form-group"><label>পূর্ণ নাম *</label><input type="text" id="m-name"
+                            placeholder="আপনার নাম"></div>
+                    <div class="form-group"><label>মোবাইল *</label><input type="tel" id="m-phone"
+                            placeholder="01XXXXXXXXX"></div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group"><label>NID *</label><input type="text" id="m-nid" placeholder="NID নম্বর">
+                    </div>
+                    <div class="form-group"><label>পেশা</label><input type="text" id="m-job" placeholder="পেশা"></div>
+                </div>
+                <div class="form-group"><label>ঠিকানা *</label><input type="text" id="m-address"
+                        placeholder="বিস্তারিত ঠিকানা"></div><button class="form-submit"
+                    onclick="quickSubmitForm('member')">সদস্য আবেদন জমা দিন →</button>
+            </div>
+            <div class="form-section" id="tab-product">
+                <div id="alert-product" class="alert"></div>
+                <div class="form-row">
+                    <div class="form-group"><label>নাম *</label><input type="text" id="p-name" placeholder="পূর্ণ নাম">
+                    </div>
+                    <div class="form-group"><label>মোবাইল *</label><input type="tel" id="p-phone"
+                            placeholder="01XXXXXXXXX"></div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group"><label>পণ্যের নাম *</label><input type="text" id="p-product"
+                            placeholder="Samsung Galaxy A55"></div>
+                    <div class="form-group"><label>মূল্য (৳) *</label><input type="number" id="p-price" placeholder="৳"
+                            oninput="previewInstallment()"></div>
+                </div>
+                <div id="p-calc-box"
+                    style="display:none;background:#f0fdf4;border:1px solid #a7f3d0;border-radius:7px;padding:10px;margin-bottom:10px;font-size:12px;">
+                    মোট: <b id="pv-t">-</b> | ডাউন: <b id="pv-d">-</b> | মাসিক: <b id="pv-m">-</b></div><button
+                    class="form-submit" onclick="quickSubmitForm('product')">পণ্য রিকোয়েস্ট জমা দিন →</button>
+            </div>
+            <div class="form-section" id="tab-qard">
+                <div id="alert-qard" class="alert"></div>
+                <div
+                    style="background:#fffbeb;border:1px solid rgba(186,117,23,.3);border-radius:7px;padding:10px;margin-bottom:12px;font-size:12px;">
+                    ⚠️ সদস্যদের জন্য। সর্বোচ্চ ১৫,০০০ টাকা। ৩ মাসে পরিশোধযোগ্য।</div>
+                <div class="form-row">
+                    <div class="form-group"><label>নাম *</label><input type="text" id="q-name" placeholder="পূর্ণ নাম">
+                    </div>
+                    <div class="form-group"><label>মোবাইল *</label><input type="tel" id="q-phone"
+                            placeholder="01XXXXXXXXX"></div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group"><label>পরিমাণ * (সর্বোচ্চ ১৫,০০০)</label><input type="number" max="15000"
+                            id="q-amount" placeholder="৳"></div>
+                    <div class="form-group"><label>পরিশোধের মাস</label><input type="month" id="q-start"></div>
+                </div><button class="form-submit" onclick="quickSubmitForm('qard')">করজে হাসানা আবেদন →</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ══════ FOOTER ══════ -->
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <div class="logo">
+                    <div class="logo-icon"
+                        style="width:44px;height:44px;background:linear-gradient(135deg,#C9A227,#A67C00);color:#fff;display:flex;align-items:center;justify-content:center;border-radius:50%;font-weight:700;font-size:18px;">
+                        ব</div>
+                    <div class="logo-text"><strong>বারাকাহ ফাইন্যান্স</strong><span>Barakah Finance</span></div>
+                </div>
+                <p>সুদমুক্ত লেনদেনে সমৃদ্ধি সবার।</p>
+            </div>
+            <div class="footer-col">
+                <h5>দ্রুত লিঙ্ক</h5>
+                <ul>
+                    <li><a onclick="smScroll('about')">আমাদের সম্পর্কে</a></li>
+                    <li><a onclick="smScroll('calculator')">ক্যালকুলেটর</a></li>
+                    <li><a href="form.html">আবেদন করুন</a></li>
+                    <li><a href="admin/admin.html">অ্যাডমিন</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h5>সেবাসমূহ</h5>
+                <ul>
+                    <li><a>কিস্তিতে পণ্য ক্রয়</a></li>
+                    <li><a>করজে হাসানা</a></li>
+                    <li><a>মাসিক সঞ্চয়</a></li>
+                    <li><a>হালাল বিনিয়োগ</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h5>যোগাযোগ</h5>
+                <ul>
+                    <li><a>সভাপতি: ০১৭৩৭১৩১০৯৫</a></li>
+                    <li><a>সম্পাদক: ০১৭১৭২৬৭০০৫</a></li>
+                    <li><a>কোষাধ্যক্ষ: ০১৬৪৮২৪৮০০৬</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom"><span>© ২০২৬ বারাকাহ ফাইন্যান্স। সর্বস্বত্ব সংরক্ষিত।</span><span>শরিয়াহ পরামর্শক:
+                মাওলানা আব্দুল হান্নান | মাও. ইমরান হোসাইন কাসেমী</span></div>
+    </footer>
+
+    <!-- ══════ AUTH MODAL ══════ -->
+    <div class="auth-overlay hidden" id="authModal" onclick="if(event.target===this)closeAuthModal()">
+        <div class="auth-box">
+            <div class="auth-head">
+                <h2 id="auth-head-txt">বারাকাহ ফাইন্যান্স</h2><button class="auth-x"
+                    onclick="closeAuthModal()">✕</button>
+            </div>
+            <div class="auth-tabs-row">
+                <div class="atab on" id="atab-login" onclick="setAuthTab('login')">লগইন</div>
+                <div class="atab" id="atab-signup" onclick="setAuthTab('signup')">নিবন্ধন</div>
+            </div>
+            <div class="auth-body" id="ap-login">
+                <div class="aalert aalert-err hidden" id="al-login"></div>
+                <div class="af"><label>মোবাইল / ইমেইল / ইউজারনেম *</label><input class="ai" id="li-id"
+                        placeholder="01XXXXXXXXX বা username" /></div>
+                <div class="af"><label>পাসওয়ার্ড *</label><input class="ai" type="password" id="li-pw"
+                        placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()" /></div>
+                <div
+                    style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;font-size:12px;">
+                    <label style="display:flex;gap:5px;align-items:center;cursor:pointer;"><input type="checkbox"
+                            id="li-rem" /> মনে রাখুন</label><span onclick="setAuthPanel('forgot')"
+                        style="color:#065F46;cursor:pointer;text-decoration:underline;">পাসওয়ার্ড ভুলে গেছেন?</span>
+                </div><button class="auth-btn" onclick="doLogin()">🔑 লগইন করুন</button>
+            </div>
+            <div class="auth-body hidden" id="ap-signup">
+                <div class="aalert aalert-err hidden" id="al-signup"></div>
+                <div class="a2col">
+                    <div class="af"><label>নাম *</label><input class="ai" id="su-name" placeholder="প্রথম নাম"
+                            oninput="autoGenerateUsername()" /></div>
+                    <div class="af"><label>উপনাম</label><input class="ai" id="su-sname"
+                            placeholder="শেষ নাম (ঐচ্ছিক)" /></div>
+                </div>
+                <div class="af"><label>জন্ম তারিখ (NID অনুযায়ী) *</label><input class="ai" type="date" id="su-dob" />
+                </div>
+                <div class="af"><label>ইউজারনেম *</label><input class="ai" id="su-uname" placeholder="username"
+                        oninput="checkUsernameAvailability()" />
+                    <div id="uname-hint"></div>
+                </div>
+                <div class="af"><label>মোবাইল নম্বর *</label><input class="ai" id="su-phone" placeholder="01XXXXXXXXX"
+                        inputmode="numeric" /></div>
+                <div class="af"><label>ইমেইল (ঐচ্ছিক)</label><input class="ai" type="email" id="su-email"
+                        placeholder="email@example.com" /></div>
+                <div class="af"><label>রেফারেল — ঐচ্ছিক (সদস্যের নাম/মোবাইল/আইডি)</label><input class="ai" id="su-ref"
+                        placeholder="অনুসন্ধান করুন..." oninput="searchReferral()" />
+                    <div id="ref-results"></div><input type="hidden" id="su-ref-val" />
+                </div>
+                <div class="af"><label>পাসওয়ার্ড * (৮+ অক্ষর, সংখ্যা ও লেটার বাধ্যতামূলক)</label><input class="ai"
+                        type="password" id="su-pw" placeholder="••••••••" /></div>
+                <div class="af"><label>পাসওয়ার্ড নিশ্চিতকরণ *</label><input class="ai" type="password" id="su-pw2"
+                        placeholder="••••••••" /></div>
+                <div class="af" style="display:flex;gap:8px;align-items:flex-start;"><input type="checkbox"
+                        id="su-terms" style="margin-top:3px;width:16px;height:16px;flex-shrink:0;" /><label
+                        for="su-terms" style="font-size:12px;cursor:pointer;">আমি <span onclick="openTermsModal()"
+                            style="color:#065F46;text-decoration:underline;cursor:pointer;">শর্তাবলী</span> পড়েছি ও
+                        সম্মত আছি *</label></div><button class="auth-btn" onclick="doSignup()">📩 OTP পাঠান ও নিবন্ধন
+                    করুন</button>
+            </div>
+            <div class="auth-body hidden" id="ap-otp">
+                <div class="aalert aalert-err hidden" id="al-otp"></div>
+                <div class="otp-center">
+                    <p style="color:#888;font-size:12px;">OTP পাঠানো হয়েছে:</p>
+                    <div class="otp-phone" id="otp-phone-display"></div>
+                    <div class="otp-timer" id="otp-timer-el">০৫:০০</div><span class="otp-resend"
+                        onclick="resendOtpCode()">🔄 পুনরায় পাঠান</span>
+                </div>
+                <div class="af"><label>৬ সংখ্যার OTP *</label><input class="ai otp-big" id="otp-val"
+                        placeholder="• • • • • •" maxlength="6" inputmode="numeric"
+                        onkeydown="if(event.key==='Enter')verifyOtp()" /></div><button class="auth-btn"
+                    onclick="verifyOtp()">✅ যাচাই করুন ও অ্যাকাউন্ট খুলুন</button>
+                <p style="text-align:center;font-size:12px;margin-top:10px;"><span onclick="setAuthPanel('signup')"
+                        style="color:#065F46;cursor:pointer;">← পেছনে যান</span></p>
+            </div>
+            <div class="auth-body hidden" id="ap-forgot">
+                <div class="aalert aalert-err hidden" id="al-forgot"></div>
+                <div class="af"><label>মোবাইল নম্বর বা ইমেইল</label><input class="ai" id="fg-id"
+                        placeholder="নম্বর বা ইমেইল" /></div><button class="auth-btn" onclick="doForgotPassword()">🔑
+                    পাসওয়ার্ড পুনরুদ্ধার</button>
+                <p style="text-align:center;font-size:12px;margin-top:10px;"><span onclick="setAuthPanel('login')"
+                        style="color:#065F46;cursor:pointer;">← লগইনে ফিরুন</span></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- TERMS MODAL -->
+    <div class="auth-overlay hidden" id="termsModal" onclick="if(event.target===this)closeTermsModal()">
+        <div class="auth-box" style="max-width:560px;">
+            <div class="auth-head">
+                <h2>শর্তাবলী ও নীতিমালা</h2><button class="auth-x" onclick="closeTermsModal()">✕</button>
+            </div>
+            <div class="auth-body">
+                <div class="terms-body">
+                    <p><strong>১. সদস্যপদ:</strong> অফেরতযোগ্য ১০০ টাকা আবেদন ফি। কমিটির অনুমোদনের পর সদস্যপদ কার্যকর।
+                    </p>
+                    <p><strong>২. মাসিক সঞ্চয়:</strong> প্রতি মাসের ১৫ তারিখের মধ্যে ২,০০০ টাকা সঞ্চয় বাধ্যতামূলক।
+                        বিলম্বে ১০০ টাকা ফি।</p>
+                    <p><strong>৩. প্রতিশ্রুতিকাল:</strong> প্রাথমিক ৩ বছর সক্রিয় সদস্য থাকার প্রতিশ্রুতি।</p>
+                    <p><strong>৪. করজে হাসানা:</strong> সর্বোচ্চ ১৫,০০০ টাকা। ৩ মাসে পরিশোধ বাধ্যতামূলক।</p>
+                    <p><strong>৫. কিস্তি সুবিধা:</strong> মোট মূল্যের ১০% লাভে ৬ কিস্তিতে পণ্য ক্রয়।</p>
+                    <p><strong>৬. শৃঙ্খলা:</strong> নীতিমালা লঙ্ঘনে সদস্যপদ বাতিল।</p>
+                    <p><strong>৭. গোপনীয়তা:</strong> ব্যক্তিগত তথ্য সম্পূর্ণ গোপন। তৃতীয় পক্ষের সাথে শেয়ার নয়।</p>
+                    <p><strong>৮. বিরোধ নিষ্পত্তি:</strong> কমিটি ও শরিয়াহ পরামর্শকের মাধ্যমে।</p>
+                </div><button class="auth-btn" style="margin-top:14px;" onclick="acceptTerms()">✅ সম্মত আছি — বন্ধ
+                    করুন</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- BADGE DETAIL MODAL (single) -->
+    <div class="auth-overlay hidden" id="badgeDetailModal" onclick="if(event.target===this)closeBadgeDetailModal()">
+        <div class="auth-box" style="max-width:620px;">
+            <div class="auth-head">
+                <h2>বিস্তারিত তথ্য</h2><button class="auth-x" onclick="closeBadgeDetailModal()">✕</button>
+            </div>
+            <div class="auth-body" id="badgeDetailContent"></div>
+        </div>
+    </div>
+
+    <!-- Single Toast -->
+    <div id="globalToast" class="toast" style="display:none;"></div>
+
+    <!-- JS: ORDER MATTERS! db.js FIRST, then others -->
+    <script src="js/db.js"></script>
+    <script src="js/data.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/notice.js"></script>
+    <script src="js/admin-settings.js"></script>
+
+    <!-- Initialization script for critical functions not yet in other files -->
+    <script>
+        // Global helper functions that were missing or need to be defined early
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const toggle = document.getElementById('dkTog');
+            if (toggle) toggle.classList.toggle('on');
+            localStorage.setItem('bf_dark', document.body.classList.contains('dark-mode') ? '1' : '0');
+        }
+
+        function setAuthTab(tab) {
+            const loginTab = document.getElementById('atab-login');
+            const signupTab = document.getElementById('atab-signup');
+            if (tab === 'login') {
+                loginTab.classList.add('on');
+                signupTab.classList.remove('on');
+                document.getElementById('ap-login').classList.remove('hidden');
+                document.getElementById('ap-signup').classList.add('hidden');
+                document.getElementById('ap-otp').classList.add('hidden');
+                document.getElementById('ap-forgot').classList.add('hidden');
+            } else {
+                loginTab.classList.remove('on');
+                signupTab.classList.add('on');
+                document.getElementById('ap-login').classList.add('hidden');
+                document.getElementById('ap-signup').classList.remove('hidden');
+                document.getElementById('ap-otp').classList.add('hidden');
+                document.getElementById('ap-forgot').classList.add('hidden');
+            }
+        }
+
+        function setAuthPanel(panel) {
+            document.querySelectorAll('.auth-body').forEach(p => p.classList.add('hidden'));
+            document.getElementById(`ap-${panel}`).classList.remove('hidden');
+        }
+
+        function closeAuthModal() {
+            document.getElementById('authModal').classList.add('hidden');
+        }
+
+        function openTermsModal() { document.getElementById('termsModal').classList.remove('hidden'); }
+        function closeTermsModal() { document.getElementById('termsModal').classList.add('hidden'); }
+        function acceptTerms() { document.getElementById('su-terms').checked = true; closeTermsModal(); }
+        function closeBadgeDetailModal() { document.getElementById('badgeDetailModal').classList.add('hidden'); }
+
+        function calculateInstallment() { if (window.calculate) window.calculate(); }
+        function switchFormTab(tabId) { if (window.switchTab) window.switchTab(null, tabId); }
+        function quickSubmitForm(type) { if (window.quickSubmit) window.quickSubmit(type); }
+        function previewInstallment() { if (window.pCalc) window.pCalc(); }
+
+        // Check saved dark mode
+        if (localStorage.getItem('bf_dark') === '1') {
+            document.body.classList.add('dark-mode');
+            const dk = document.getElementById('dkTog');
+            if (dk) dk.classList.add('on');
+        }
+    </script>
+</body>
+
+</html>

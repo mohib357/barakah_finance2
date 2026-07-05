@@ -1,0 +1,727 @@
+/* C:\Project\Barakah_Finance\style\hero_style.css */
+/* FIXED & IMPROVED VERSION:
+     - Unified root variables (moved to main style.css or kept here as fallback)
+     - Fixed duplicate .hero-content class definitions (merged)
+     - Removed duplicate .badges-section (now only in badges.css)
+     - Fixed ::before pseudo-element z-index with proper relative positioning
+     - Added proper dark mode support with .dark-mode class
+     - Improved responsive design
+     - Added reduced motion support
+     - Fixed rainbow animation default (now disabled by default)
+     - Cleaned up duplicate code
+*/
+
+/* ════════ ROOT VARIABLES ════════ */
+:root {
+    /* ── Animation Control ── */
+    --animations-enabled: 1;
+    --neumorphism-enabled: 1;
+    --rainbow-enabled: 0;
+    /* Changed: disabled by default for better UX */
+    --rainbow-speed: slow;
+
+    /* ── Neumorphism ── */
+    --neumorphism-blur: 10px;
+    --neumorphism-opacity: 0.3;
+    --neumorphism-border-opacity: 0.2;
+
+    /* ── Colors ── */
+    --gold: #C9A227;
+    --gold-light: #F5D061;
+    --dark-green: #0A2A1A;
+    --medium-green: #1B5B37;
+    --gradient-start: #0A2A1A;
+    --gradient-end: #31945c;
+    --hero-shadow: rgba(0, 0, 0, 0.30);
+    --hero-shadow-light: rgba(30, 80, 50, 0.25);
+    --hero-glow: rgba(2, 255, 137, 0.521);
+    --hero-glow-white: rgba(255, 255, 255, 0.807);
+}
+
+/* ════════ ANIMATION SYSTEM ════════ */
+.no-animation *,
+.no-animation .reveal,
+.no-animation .hero-content,
+.no-animation .stat-card {
+    animation: none !important;
+    transition: none !important;
+}
+
+.no-neumorphism .hero-content,
+.no-neumorphism .stat-card,
+.no-neumorphism .btn-primary,
+.no-neumorphism .btn-outline,
+.no-neumorphism .hero-badge {
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+}
+
+.rainbow-enabled .hero-content:hover {
+    animation: var(--rainbow-animation, rainbowSlow 4s ease-in-out infinite) !important;
+}
+
+/* ════════ RAINBOW ANIMATIONS ════════ */
+@keyframes rainbowSlow {
+    0% {
+        box-shadow: 4px 4px 25px rgba(255, 0, 0, 0.6), -4px -4px 20px rgba(255, 0, 0, 0.3);
+        border-color: rgba(255, 0, 0, 0.3);
+    }
+
+    14% {
+        box-shadow: 4px 4px 25px rgba(255, 165, 0, 0.6), -4px -4px 20px rgba(255, 165, 0, 0.3);
+        border-color: rgba(255, 165, 0, 0.3);
+    }
+
+    28% {
+        box-shadow: 4px 4px 25px rgba(255, 255, 0, 0.6), -4px -4px 20px rgba(255, 255, 0, 0.3);
+        border-color: rgba(255, 255, 0, 0.3);
+    }
+
+    42% {
+        box-shadow: 4px 4px 25px rgba(0, 200, 0, 0.6), -4px -4px 20px rgba(0, 200, 0, 0.3);
+        border-color: rgba(0, 200, 0, 0.3);
+    }
+
+    57% {
+        box-shadow: 4px 4px 25px rgba(0, 255, 255, 0.6), -4px -4px 20px rgba(0, 255, 255, 0.3);
+        border-color: rgba(0, 255, 255, 0.3);
+    }
+
+    71% {
+        box-shadow: 4px 4px 25px rgba(0, 100, 255, 0.6), -4px -4px 20px rgba(0, 100, 255, 0.3);
+        border-color: rgba(0, 100, 255, 0.3);
+    }
+
+    85% {
+        box-shadow: 4px 4px 25px rgba(155, 0, 255, 0.6), -4px -4px 20px rgba(155, 0, 255, 0.3);
+        border-color: rgba(155, 0, 255, 0.3);
+    }
+
+    100% {
+        box-shadow: 4px 4px 25px rgba(255, 0, 100, 0.6), -4px -4px 20px rgba(255, 0, 100, 0.3);
+        border-color: rgba(255, 0, 100, 0.3);
+    }
+}
+
+@keyframes rainbowMedium {
+
+    0%,
+    100% {
+        box-shadow: 4px 4px 25px #ff0000, -4px -4px 20px #ff0000;
+        border-color: #ff0000;
+    }
+
+    14% {
+        box-shadow: 4px 4px 25px #ff8c00, -4px -4px 20px #ff8c00;
+        border-color: #ff8c00;
+    }
+
+    28% {
+        box-shadow: 4px 4px 25px #ffff00, -4px -4px 20px #ffff00;
+        border-color: #ffff00;
+    }
+
+    42% {
+        box-shadow: 4px 4px 25px #00ff00, -4px -4px 20px #00ff00;
+        border-color: #00ff00;
+    }
+
+    57% {
+        box-shadow: 4px 4px 25px #00ffff, -4px -4px 20px #00ffff;
+        border-color: #00ffff;
+    }
+
+    71% {
+        box-shadow: 4px 4px 25px #0080ff, -4px -4px 20px #0080ff;
+        border-color: #0080ff;
+    }
+
+    85% {
+        box-shadow: 4px 4px 25px #8000ff, -4px -4px 20px #8000ff;
+        border-color: #8000ff;
+    }
+}
+
+@keyframes rainbowFast {
+
+    0%,
+    100% {
+        box-shadow: 4px 4px 25px #ff0000, -4px -4px 20px #ff0000;
+    }
+
+    12% {
+        box-shadow: 4px 4px 25px #ff8c00, -4px -4px 20px #ff8c00;
+    }
+
+    25% {
+        box-shadow: 4px 4px 25px #ffff00, -4px -4px 20px #ffff00;
+    }
+
+    37% {
+        box-shadow: 4px 4px 25px #00ff00, -4px -4px 20px #00ff00;
+    }
+
+    50% {
+        box-shadow: 4px 4px 25px #00ffff, -4px -4px 20px #00ffff;
+    }
+
+    62% {
+        box-shadow: 4px 4px 25px #0080ff, -4px -4px 20px #0080ff;
+    }
+
+    75% {
+        box-shadow: 4px 4px 25px #8000ff, -4px -4px 20px #8000ff;
+    }
+
+    87% {
+        box-shadow: 4px 4px 25px #ff00ff, -4px -4px 20px #ff00ff;
+    }
+}
+
+/* ════════ MAIN HERO STYLES ════════ */
+.hero {
+    min-height: 100vh;
+    background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+    padding: 100px 4% 4rem;
+    isolation: isolate;
+    transition: background 0.5s ease;
+}
+
+/* ── Dark Mode ── */
+body.dark-mode .hero {
+    background: linear-gradient(135deg, #022c22 0%, #064E3B 100%);
+}
+
+/* ════════ HERO PATTERN ════════ */
+.hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(ellipse 80% 60% at 30% 40%, rgba(29, 158, 117, 0.12) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 40% at 80% 70%, rgba(222, 220, 213, 0.08) 0%, transparent 50%);
+    z-index: 0;
+}
+
+.hero-pattern {
+    position: absolute;
+    inset: 0;
+    opacity: 0.03;
+    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23C9A227'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    pointer-events: none;
+}
+
+/* ════════ HERO CONTENT (MERGED & FIXED) ════════ */
+.hero-content {
+    position: relative;
+    /* Fixed: required for ::before z-index */
+    z-index: 2;
+    width: 45%;
+    max-width: 600px;
+    min-width: 320px;
+    background: rgba(27, 91, 55, var(--neumorphism-opacity));
+    backdrop-filter: blur(var(--neumorphism-blur));
+    -webkit-backdrop-filter: blur(var(--neumorphism-blur));
+    border-radius: 48px;
+    padding: 48px;
+    border: 1px solid rgba(255, 255, 255, var(--neumorphism-border-opacity));
+    box-shadow:
+        8px 8px 20px rgba(0, 0, 0, var(--neumorphism-shadow-dark, 0.30)),
+        -4px -4px 12px rgba(30, 80, 50, var(--neumorphism-shadow-light, 0.25)),
+        inset 0px 0px 0px rgba(255, 255, 255, 0.05);
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+    margin-right: 2rem;
+}
+
+/* ── Dark Mode ── */
+body.dark-mode .hero-content {
+    background: rgba(10, 40, 20, 0.5);
+    border-color: rgba(255, 255, 255, 0.08);
+    box-shadow:
+        8px 8px 20px rgba(0, 0, 0, 0.4),
+        -4px -4px 12px rgba(10, 40, 20, 0.3);
+}
+
+/* Glow effect on hover (fixed z-index) */
+.hero-content::before {
+    content: '';
+    position: absolute;
+    top: -150%;
+    left: -150%;
+    width: 300%;
+    height: 300%;
+    background: linear-gradient(135deg,
+            rgba(255, 255, 255, 0) 0%,
+            rgba(2, 255, 137, 0.15) 50%,
+            rgba(255, 255, 255, 0) 100%);
+    transition: all 0.6s ease-in-out;
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0;
+}
+
+.hero-content:hover::before {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 1;
+}
+
+/* Hover shadow effect */
+.hero-content:hover {
+    box-shadow:
+        4px 4px 15px var(--hero-glow),
+        -4px -4px 15px var(--hero-glow-white),
+        inset 1px 1px 2px rgba(255, 255, 255, 0.08);
+}
+
+body.dark-mode .hero-content:hover {
+    box-shadow:
+        4px 4px 15px rgba(2, 255, 137, 0.3),
+        -4px -4px 15px rgba(255, 255, 255, 0.2);
+}
+
+/* ════════ BADGES SECTION (REMOVED DUPLICATE – now only in badges.css) ════════ */
+/* .badges-section is now defined in badges.css only */
+
+/* ════════ HERO BADGE ════════ */
+.hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(201, 162, 39, 0.12);
+    border: 1px solid rgba(201, 162, 39, 0.3);
+    color: var(--gold-light);
+    padding: 8px 20px;
+    border-radius: 60px;
+    font-size: 13px;
+    margin-bottom: 2rem;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    box-shadow:
+        inset 3px 3px 6px rgba(0, 0, 0, 0.15),
+        inset -2px -2px 4px rgba(255, 255, 255, 0.05),
+        2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.hero-badge::before {
+    content: '\f072';
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    font-size: 12px;
+}
+
+/* ── Dark Mode ── */
+body.dark-mode .hero-badge {
+    background: rgba(201, 162, 39, 0.08);
+    border-color: rgba(201, 162, 39, 0.2);
+}
+
+/* ════════ HERO TYPOGRAPHY ════════ */
+.hero h1 {
+    font-family: 'Noto Serif Bengali', 'SolaimanLipi', serif;
+    font-size: clamp(2.2rem, 5vw, 3.5rem);
+    color: white;
+    line-height: 1.3;
+    margin-bottom: 1rem;
+    font-weight: 700;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.hero h1 em {
+    font-style: normal;
+    background: linear-gradient(135deg, var(--gold-light), var(--gold));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    position: relative;
+    display: inline-block;
+}
+
+.hero h1 em::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, var(--gold), transparent);
+}
+
+.hero .slogan {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 2rem;
+    line-height: 1.7;
+    font-weight: 300;
+}
+
+body.dark-mode .hero .slogan {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+/* ════════ HERO ACTIONS ════════ */
+.hero-actions {
+    display: flex;
+    gap: 1.2rem;
+    flex-wrap: wrap;
+}
+
+/* ════════ BUTTONS ════════ */
+.btn-primary {
+    background: linear-gradient(135deg, var(--gold), #A67C00);
+    color: var(--dark-green);
+    padding: 14px 34px;
+    border-radius: 50px;
+    font-size: 15px;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+    border: none;
+    transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+    font-family: 'Noto Sans Bengali', sans-serif;
+    box-shadow:
+        8px 8px 16px rgba(0, 0, 0, 0.25),
+        -4px -4px 8px rgba(30, 80, 50, 0.3),
+        inset 1px 1px 1px rgba(255, 255, 255, 0.2);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #D9B237, #B88D00);
+    transform: translateY(-3px);
+    box-shadow:
+        12px 12px 20px rgba(0, 0, 0, 0.3),
+        -6px -6px 12px rgba(30, 80, 50, 0.35),
+        inset 1px 1px 1px rgba(255, 255, 255, 0.15);
+}
+
+.btn-primary:active {
+    transform: translateY(0px);
+    box-shadow:
+        inset 6px 6px 12px rgba(0, 0, 0, 0.2),
+        inset -2px -2px 4px rgba(255, 255, 255, 0.05);
+}
+
+.btn-outline {
+    background: rgba(255, 255, 255, 0.05);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    padding: 14px 34px;
+    border-radius: 50px;
+    font-size: 15px;
+    font-weight: 500;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+    font-family: 'Noto Sans Bengali', sans-serif;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    box-shadow:
+        5px 5px 12px rgba(0, 0, 0, 0.15),
+        -3px -3px 8px rgba(30, 80, 50, 0.2);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-outline:hover {
+    border-color: rgba(201, 162, 39, 0.6);
+    background: rgba(201, 162, 39, 0.1);
+    transform: translateY(-3px);
+    box-shadow:
+        8px 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+body.dark-mode .btn-outline {
+    border-color: rgba(255, 255, 255, 0.15);
+}
+
+body.dark-mode .btn-outline:hover {
+    background: rgba(201, 162, 39, 0.08);
+}
+
+/* ════════ STAT CARDS ════════ */
+.hero-stats {
+    position: absolute;
+    right: 5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    z-index: 2;
+}
+
+.stat-card {
+    background: rgba(13, 43, 26, 0.5);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(201, 162, 39, 0.2);
+    border-radius: 28px;
+    padding: 1.2rem 2rem;
+    text-align: center;
+    min-width: 140px;
+    transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+    box-shadow:
+        10px 10px 20px rgba(0, 0, 0, 0.2),
+        -6px -6px 12px rgba(30, 80, 50, 0.25),
+        inset 1px 1px 1px rgba(255, 255, 255, 0.08);
+}
+
+.stat-card:hover {
+    transform: translateX(-8px);
+    box-shadow:
+        6px 6px 14px rgba(0, 0, 0, 0.2),
+        -4px -4px 10px rgba(30, 80, 50, 0.2);
+}
+
+body.dark-mode .stat-card {
+    background: rgba(5, 20, 12, 0.6);
+    border-color: rgba(201, 162, 39, 0.1);
+}
+
+.stat-card .num {
+    font-family: 'Noto Serif Bengali', serif;
+    font-size: 2.5rem;
+    background: linear-gradient(135deg, var(--gold-light), var(--gold));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-weight: 800;
+    display: block;
+    line-height: 1.2;
+}
+
+.stat-card .label {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.55);
+    margin-top: 8px;
+    font-weight: 400;
+    letter-spacing: 0.5px;
+}
+
+body.dark-mode .stat-card .label {
+    color: rgba(255, 255, 255, 0.4);
+}
+
+/* ════════ SCROLL REVEAL ANIMATION ════════ */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.6s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+}
+
+.reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.hero-content.reveal {
+    animation-delay: 0.1s;
+}
+
+.stat-card.reveal:nth-child(1) {
+    animation-delay: 0.2s;
+}
+
+.stat-card.reveal:nth-child(2) {
+    animation-delay: 0.35s;
+}
+
+.stat-card.reveal:nth-child(3) {
+    animation-delay: 0.5s;
+}
+
+/* ════════ RESPONSIVE DESIGN ════════ */
+@media (max-width: 1200px) {
+    .hero-stats {
+        right: 2rem;
+    }
+
+    .stat-card {
+        padding: 1rem 1.5rem;
+        min-width: 110px;
+    }
+
+    .stat-card .num {
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 992px) {
+    .hero {
+        flex-direction: column;
+        padding: 100px 2rem 3rem;
+    }
+
+    .hero-content {
+        width: 100%;
+        max-width: 100%;
+        margin: 20px 0;
+        height: auto;
+    }
+
+    .hero-stats {
+        position: relative;
+        right: auto;
+        top: auto;
+        transform: none;
+        flex-direction: row;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 1rem;
+        margin-top: 1rem;
+        width: 100%;
+    }
+
+    .stat-card {
+        flex: 1;
+        min-width: 120px;
+        padding: 0.8rem 1.2rem;
+    }
+
+    .stat-card:hover {
+        transform: translateY(-5px);
+    }
+}
+
+@media (max-width: 640px) {
+    .hero {
+        padding: 90px 1rem 2rem;
+    }
+
+    .hero-content {
+        padding: 24px 20px;
+        border-radius: 32px;
+        margin: 16px 0;
+    }
+
+    .hero-stats {
+        flex-wrap: wrap;
+        gap: 0.8rem;
+    }
+
+    .stat-card {
+        min-width: 100px;
+        padding: 0.8rem 1rem;
+    }
+
+    .stat-card .num {
+        font-size: 1.5rem;
+    }
+
+    .btn-primary,
+    .btn-outline {
+        padding: 12px 24px;
+        font-size: 13px;
+        width: 100%;
+        text-align: center;
+        justify-content: center;
+    }
+
+    .hero-actions {
+        flex-direction: column;
+        gap: 0.8rem;
+    }
+
+    .hero h1 {
+        font-size: 1.8rem;
+    }
+
+    .hero .slogan {
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-content {
+        padding: 18px 16px;
+        border-radius: 24px;
+    }
+
+    .hero-badge {
+        font-size: 10px;
+        padding: 5px 14px;
+    }
+
+    .hero h1 {
+        font-size: 1.5rem;
+    }
+
+    .hero .slogan {
+        font-size: 0.82rem;
+    }
+
+    .stat-card .num {
+        font-size: 1.2rem;
+    }
+
+    .stat-card {
+        min-width: 80px;
+        padding: 0.6rem 0.8rem;
+    }
+}
+
+/* ════════ ACCESSIBILITY ════════ */
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+
+    .reveal {
+        opacity: 1 !important;
+        transform: none !important;
+    }
+
+    .hero-content::before {
+        display: none !important;
+    }
+
+    .rainbow-enabled .hero-content:hover {
+        animation: none !important;
+    }
+}
+
+/* Focus visible for keyboard users */
+.btn-primary:focus-visible,
+.btn-outline:focus-visible,
+.stat-card:focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: 3px;
+}
+
+/* ── Focus visible for clickable badge cards ── */
+.badge-card.clickable:focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: 4px;
+}

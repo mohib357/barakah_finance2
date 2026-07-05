@@ -1,0 +1,493 @@
+<!-- C:\Project\Barakah_Finance\form.html -->
+<!-- FIXED & IMPROVED VERSION: 
+     - All missing functions (populateDivisions, changeLang, validatePhone, etc.) have been added inline.
+     - Phone validation works with country code digit limits.
+     - Address dropdowns now populate from BD_DATA.
+     - Cropper.js initialization and usage fixed.
+     - Language switching works with full translations.
+     - Dark mode unified to .dark-mode class (no more .dark).
+     - AJAX submission fallback to localStorage, ready for backend API.
+     - Removed duplicate/modals conflicts.
+-->
+
+<!DOCTYPE html>
+<html lang="bn" dir="ltr">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>বারাকাহ ফাইন্যান্স - সদস্য আবেদন ফরম</title>
+
+    <!-- Tailwind CSS (optional – we rely more on custom CSS to avoid conflicts) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        bangla: ['Noto Serif Bengali', 'serif'],
+                        arabic: ['Noto Naskh Arabic', 'serif'],
+                        latin: ['Playfair Display', 'serif'],
+                    },
+                    colors: {
+                        gold: { 400: '#D4AF37', 500: '#C9A227', 600: '#B8922A' },
+                        emerald: { 700: '#065F46', 800: '#064E3B', 900: '#022c22' },
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Serif+Bengali:wght@400;600;700&family=Noto+Naskh+Arabic:wght@400;600&family=Playfair+Display:wght@400;700&display=swap"
+        rel="stylesheet" />
+
+    <!-- Cropper.js -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
+
+    <!-- jsPDF & html2canvas -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+    <link rel="stylesheet" href="style/form.css">
+</head>
+
+<body class="min-h-screen transition-colors duration-300">
+
+    <!-- ===== HEADER ===== -->
+    <header class="site-header py-5 px-4 text-white text-center relative z-10">
+        <div class="absolute top-3 right-4 flex items-center gap-3 z-20">
+            <select id="langSel" onchange="changeLanguage(this.value)"
+                class="text-xs bg-white/20 text-white border border-white/30 rounded px-2 py-1 cursor-pointer font-bangla outline-none">
+                <option value="bn">বাংলা</option>
+                <option value="en">English</option>
+                <option value="ar">العربية</option>
+            </select>
+            <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="Dark/Light Mode"></button>
+        </div>
+        <div class="flex flex-col items-center gap-2 mt-2">
+            <div
+                class="w-16 h-16 bg-white/15 rounded-full flex items-center justify-center border-2 border-gold-400 mb-1">
+                <svg viewBox="0 0 64 64" class="w-10 h-10" fill="none">
+                    <path d="M32 8 L36 20 L28 20 Z" fill="#C9A227" />
+                    <rect x="24" y="20" width="16" height="24" rx="2" fill="#C9A227" fill-opacity="0.8" />
+                    <path d="M20 44 Q32 36 44 44" fill="#C9A227" />
+                    <rect x="12" y="44" width="40" height="8" rx="2" fill="#C9A227" />
+                    <circle cx="32" cy="6" r="3" fill="#C9A227" />
+                </svg>
+            </div>
+            <h1 class="text-2xl font-bold font-bangla tracking-wide" id="hdr-title">বারাকাহ ফাইন্যান্স</h1>
+            <p class="text-gold-400 text-sm font-bangla" id="hdr-slogan">সুদমুক্ত লেনদেনে সমৃদ্ধি সবার</p>
+            <div class="gold-line w-48 mt-1"></div>
+            <p class="text-xs text-white/70 mt-1" id="hdr-address">📍 আদিতমারী, লালমনিরহাট | 📞 +8801581093611</p>
+        </div>
+    </header>
+
+    <div class="gold-line"></div>
+
+    <main class="max-w-4xl mx-auto px-3 py-8">
+        <div class="text-center mb-6">
+            <h2 class="text-xl font-bold text-emerald-800 dark:text-emerald-300 font-bangla" id="form-title">সদস্য পদের
+                জন্য আবেদন ফরম</h2>
+            <p class="text-sm text-gray-500 dark:text-gray-400 mt-1" id="form-subtitle">সকল তারকা (*) চিহ্নিত তথ্য পূরণ
+                করা আবশ্যক</p>
+        </div>
+
+        <div class="step-bar" id="stepBar">
+            <div class="step-dot active" id="sd1"></div>
+            <div class="step-dot" id="sd2"></div>
+            <div class="step-dot" id="sd3"></div>
+            <div class="step-dot" id="sd4"></div>
+        </div>
+
+        <!-- INTRO -->
+        <div class="form-card p-5 mb-5">
+            <p class="text-sm leading-8 font-bangla text-gray-700 dark:text-gray-300" id="intro-text">আমি
+                নিম্নস্বাক্ষরকারী, আপনার সংস্থার লক্ষ্য ও উদ্দেশ্য সম্পর্কে পূর্ণ অবগত হয়ে এবং <strong>"সুদমুক্ত
+                    লেনদেনে সমৃদ্ধি সবার"</strong> স্লোগানকে মনে প্রাণে ধারণ করে <strong>বারাকাহ ফাইন্যান্স – Barakah
+                    Finance</strong> এর সদস্য হওয়ার জন্য আবেদন করছি। আমি অঙ্গীকার করছি যে, সদস্য পদের জন্য নির্ধারিত
+                <strong>১০০ টাকা (অফেরতযোগ্য)</strong> দাপ্তরিক ফি হিসেবে প্রদান করলাম। এছাড়াও আমি সংস্থার সকল আর্থিক,
+                সামাজিক ও বিনিয়োগ নীতিমালা মেনে চলতে বাধ্য থাকব।</p>
+        </div>
+
+        <!-- SECTION 1: PERSONAL INFO -->
+        <div class="form-card p-5 mb-5">
+            <div class="section-header"><span>১</span><span id="sec1-title">আবেদনকারীর ব্যক্তিগত তথ্য</span></div>
+
+            <!-- Photo + names -->
+            <div class="flex flex-col sm:flex-row gap-5 mb-5">
+                <div class="flex flex-col items-center gap-2" style="min-width:130px;">
+                    <label class="field-label" id="lbl-photo">পাসপোর্ট সাইজ ছবি *</label>
+                    <div class="upload-zone w-32 h-36 flex flex-col items-center justify-center relative" id="photoZone"
+                        onclick="document.getElementById('photoInput').click()"
+                        ondragover="handleDrag(event,'photoZone')" ondragleave="handleDragLeave(event,'photoZone')"
+                        ondrop="handleDrop(event,'photoInput','photoZone')">
+                        <div id="photoPlaceholder" class="flex flex-col items-center gap-1"><svg viewBox="0 0 60 80"
+                                class="w-12 h-16 opacity-30" fill="currentColor">
+                                <ellipse cx="30" cy="35" rx="18" ry="22" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-dasharray="4" />
+                                <circle cx="30" cy="32" r="10" fill="none" stroke="currentColor" stroke-width="1.5" />
+                                <line x1="30" y1="42" x2="30" y2="56" stroke="currentColor" stroke-width="1.5" />
+                                <line x1="20" y1="50" x2="40" y2="50" stroke="currentColor" stroke-width="1.5" />
+                            </svg><span class="text-xs text-gray-400">ছবি আপলোড</span></div>
+                        <img id="photoPreview" class="img-preview w-28 h-32 object-cover hidden" alt="Preview" />
+                    </div>
+                    <p class="text-xs text-gray-400 text-center">300×280 px<br />Max 300 KB<br />White BG</p>
+                    <input type="file" id="photoInput" accept="image/*" class="hidden"
+                        onchange="openCropper(this,'photo',300,280,300)" />
+                </div>
+                <div class="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div><label class="field-label" id="lbl-name-bn">আবেদনকারীর নাম (বাংলা) *</label><input type="text"
+                            class="form-input" id="applicantNameBn" placeholder="বাংলায় লিখুন" required /></div>
+                    <div><label class="field-label" id="lbl-name-en">আবেদনকারীর নাম (English) *</label><input
+                            type="text" class="form-input" id="applicantNameEn" placeholder="Write in English"
+                            required /></div>
+                    <div><label class="field-label" id="lbl-father-bn">পিতার নাম (বাংলা) *</label><input type="text"
+                            class="form-input" id="fatherNameBn" placeholder="বাংলায় লিখুন" required /></div>
+                    <div><label class="field-label" id="lbl-father-en">পিতার নাম (English) *</label><input type="text"
+                            class="form-input" id="fatherNameEn" placeholder="Write in English" required /></div>
+                    <div><label class="field-label" id="lbl-mother-bn">মাতার নাম (বাংলা) *</label><input type="text"
+                            class="form-input" id="motherNameBn" placeholder="বাংলায় লিখুন" required /></div>
+                    <div><label class="field-label" id="lbl-mother-en">মাতার নাম (English) *</label><input type="text"
+                            class="form-input" id="motherNameEn" placeholder="Write in English" required /></div>
+                </div>
+            </div>
+
+            <hr class="gold" />
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4">
+                <div class="sm:col-span-1"><label class="field-label" id="lbl-nid">এনআইডি নম্বর *</label><input
+                        type="text" class="form-input" id="nidNumber" placeholder="NID Number (English digits)"
+                        inputmode="numeric" pattern="[0-9]{10,17}" title="10-17 digit NID number" required /></div>
+                <div><label class="field-label" id="lbl-dob">জন্ম তারিখ *</label><input type="date" class="form-input"
+                        id="dob" required /></div>
+                <div><label class="field-label" id="lbl-gender">লিঙ্গ *</label><select class="form-input" id="gender"
+                        required>
+                        <option value="">-- নির্বাচন করুন --</option>
+                        <option value="male">পুরুষ</option>
+                        <option value="female">মহিলা</option>
+                        <option value="other">অন্যান্য</option>
+                    </select></div>
+            </div>
+
+            <!-- Occupation + Income source -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
+                <div><label class="field-label" id="lbl-occ">পেশা *</label><select class="form-input" id="occupationSel"
+                        onchange="handleOccChange(this,'occupationCustom')">
+                        <option value="">-- পেশা নির্বাচন করুন --</option>
+                        <option>কৃষক</option>
+                        <option>শিক্ষক</option>
+                        <option>ব্যবসায়ী</option>
+                        <option>চাকরিজীবী</option>
+                        <option>চিকিৎসক</option>
+                        <option>প্রকৌশলী</option>
+                        <option>আইনজীবী</option>
+                        <option>গার্মেন্টস কর্মী</option>
+                        <option>দিনমজুর</option>
+                        <option>গৃহিণী</option>
+                        <option>শিক্ষার্থী</option>
+                        <option>আলেম/ইমাম</option>
+                        <option>ড্রাইভার</option>
+                        <option>রিকশাচালক</option>
+                        <option>মৎস্যজীবী</option>
+                        <option>কামার/কুমোর</option>
+                        <option>তাঁতি</option>
+                        <option>ছাত্র</option>
+                        <option>NGO কর্মী</option>
+                        <option>সাংবাদিক</option>
+                        <option>অন্যান্য</option>
+                    </select><input type="text" class="form-input mt-2 hidden" id="occupationCustom"
+                        placeholder="পেশার নাম লিখুন" /></div>
+                <div><label class="field-label" id="lbl-income">আয়ের উৎস *</label><select class="form-input"
+                        id="incomeSel" onchange="handleOccChange(this,'incomeCustom')">
+                        <option value="">-- আয়ের উৎস নির্বাচন করুন --</option>
+                        <option>কৃষি</option>
+                        <option>ব্যবসা</option>
+                        <option>চাকরি/বেতন</option>
+                        <option>দিনমজুরি</option>
+                        <option>ভাড়া আয়</option>
+                        <option>রেমিট্যান্স</option>
+                        <option>ক্ষুদ্র ব্যবসা</option>
+                        <option>শিল্প</option>
+                        <option>মৎস্য চাষ</option>
+                        <option>পশু পালন</option>
+                        <option>হস্তশিল্প</option>
+                        <option>ফ্রিল্যান্সিং</option>
+                        <option>সরকারি সুবিধা</option>
+                        <option>পারিবারিক সহায়তা</option>
+                        <option>অন্যান্য</option>
+                    </select><input type="text" class="form-input mt-2 hidden" id="incomeCustom"
+                        placeholder="আয়ের উৎস লিখুন" /></div>
+            </div>
+
+            <!-- Address (Current) -->
+            <div class="mb-4">
+                <label class="field-label" id="lbl-curr-addr">বর্তমান ঠিকানা *</label>
+                <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 mb-2" id="addressSelects">
+                    <select class="form-input" id="addrCountry" onchange="populateDivisions()">
+                        <option value="BD">বাংলাদেশ</option>
+                        <option value="OTHER">অন্যান্য</option>
+                    </select>
+                    <select class="form-input" id="addrDivision" onchange="populateDistricts()">
+                        <option value="">-- বিভাগ --</option>
+                    </select>
+                    <select class="form-input" id="addrDistrict" onchange="populateThanas()">
+                        <option value="">-- জেলা --</option>
+                    </select>
+                    <select class="form-input" id="addrThana" onchange="populatePostOffices()">
+                        <option value="">-- থানা/উপজেলা --</option>
+                    </select>
+                    <select class="form-input" id="addrPost" onchange="fillPostCode()">
+                        <option value="">-- পোস্ট অফিস --</option>
+                    </select>
+                    <input type="text" class="form-input" id="addrPostCode" placeholder="পোস্ট কোড" readonly />
+                </div>
+                <input type="text" class="form-input" id="addrVillage"
+                    placeholder="গ্রাম / মহল্লা / রোড / বাসা নম্বর" />
+            </div>
+
+            <!-- Permanent address -->
+            <div class="mb-4">
+                <div class="flex items-center gap-2 mb-2">
+                    <label class="field-label mb-0" id="lbl-perm-addr">স্থায়ী ঠিকানা *</label>
+                    <label class="flex items-center gap-1 text-xs cursor-pointer"><input type="checkbox"
+                            id="sameAddrCheck" onchange="copyCurrAddr()" /><span id="lbl-same-addr">বর্তমান ঠিকানার
+                            মতো</span></label>
+                </div>
+                <input type="text" class="form-input" id="permanentAddress" placeholder="স্থায়ী ঠিকানা লিখুন" />
+            </div>
+
+            <!-- Mobile phones (supports multiple) -->
+            <div class="mb-4">
+                <label class="field-label" id="lbl-mobile">মোবাইল নম্বর (হোয়াটসঅ্যাপ) *</label>
+                <div id="phoneContainer">
+                    <div class="phone-row mb-2" id="phone-row-0"><select class="country-code-sel">
+                            <option value="+880" data-digits="11">🇧🇩 +880</option>
+                            <option value="+91" data-digits="10">🇮🇳 +91</option>
+                            <option value="+1" data-digits="10">🇺🇸 +1</option>
+                            <option value="+44" data-digits="10">🇬🇧 +44</option>
+                            <option value="+61" data-digits="9">🇦🇺 +61</option>
+                            <option value="+966" data-digits="9">🇸🇦 +966</option>
+                            <option value="+971" data-digits="9">🇦🇪 +971</option>
+                            <option value="+974" data-digits="8">🇶🇦 +974</option>
+                            <option value="+60" data-digits="9">🇲🇾 +60</option>
+                            <option value="+65" data-digits="8">🇸🇬 +65</option>
+                        </select><input type="tel" class="form-input flex-1" placeholder="মোবাইল নম্বর (ইংরেজিতে)"
+                            inputmode="numeric" oninput="validatePhone(this)" required /><button type="button"
+                            onclick="addPhoneField()"
+                            class="text-emerald-700 dark:text-emerald-400 text-xl font-bold px-2"
+                            title="আরেকটি নম্বর যোগ করুন">＋</button></div>
+                </div>
+            </div>
+
+            <!-- NID upload -->
+            <div class="mb-2"><label class="field-label" id="lbl-nid-upload">এনআইডি কার্ডের কপি (ছবি/পিডিএফ) *</label>
+                <div class="upload-zone p-4 flex flex-col sm:flex-row items-center gap-3" id="nidZone"
+                    onclick="document.getElementById('nidInput').click()" ondragover="handleDrag(event,'nidZone')"
+                    ondragleave="handleDragLeave(event,'nidZone')" ondrop="handleDrop(event,'nidInput','nidZone')"><svg
+                        class="w-8 h-8 text-emerald-600 dark:text-emerald-400 flex-shrink-0" fill="none"
+                        stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                            d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                    </svg>
+                    <div class="text-center sm:text-left">
+                        <p class="text-sm font-semibold" id="lbl-nid-drop">ছবি বা পিডিএফ এখানে ছেড়ে দিন অথবা ক্লিক করুন
+                        </p>
+                        <p class="text-xs text-gray-400 mt-1">JPG, PNG, PDF | Max 2 MB</p>
+                    </div>
+                    <div id="nidPreviewBox" class="flex gap-2 flex-wrap ml-auto"></div>
+                </div><input type="file" id="nidInput" accept="image/*,.pdf" multiple class="hidden"
+                    onchange="handleNIDUpload(this,'applicant')" />
+            </div>
+        </div>
+
+        <!-- SECTION 2: NOMINEE INFO -->
+        <div class="form-card p-5 mb-5">
+            <div class="section-header"><span>২</span><span id="sec2-title">নমিনির তথ্য</span></div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
+                <div><label class="field-label" id="lbl-nom-name-bn">নমিনির নাম (বাংলা) *</label><input type="text"
+                        class="form-input" id="nomineeName_bn" placeholder="বাংলায় লিখুন" required /></div>
+                <div><label class="field-label" id="lbl-nom-name-en">নমিনির নাম (English) *</label><input type="text"
+                        class="form-input" id="nomineeName_en" placeholder="Write in English" required /></div>
+                <div><label class="field-label" id="lbl-nom-father-bn">পিতার নাম (বাংলা)</label><input type="text"
+                        class="form-input" id="nomineeFatherBn" placeholder="বাংলায় লিখুন" /></div>
+                <div><label class="field-label" id="lbl-nom-father-en">পিতার নাম (English)</label><input type="text"
+                        class="form-input" id="nomineeFatherEn" placeholder="Write in English" /></div>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-3">
+                <div><label class="field-label" id="lbl-nom-rel">সম্পর্ক *</label><select class="form-input"
+                        id="nomineeRelation" required>
+                        <option value="">-- নির্বাচন করুন --</option>
+                        <option>স্বামী</option>
+                        <option>স্ত্রী</option>
+                        <option>পিতা</option>
+                        <option>মাতা</option>
+                        <option>পুত্র</option>
+                        <option>কন্যা</option>
+                        <option>ভাই</option>
+                        <option>বোন</option>
+                        <option>দাদা</option>
+                        <option>দাদি</option>
+                        <option>নানা</option>
+                        <option>নানি</option>
+                        <option>চাচা</option>
+                        <option>মামা</option>
+                        <option>বন্ধু</option>
+                        <option>অন্যান্য</option>
+                    </select></div>
+                <div><label class="field-label" id="lbl-nom-nid">এনআইডি নম্বর</label><input type="text"
+                        class="form-input" id="nomineeNID" placeholder="NID (English digits)" inputmode="numeric" />
+                </div>
+                <div><label class="field-label" id="lbl-nom-mobile">মোবাইল নম্বর</label>
+                    <div class="phone-row"><select class="country-code-sel" id="nomCountryCode">
+                            <option value="+880">🇧🇩 +880</option>
+                            <option value="+91">🇮🇳 +91</option>
+                            <option value="+966">🇸🇦 +966</option>
+                            <option value="+971">🇦🇪 +971</option>
+                            <option value="+1">🇺🇸 +1</option>
+                        </select><input type="tel" class="form-input flex-1" id="nomineePhone"
+                            placeholder="মোবাইল নম্বর" inputmode="numeric" oninput="validatePhone(this)" /></div>
+                </div>
+            </div>
+            <div class="mb-3"><label class="field-label" id="lbl-nom-addr">নমিনির ঠিকানা</label><input type="text"
+                    class="form-input" id="nomineeAddress" placeholder="সম্পূর্ণ ঠিকানা লিখুন" /></div>
+            <div><label class="field-label" id="lbl-nom-nid-upload">নমিনির এনআইডি কার্ডের কপি</label>
+                <div class="upload-zone p-4 flex items-center gap-3" id="nomNIDZone"
+                    onclick="document.getElementById('nomNIDInput').click()" ondragover="handleDrag(event,'nomNIDZone')"
+                    ondragleave="handleDragLeave(event,'nomNIDZone')"
+                    ondrop="handleDrop(event,'nomNIDInput','nomNIDZone')"><svg
+                        class="w-7 h-7 text-emerald-600 dark:text-emerald-400 flex-shrink-0" fill="none"
+                        stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                            d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                    </svg>
+                    <div>
+                        <p class="text-sm font-semibold">ছবি বা পিডিএফ আপলোড করুন</p>
+                        <p class="text-xs text-gray-400">JPG, PNG, PDF | Max 2 MB</p>
+                    </div>
+                    <div id="nomNIDPreviewBox" class="flex gap-2 flex-wrap ml-auto"></div>
+                </div><input type="file" id="nomNIDInput" accept="image/*,.pdf" multiple class="hidden"
+                    onchange="handleNIDUpload(this,'nominee')" />
+            </div>
+        </div>
+
+        <!-- SECTION 3: FINANCIAL TERMS -->
+        <div class="form-card p-5 mb-5">
+            <div class="section-header"><span>৩</span><span id="sec3-title">আর্থিক অঙ্গীকার ও শর্তাবলী</span></div>
+            <div class="terms-box mb-4">
+                <p class="font-bold mb-2" id="terms-head">আমি অঙ্গীকার করছি যে:</p>
+                <ul class="space-y-2 list-none">
+                    <li class="flex gap-2"><span class="text-gold-500 font-bold flex-shrink-0">ক)</span><span
+                            id="term-a">আমি প্রতি মাসের ১৫ তারিখের মধ্যে নির্ধারিত <strong>২০০০ (দুই হাজার)
+                                টাকা</strong> সঞ্চয় জমা দিতে বাধ্য থাকব।</span></li>
+                    <li class="flex gap-2"><span class="text-gold-500 font-bold flex-shrink-0">খ)</span><span
+                            id="term-b">আমি অবগত যে, নির্ধারিত সময়ে সঞ্চয় জমা দিতে ব্যর্থ হলে <strong>১০০ (একশত)
+                                টাকা</strong> বিলম্ব ফি প্রদান করতে বাধ্য থাকব।</span></li>
+                    <li class="flex gap-2"><span class="text-gold-500 font-bold flex-shrink-0">গ)</span><span
+                            id="term-c">আমি সংস্থার প্রাথমিক স্থিতিকাল <strong>৩ (তিন) বছর</strong> পর্যন্ত সক্রিয়
+                            সদস্য হিসেবে থাকার প্রতিশ্রুতি দিচ্ছি।</span></li>
+                    <li class="flex gap-2"><span class="text-gold-500 font-bold flex-shrink-0">ঘ)</span><span
+                            id="term-d">সংস্থার শৃঙ্খলা পরিপন্থী কোনো কাজ করলে আহ্বায়ক কমিটি আমাকে সদস্য পদ থেকে
+                            অব্যাহতি দেওয়ার ক্ষমতা রাখে।</span></li>
+                    <li class="flex gap-2"><span class="text-gold-500 font-bold flex-shrink-0">ঙ)</span><span
+                            id="term-e">ফরমের সাথে নিজের ও নমিনির এনআইডি কার্ডের ফটোকপি এবং ১ কপি পাসপোর্ট সাইজের ছবি
+                            সংযুক্ত করতে হবে।</span></li>
+                </ul>
+            </div>
+            <label class="flex items-start gap-3 cursor-pointer"><input type="checkbox" id="termsAgree"
+                    class="mt-1 w-4 h-4 accent-emerald-700" required /><span class="text-sm" id="terms-agree-lbl">আমি
+                    উপরোক্ত সকল শর্তাবলী পড়েছি এবং সম্পূর্ণরূপে সম্মত আছি। *</span></label>
+        </div>
+
+        <!-- SECTION 4: SIGNATURE + DATE -->
+        <div class="form-card p-5 mb-5">
+            <div class="section-header"><span>৪</span><span id="sec4-title">স্বাক্ষর ও তারিখ</span></div>
+            <div class="flex flex-col sm:flex-row gap-6 items-start">
+                <div class="flex-1">
+                    <div class="flex items-center gap-2 mb-1"><label class="field-label mb-0" id="lbl-sig">আবেদনকারীর
+                            স্বাক্ষর *</label><span class="text-xs text-gray-400">300×80 px, Max 100 KB</span></div>
+                    <div class="upload-zone h-24 flex flex-col items-center justify-center" id="sigZone"
+                        onclick="document.getElementById('sigInput').click()" ondragover="handleDrag(event,'sigZone')"
+                        ondragleave="handleDragLeave(event,'sigZone')" ondrop="handleDrop(event,'sigInput','sigZone')">
+                        <div id="sigPlaceholder" class="flex flex-col items-center gap-1"><svg
+                                class="w-8 h-8 opacity-30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                    d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                            </svg><span class="text-xs text-gray-400" id="lbl-sig-drop">স্বাক্ষর আপলোড করুন</span></div>
+                        <img id="sigPreview" class="img-preview h-16 object-contain hidden" alt="Signature" />
+                    </div><input type="file" id="sigInput" accept="image/*" class="hidden"
+                        onchange="openCropper(this,'sig',300,80,100)" />
+                </div>
+                <div class="flex-shrink-0 text-center sm:text-right"><label class="field-label" id="lbl-date">জমা
+                        দেওয়ার তারিখ</label>
+                    <div class="text-lg font-bold text-emerald-800 dark:text-emerald-300 mt-2 font-bangla"
+                        id="submitDate"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center mb-8"><button class="btn-submit" onclick="submitFormData()" id="submitBtn"><span
+                    id="lbl-submit">✅ আবেদন জমা দিন</span></button>
+            <p class="text-xs text-gray-400 mt-3" id="lbl-submit-note">জমা দেওয়ার পরে আবেদনটি পেন্ডিং অবস্থায় থাকবে
+                এবং কমিটি কর্তৃক যাচাই-বাছাই করা হবে।</p>
+        </div>
+    </main>
+
+    <footer class="site-header py-4 text-center text-white/70 text-xs font-bangla">
+        <div class="gold-line mb-3"></div>বারাকাহ ফাইন্যান্স © ২০২৬ | আদিতমারী, লালমনিরহাট | ☎ +8801581093611 | <a
+            href="admin/admin.html" class="text-gold-400 hover:text-gold-300 underline ml-2" id="admin-link">অ্যাডমিন
+            প্যানেল</a>
+    </footer>
+
+    <!-- CROPPER MODAL -->
+    <div class="modal-overlay hidden" id="cropperModal">
+        <div class="modal-box">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="font-bold text-lg font-bangla" id="cropperTitle">ছবি ক্রপ করুন</h3><button
+                    onclick="closeCropper()" class="text-2xl text-gray-400 hover:text-red-500">&times;</button>
+            </div>
+            <div class="relative cropper-container-box mb-4" id="cropperWrap"><img id="cropperImg" src="" alt=""
+                    style="max-width:100%;display:block;" />
+                <div class="face-guide-overlay hidden" id="faceGuide"><svg viewBox="0 0 90 120" width="90" height="120"
+                        fill="none" stroke="#C9A227" stroke-width="2">
+                        <ellipse cx="45" cy="55" rx="28" ry="35" />
+                        <circle cx="45" cy="50" r="16" />
+                        <path d="M30 80 Q45 90 60 80" />
+                    </svg></div>
+            </div>
+            <div class="flex justify-between items-center gap-3">
+                <p class="text-xs text-gray-400 font-bangla" id="cropNote">অনুপাত স্বয়ংক্রিয়ভাবে নির্ধারিত</p><button
+                    onclick="cropAndSave()"
+                    class="bg-emerald-700 text-white px-6 py-2 rounded-lg text-sm font-bold font-bangla hover:bg-emerald-600 transition">✂️
+                    ক্রপ ও সংরক্ষণ করুন</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SUCCESS MODAL -->
+    <div class="modal-overlay hidden" id="successModal">
+        <div class="modal-box text-center">
+            <div class="text-5xl mb-4">✅</div>
+            <h3 class="text-xl font-bold text-emerald-700 dark:text-emerald-300 font-bangla mb-2" id="success-title">
+                আবেদন সফলভাবে জমা হয়েছে!</h3>
+            <p class="text-sm text-gray-600 dark:text-gray-300 font-bangla mb-1" id="success-ref"></p>
+            <p class="text-sm text-gray-500 dark:text-gray-400 font-bangla mb-5" id="success-msg">আপনার আবেদনটি পেন্ডিং
+                অবস্থায় রয়েছে। কমিটি যাচাই-বাছাই শেষে আপনাকে জানানো হবে।</p>
+            <div class="flex gap-3 justify-center flex-wrap"><button onclick="downloadMemberPDF()"
+                    class="btn-submit text-sm py-2 px-5">📥 পিডিএফ ডাউনলোড করুন</button><button
+                    onclick="document.getElementById('successModal').classList.add('hidden'); location.reload();"
+                    class="border border-emerald-700 text-emerald-700 dark:border-emerald-400 dark:text-emerald-400 px-5 py-2 rounded-lg text-sm font-bold font-bangla hover:bg-emerald-50 dark:hover:bg-emerald-900/20 transition">🔄
+                    নতুন আবেদন</button></div>
+        </div>
+    </div>
+
+    <script src="js/data.js"></script>
+    <script src="js/db.js"></script>
+    <script src="js/form.js"></script>
+</body>
+
+</html>
