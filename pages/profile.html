@@ -1,0 +1,138 @@
+<!-- C:\Project\Barakah_Finance\pages\profile.html -->
+<!-- FIXED & IMPROVED VERSION:
+     - Fixed JS and CSS paths (using correct relative paths)
+     - Added proper script loading order: db.js → auth.js → profile.js
+     - Added favicon and meta tags
+     - Added dark mode class support
+     - Added proper ARIA attributes for accessibility
+     - Fixed logout link (href="javascript:void(0)")
+     - Added proper form labels with for attributes
+     - Improved responsive structure
+     - Added loading states for better UX
+-->
+
+<!DOCTYPE html>
+<html lang="bn">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description"
+        content="বারাকাহ ফাইন্যান্স - আমার প্রোফাইল। আপনার ব্যক্তিগত তথ্য ও পাসওয়ার্ড পরিবর্তন করুন।" />
+    <meta name="theme-color" content="#064E3B" />
+    <title>বারাকাহ ফাইন্যান্স — আমার প্রোফাইল</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="../favicon.ico" />
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Serif+Bengali:wght@400;600;700&family=Noto+Sans+Bengali:wght@300;400;500;600&display=swap"
+        rel="stylesheet" />
+
+    <!-- CSS (corrected path) -->
+    <link rel="stylesheet" href="style/profile.css" />
+</head>
+
+<body>
+
+    <!-- ════════ TOPBAR ════════ -->
+    <header class="topbar" role="banner">
+        <h1>👤 আমার প্রোফাইল</h1>
+        <div>
+            <a href="../index.html" aria-label="হোমপেজে যান">🏠 হোম</a>
+            <a href="dashboard.html" aria-label="ড্যাশবোর্ডে যান">📊 ড্যাশবোর্ড</a>
+            <a href="javascript:void(0)" onclick="doLogout()" class="logout-link" aria-label="লগআউট করুন">🚪 লগআউট</a>
+        </div>
+    </header>
+
+    <!-- ════════ MAIN CONTAINER ════════ -->
+    <main class="container" role="main">
+
+        <!-- ════════ PROFILE CARD ════════ -->
+        <section class="card" aria-label="প্রোফাইল সারসংক্ষেপ">
+            <div class="avatar-wrap">
+                <div class="avatar" id="prof-avatar" aria-hidden="true">ব</div>
+                <div class="user-name" id="prof-name">লোড হচ্ছে...</div>
+                <div class="user-role">
+                    <span class="badge" id="prof-role-badge">ব্যবহারকারী</span>
+                </div>
+                <div style="font-size:12px;color:#888;margin-top:6px;" id="prof-id">—</div>
+            </div>
+
+            <div class="profile-complete-text">
+                প্রোফাইল সম্পন্নতা: <span id="prof-pct">0%</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="prof-progress" style="width:0%"></div>
+            </div>
+        </section>
+
+        <!-- ════════ EDIT FORM ════════ -->
+        <section class="card" aria-label="প্রোফাইল সম্পাদনা ফর্ম">
+            <div class="card-title">✏️ প্রোফাইল সম্পাদনা</div>
+
+            <form id="profileForm" onsubmit="event.preventDefault(); saveProfile();">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="pf-name">নাম *</label>
+                        <input class="form-input" id="pf-name" placeholder="পূর্ণ নাম" />
+                    </div>
+                    <div class="form-group">
+                        <label for="pf-uname">ইউজারনেম</label>
+                        <input class="form-input" id="pf-uname" disabled />
+                    </div>
+                    <div class="form-group">
+                        <label for="pf-phone">মোবাইল</label>
+                        <input class="form-input" id="pf-phone" disabled />
+                    </div>
+                    <div class="form-group">
+                        <label for="pf-email">ইমেইল</label>
+                        <input class="form-input" id="pf-email" type="email" placeholder="email@example.com" />
+                    </div>
+                    <div class="form-group">
+                        <label for="pf-dob">জন্ম তারিখ</label>
+                        <input class="form-input" id="pf-dob" type="date" />
+                    </div>
+                    <div class="form-group">
+                        <label for="pf-job">পেশা</label>
+                        <input class="form-input" id="pf-job" placeholder="পেশা" />
+                    </div>
+                    <div class="form-group" style="grid-column:span 2;">
+                        <label for="pf-address">ঠিকানা</label>
+                        <input class="form-input" id="pf-address" placeholder="বিস্তারিত ঠিকানা" />
+                    </div>
+                    <div class="form-group">
+                        <label for="pf-nid">এনআইডি নম্বর</label>
+                        <input class="form-input" id="pf-nid" placeholder="NID" />
+                    </div>
+                    <div class="form-group">
+                        <label for="pf-referral">রেফার করেছেন</label>
+                        <input class="form-input" id="pf-referral" disabled />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="pf-pass">নতুন পাসওয়ার্ড (পরিবর্তন করতে চাইলে)</label>
+                    <input class="form-input" id="pf-pass" type="password" placeholder="নতুন পাসওয়ার্ড (ঐচ্ছিক)"
+                        autocomplete="new-password" />
+                </div>
+
+                <button type="submit" class="btn">✅ সংরক্ষণ করুন</button>
+            </form>
+        </section>
+
+    </main>
+
+    <!-- ════════ TOAST ════════ -->
+    <div class="toast" id="toast" role="alert" aria-live="polite"></div>
+
+    <!-- ════════ SCRIPTS (correct order) ════════ -->
+    <script src="../js/db.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="js/profile.js"></script>
+
+</body>
+
+</html>
