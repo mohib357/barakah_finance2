@@ -1,0 +1,191 @@
+<!-- C:\Project\Barakah_Finance\admin\admin.html -->
+<!-- FIXED & IMPROVED VERSION:
+     - Fixed JS and CSS paths (using correct relative paths)
+     - Added proper script loading order
+     - Added favicon and meta tags
+     - Added dark mode class support
+     - Removed hardcoded demo password
+     - Added proper ARIA attributes for accessibility
+     - Added pagination controls
+     - Fixed admin-settings.js path
+     - Added proper form labels with for attributes
+     - Improved responsive structure
+-->
+
+<!DOCTYPE html>
+<html lang="bn" dir="ltr">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="বারাকাহ ফাইন্যান্স - অ্যাডমিন প্যানেল। সদস্য আবেদন ব্যবস্থাপনা ও অনুমোদন।" />
+    <meta name="theme-color" content="#064E3B" />
+    <title>বারাকাহ ফাইন্যান্স - অ্যাডমিন প্যানেল</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="../favicon.ico" />
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: { extend: { colors: { gold: { 400: '#D4AF37', 500: '#C9A227' } } } }
+        }
+    </script>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Bengali:wght@400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet" />
+
+    <!-- PDF Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+    <!-- CSS (corrected path) -->
+    <link rel="stylesheet" href="style/admin.css" />
+</head>
+
+<body class="min-h-screen admin-panel">
+
+    <!-- ════════ HEADER ════════ -->
+    <header style="background:linear-gradient(135deg,#022c22,#064E3B);" class="py-4 px-6 flex flex-wrap items-center justify-between gap-3">
+        <div>
+            <h1 class="text-xl font-bold text-white">বারাকাহ ফাইন্যান্স — অ্যাডমিন প্যানেল</h1>
+            <p class="text-xs text-emerald-400">সদস্য আবেদন ব্যবস্থাপনা</p>
+        </div>
+        <div class="flex items-center gap-3 flex-wrap">
+            <div id="adminBadge" class="text-xs bg-emerald-900/60 border border-emerald-700 px-3 py-1.5 rounded-lg text-emerald-300 hidden">
+                লগইন: <span id="adminRoleLabel">—</span>
+            </div>
+            <button onclick="showLoginModal()" id="loginBtn" class="btn-primary text-xs py-1.5 px-4" aria-label="লগইন করুন">🔑 লগইন</button>
+            <button onclick="adminLogout()" id="logoutBtn" class="btn-danger text-xs py-1.5 px-4 hidden" aria-label="লগআউট করুন">লগআউট</button>
+            <a href="../form.html" class="text-emerald-400 text-xs hover:text-emerald-300" aria-label="ফরমে ফিরুন">← ফরমে ফিরুন</a>
+            <a href="../index.html" class="text-emerald-400 text-xs hover:text-emerald-300" aria-label="হোমপেজে যান">🏠 হোম</a>
+        </div>
+    </header>
+
+    <!-- ════════ MAIN CONTENT ════════ -->
+    <main class="max-w-6xl mx-auto px-4 py-5">
+
+        <!-- ── STATS ROW ── -->
+        <section class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6" id="statsRow" aria-label="পরিসংখ্যান">
+            <div class="stat-card">
+                <div class="stat-value text-white" id="statTotal">0</div>
+                <div class="stat-label text-emerald-400 mt-1">মোট আবেদন</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value text-yellow-400" id="statPending">0</div>
+                <div class="stat-label text-emerald-400 mt-1">পেন্ডিং</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value text-emerald-400" id="statApproved">0</div>
+                <div class="stat-label text-emerald-400 mt-1">অনুমোদিত</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value text-red-400" id="statRejected">0</div>
+                <div class="stat-label text-emerald-400 mt-1">প্রত্যাখ্যাত</div>
+            </div>
+        </section>
+
+        <!-- ── SEARCH & FILTER ── -->
+        <section class="card p-4 mb-4 flex flex-wrap gap-3 items-center">
+            <input type="text" class="form-input flex-1 min-w-48" placeholder="🔍 নাম, NID বা ID দিয়ে খুঁজুন..." id="searchBox" oninput="renderTable()" aria-label="আবেদন খুঁজুন" />
+            <div class="flex gap-2 flex-wrap" role="group" aria-label="ফিল্টার">
+                <button class="filter-btn active" onclick="setFilter('all',this)" aria-label="সকল আবেদন দেখান">সকল</button>
+                <button class="filter-btn" onclick="setFilter('pending',this)" aria-label="পেন্ডিং আবেদন দেখান">পেন্ডিং</button>
+                <button class="filter-btn" onclick="setFilter('approved',this)" aria-label="অনুমোদিত আবেদন দেখান">অনুমোদিত</button>
+                <button class="filter-btn" onclick="setFilter('rejected',this)" aria-label="প্রত্যাখ্যাত আবেদন দেখান">প্রত্যাখ্যাত</button>
+            </div>
+            <button onclick="exportCSV()" class="btn-gold text-xs py-1.5 px-4" aria-label="CSV এক্সপোর্ট করুন">📊 CSV Export</button>
+        </section>
+
+        <!-- ── TABLE ── -->
+        <section class="card overflow-x-auto mb-8">
+            <table class="w-full min-w-[700px]" aria-label="আবেদন তালিকা">
+                <thead>
+                    <tr>
+                        <th>সদস্য ID</th>
+                        <th>নাম (বাংলা)</th>
+                        <th>NID</th>
+                        <th>মোবাইল</th>
+                        <th>জমার তারিখ</th>
+                        <th>অবস্থা</th>
+                        <th>অনুমোদন</th>
+                        <th>কার্যক্রম</th>
+                    </tr>
+                </thead>
+                <tbody id="appTableBody">
+                    <tr>
+                        <td colspan="8" class="text-center text-gray-500 py-8">লোড হচ্ছে...</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div id="paginationControls" class="mt-4"></div>
+        </section>
+
+    </main>
+
+    <!-- ════════ LOGIN MODAL ════════ -->
+    <div class="modal-overlay hidden" id="loginModal" role="dialog" aria-modal="true" aria-label="অ্যাডমিন লগইন">
+        <div class="modal-box max-w-xs">
+            <h3 class="font-bold text-lg mb-4 text-emerald-300">অ্যাডমিন লগইন</h3>
+            <div class="mb-3">
+                <label class="block text-xs text-emerald-400 mb-1" for="loginRole">ভূমিকা নির্বাচন করুন</label>
+                <select class="form-input" id="loginRole">
+                    <option value="">-- ভূমিকা --</option>
+                    <option value="committee1">আহ্বায়ক কমিটি (০১)</option>
+                    <option value="committee2">আহ্বায়ক কমিটি (০২)</option>
+                    <option value="committee3">আহ্বায়ক কমিটি (০৩)</option>
+                    <option value="committee4">আহ্বায়ক কমিটি (০৪)</option>
+                    <option value="secretary">সাধারণ সম্পাদক</option>
+                    <option value="vicePresident">সহ-সভাপতি</option>
+                    <option value="president">সভাপতি</option>
+                </select>
+            </div>
+            <div class="mb-4">
+                <label class="block text-xs text-emerald-400 mb-1" for="loginPass">পাসওয়ার্ড</label>
+                <input type="password" class="form-input" id="loginPass" placeholder="পাসওয়ার্ড লিখুন" onkeydown="if(event.key==='Enter')doLogin()" />
+            </div>
+            <div class="flex gap-3">
+                <button onclick="doLogin()" class="btn-primary flex-1">লগইন করুন</button>
+                <button onclick="document.getElementById('loginModal').classList.add('hidden')" class="btn-danger flex-1">বাতিল</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ════════ DETAIL MODAL ════════ -->
+    <div class="modal-overlay hidden" id="detailModal" role="dialog" aria-modal="true" aria-label="আবেদনের বিস্তারিত">
+        <div class="modal-box">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="font-bold text-lg text-emerald-300">আবেদনের বিস্তারিত</h3>
+                <button onclick="document.getElementById('detailModal').classList.add('hidden')" class="text-2xl text-gray-400 hover:text-red-400" aria-label="বন্ধ করুন">&times;</button>
+            </div>
+            <div id="detailContent"></div>
+            <div class="flex flex-wrap gap-3 mt-5 pt-4 border-t border-emerald-900">
+                <button onclick="doApproveStep()" class="btn-primary" id="approveStepBtn">✅ অনুমোদন করুন</button>
+                <button onclick="doReject()" class="btn-danger">❌ প্রত্যাখ্যান করুন</button>
+                <button onclick="downloadAdminPDF()" class="btn-gold">📥 A4 PDF</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ════════ MEMBER ID MODAL ════════ -->
+    <div class="modal-overlay hidden" id="memberIDModal" role="dialog" aria-modal="true" aria-label="সদস্য আইডি প্রদান">
+        <div class="modal-box max-w-xs">
+            <h3 class="font-bold text-lg mb-3 text-emerald-300">সদস্য আইডি প্রদান</h3>
+            <p class="text-xs text-gray-400 mb-3">এই আবেদনকারীকে একটি সদস্য আইডি প্রদান করুন।</p>
+            <label class="block text-xs text-emerald-400 mb-1" for="memberIDInput">সদস্য আইডি</label>
+            <input type="text" class="form-input mb-4" id="memberIDInput" placeholder="যেমন: BF-2025-001" />
+            <div class="flex gap-3">
+                <button onclick="saveMemberID()" class="btn-primary flex-1">সংরক্ষণ করুন</button>
+                <button onclick="document.getElementById('memberIDModal').classList.add('hidden')" class="btn-danger flex-1">বাতিল</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ════════ SCRIPTS (correct order) ════════ -->
+    <script src="../js/admin_settings.js"></script>
+    <script src="js/admin.js"></script>
+
+</body>
+</html>

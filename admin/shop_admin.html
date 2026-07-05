@@ -1,0 +1,394 @@
+<!-- C:\Project\Barakah_Finance\admin\shop_admin.html -->
+<!-- FIXED & IMPROVED VERSION:
+     - Fixed JS and CSS paths (using correct relative paths)
+     - Added favicon and meta tags
+     - Added dark mode class support
+     - Added proper ARIA attributes for accessibility
+     - Added pagination controls for products and orders
+     - Added proper form labels with for attributes
+     - Added authentication check
+     - Improved responsive structure
+     - Added loading states for tables
+-->
+
+<!DOCTYPE html>
+<html lang="bn">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="বারাকাহ ফাইন্যান্স — পণ্য ও ব্যাজ অ্যাডমিন প্যানেল। পণ্য, অর্ডার, ব্যাজ ও নোটিশ ব্যবস্থাপনা।" />
+    <meta name="theme-color" content="#064E3B" />
+    <title>বারাকাহ ফাইন্যান্স — পণ্য ও ব্যাজ অ্যাডমিন</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="../favicon.ico" />
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Bengali:wght@400;600;700&display=swap" rel="stylesheet" />
+
+    <!-- CSS (corrected path) -->
+    <link rel="stylesheet" href="style/shop_admin.css" />
+</head>
+
+<body class="min-h-screen admin-panel">
+
+    <!-- ════════ HEADER ════════ -->
+    <header style="background:linear-gradient(135deg,#022c22,#064E3B);" class="py-4 px-6 flex flex-wrap items-center justify-between gap-3 mb-6">
+        <div>
+            <h1 class="text-lg font-bold text-white">বারাকাহ ফাইন্যান্স — পণ্য ও ব্যাজ ম্যানেজমেন্ট</h1>
+            <p class="text-xs text-emerald-400">ধাপ ২: ই-কমার্স + ব্যাজ কন্ট্রোল প্যানেল</p>
+        </div>
+        <div class="flex gap-3 flex-wrap">
+            <a href="admin.html" class="text-emerald-400 text-xs hover:text-emerald-300" aria-label="সদস্য অ্যাডমিনে যান">← সদস্য অ্যাডমিনে যান</a>
+            <a href="../index.html" class="text-emerald-400 text-xs hover:text-emerald-300" aria-label="হোমপেজে যান">🏠 হোম</a>
+            <a href="../pages/shop.html" class="text-yellow-400 text-xs hover:text-yellow-300" aria-label="শপ দেখুন">🛒 শপ দেখুন</a>
+        </div>
+    </header>
+
+    <!-- ════════ MAIN CONTENT ════════ -->
+    <main class="max-w-7xl mx-auto px-4">
+
+        <!-- ── STATS ROW ── -->
+        <section class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6" aria-label="পরিসংখ্যান">
+            <div class="card p-4 text-center">
+                <div class="text-2xl font-bold text-white" id="stat-products">0</div>
+                <div class="text-xs text-emerald-400 mt-1">মোট পণ্য</div>
+            </div>
+            <div class="card p-4 text-center">
+                <div class="text-2xl font-bold text-yellow-400" id="stat-orders">0</div>
+                <div class="text-xs text-emerald-400 mt-1">অর্ডার আবেদন</div>
+            </div>
+            <div class="card p-4 text-center">
+                <div class="text-2xl font-bold text-blue-400" id="stat-badges">0</div>
+                <div class="text-xs text-emerald-400 mt-1">ব্যাজ</div>
+            </div>
+            <div class="card p-4 text-center">
+                <div class="text-2xl font-bold text-purple-400" id="stat-notices">0</div>
+                <div class="text-xs text-emerald-400 mt-1">নোটিশ</div>
+            </div>
+        </section>
+
+        <!-- ── TABS ── -->
+        <nav class="flex gap-1 mb-0 overflow-x-auto" role="tablist" aria-label="বিভাগসমূহ">
+            <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab-products" onclick="switchTab('products',this)">📦 পণ্য ম্যানেজমেন্ট</button>
+            <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-orders" onclick="switchTab('orders',this)">📋 অর্ডার ম্যানেজমント</button>
+            <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-badges" onclick="switchTab('badges',this)">🏅 ব্যাজ কন্ট্রোল</button>
+            <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-notices" onclick="switchTab('notices',this)">📢 নোটিশ কন্ট্রোল</button>
+        </nav>
+
+        <!-- ═══ PRODUCTS TAB ═══ -->
+        <section class="tab-panel active card p-5 rounded-tl-none" id="tab-products" role="tabpanel" aria-label="পণ্য ম্যানেজমেন্ট">
+            <div class="flex flex-wrap gap-3 items-center mb-4">
+                <h2 class="text-base font-bold text-emerald-300 flex-1">পণ্য তালিকা</h2>
+                <input type="text" class="fi" style="max-width:200px;" placeholder="🔍 পণ্য খুঁজুন..." id="pSearch" oninput="renderProductTable()" aria-label="পণ্য খুঁজুন" />
+                <button class="btn-g" onclick="openProductModal()" aria-label="নতুন পণ্য যোগ করুন">+ নতুন পণ্য যোগ করুন</button>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full min-w-[700px]" aria-label="পণ্য তালিকা">
+                    <thead>
+                        <tr>
+                            <th>ইমোজি</th>
+                            <th>পণ্যের নাম</th>
+                            <th>ক্যাটাগরি</th>
+                            <th>মূল্য</th>
+                            <th>কিস্তি (প্রতি)</th>
+                            <th>স্টক</th>
+                            <th>ফিচার্ড</th>
+                            <th>কার্যক্রম</th>
+                        </tr>
+                    </thead>
+                    <tbody id="productTableBody">
+                        <tr><td colspan="8" class="text-center text-gray-500 py-6">লোড হচ্ছে...</td></tr>
+                    </tbody>
+                </table>
+                <div id="productPagination" class="mt-4"></div>
+            </div>
+        </section>
+
+        <!-- ═══ ORDERS TAB ═══ -->
+        <section class="tab-panel card p-5 rounded-tl-none" id="tab-orders" role="tabpanel" aria-label="অর্ডার ম্যানেজমেন্ট">
+            <div class="flex flex-wrap gap-3 items-center mb-4">
+                <h2 class="text-base font-bold text-emerald-300 flex-1">অর্ডার আবেদন</h2>
+                <div class="flex gap-2 flex-wrap" role="group" aria-label="অর্ডার ফিল্টার">
+                    <button class="tab-btn active" style="border-radius:20px;border:1px solid #1a4a30;" onclick="setOrderFilter('all',this)" aria-label="সকল অর্ডার দেখান">সকল</button>
+                    <button class="tab-btn" style="border-radius:20px;border:1px solid #1a4a30;" onclick="setOrderFilter('pending',this)" aria-label="পেন্ডিং অর্ডার দেখান">পেন্ডিং</button>
+                    <button class="tab-btn" style="border-radius:20px;border:1px solid #1a4a30;" onclick="setOrderFilter('approved',this)" aria-label="অনুমোদিত অর্ডার দেখান">অনুমোদিত</button>
+                    <button class="tab-btn" style="border-radius:20px;border:1px solid #1a4a30;" onclick="setOrderFilter('rejected',this)" aria-label="বাতিল অর্ডার দেখান">বাতিল</button>
+                </div>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full min-w-[750px]" aria-label="অর্ডার তালিকা">
+                    <thead>
+                        <tr>
+                            <th>অর্ডার আইডি</th>
+                            <th>পণ্য</th>
+                            <th>গ্রাহকের নাম</th>
+                            <th>মোবাইল</th>
+                            <th>মোট</th>
+                            <th>তারিখ</th>
+                            <th>অবস্থা</th>
+                            <th>কার্যক্রম</th>
+                        </tr>
+                    </thead>
+                    <tbody id="orderTableBody">
+                        <tr><td colspan="8" class="text-center text-gray-500 py-6">লোড হচ্ছে...</td></tr>
+                    </tbody>
+                </table>
+                <div id="orderPagination" class="mt-4"></div>
+            </div>
+        </section>
+
+        <!-- ═══ BADGES TAB ═══ -->
+        <section class="tab-panel card p-5 rounded-tl-none" id="tab-badges" role="tabpanel" aria-label="ব্যাজ কন্ট্রোল">
+            <div class="flex flex-wrap gap-3 items-center mb-4">
+                <h2 class="text-base font-bold text-emerald-300 flex-1">ব্যাজ নিয়ন্ত্রণ</h2>
+                <button class="btn-g" onclick="openBadgeModal()" aria-label="নতুন ব্যাজ যোগ করুন">+ নতুন ব্যাজ যোগ করুন</button>
+            </div>
+            <p class="text-xs text-gray-400 mb-4">ব্যাজগুলো হোমপেজের হিরো সেকশনে প্রদর্শিত হয়। ক্লিক করলে বিস্তারিত দেখা যায়।</p>
+            <div class="overflow-x-auto">
+                <table class="w-full min-w-[600px]" aria-label="ব্যাজ তালিকা">
+                    <thead>
+                        <tr>
+                            <th>আইকন</th>
+                            <th>নাম</th>
+                            <th>কী</th>
+                            <th>দেখাবে?</th>
+                            <th>ক্লিকযোগ্য?</th>
+                            <th>কার্যক্রম</th>
+                        </tr>
+                    </thead>
+                    <tbody id="badgeTableBody"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- ═══ NOTICES TAB ═══ -->
+        <section class="tab-panel card p-5 rounded-tl-none" id="tab-notices" role="tabpanel" aria-label="নোটিশ কন্ট্রোল">
+            <div class="flex flex-wrap gap-3 items-center mb-4">
+                <h2 class="text-base font-bold text-emerald-300 flex-1">নোটিশ নিয়ন্ত্রণ</h2>
+                <button class="btn-g" onclick="openNoticeModal()" aria-label="নতুন নোটিশ যোগ করুন">+ নতুন নোটিশ যোগ করুন</button>
+            </div>
+            <p class="text-xs text-gray-400 mb-4">নোটিশ নোটিশবারে স্ক্রল করে দেখাবে। বিভিন্ন ফন্ট স্টাইল ও রং ব্যবহার করা যাবে।</p>
+            <div class="overflow-x-auto">
+                <table class="w-full min-w-[600px]" aria-label="নোটিশ তালিকা">
+                    <thead>
+                        <tr>
+                            <th>নোটিশ টেক্সট</th>
+                            <th>স্টাইল</th>
+                            <th>রং</th>
+                            <th>সক্রিয়?</th>
+                            <th>কার্যক্রম</th>
+                        </tr>
+                    </thead>
+                    <tbody id="noticeTableBody"></tbody>
+                </table>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ════════ PRODUCT MODAL ════════ -->
+    <div class="modal-overlay hidden" id="productModal" role="dialog" aria-modal="true" aria-label="পণ্য ফর্ম">
+        <div class="modal-box">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="font-bold text-lg text-emerald-300" id="productModalTitle">নতুন পণ্য যোগ করুন</h3>
+                <button onclick="closeProductModal()" class="text-2xl text-gray-400 hover:text-red-400" aria-label="বন্ধ করুন">&times;</button>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
+                <div>
+                    <label class="block text-xs text-emerald-400 mb-1" for="p-name">পণ্যের নাম *</label>
+                    <input class="fi" id="p-name" placeholder="পণ্যের নাম" />
+                </div>
+                <div>
+                    <label class="block text-xs text-emerald-400 mb-1" for="p-cat">ক্যাটাগরি *</label>
+                    <input class="fi" id="p-cat" placeholder="মোবাইল / ইলেকট্রনিক্স / গৃহস্থালি..." list="catList" />
+                    <datalist id="catList">
+                        <option>মোবাইল</option>
+                        <option>ইলেকট্রনিক্স</option>
+                        <option>কম্পিউটার</option>
+                        <option>মোটরযান</option>
+                        <option>গৃহস্থালি</option>
+                        <option>পোশাক</option>
+                        <option>অন্যান্য</option>
+                    </datalist>
+                </div>
+                <div>
+                    <label class="block text-xs text-emerald-400 mb-1" for="p-price">মূল্য (টাকা) *</label>
+                    <input class="fi" id="p-price" type="number" placeholder="25000" oninput="previewEmi()" />
+                </div>
+                <div>
+                    <label class="block text-xs text-emerald-400 mb-1" for="p-emoji">ইমোজি (পণ্যের প্রতীক)</label>
+                    <input class="fi" id="p-emoji" placeholder="📱 💻 🧊 🏍️ ..." />
+                </div>
+            </div>
+            <div class="mb-3">
+                <label class="block text-xs text-emerald-400 mb-1" for="p-desc">বিবরণ</label>
+                <textarea class="fi" id="p-desc" rows="3" placeholder="পণ্যের বিস্তারিত বিবরণ..."></textarea>
+            </div>
+            <div class="mb-3">
+                <label class="block text-xs text-emerald-400 mb-1" for="p-images">ছবির URL (একাধিক হলে কমা দিয়ে দিন)</label>
+                <input class="fi" id="p-images" placeholder="https://example.com/img1.jpg, https://..." />
+                <p class="text-xs text-gray-500 mt-1">ছবি না থাকলে ইমোজি দেখাবে।</p>
+            </div>
+            <div class="flex gap-4 mb-3">
+                <label class="flex items-center gap-2 cursor-pointer text-sm">
+                    <input type="checkbox" id="p-instock" checked class="w-4 h-4 accent-emerald-700" />
+                    স্টকে আছে
+                </label>
+                <label class="flex items-center gap-2 cursor-pointer text-sm">
+                    <input type="checkbox" id="p-featured" class="w-4 h-4 accent-yellow-500" />
+                    ফিচার্ড পণ্য
+                </label>
+            </div>
+            <div class="bg-black/20 rounded-lg p-3 text-xs mb-4 hidden" id="emiPreview">
+                <p class="text-emerald-400 font-bold mb-1">কিস্তি হিসাব (পূর্বদর্শন)</p>
+                <div id="emiPreviewRows"></div>
+            </div>
+            <input type="hidden" id="p-edit-id" />
+            <div class="flex gap-3">
+                <button onclick="saveProduct()" class="btn-g flex-1">✅ সংরক্ষণ করুন</button>
+                <button onclick="closeProductModal()" class="btn-r flex-1">বাতিল</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ════════ ORDER DETAIL MODAL ════════ -->
+    <div class="modal-overlay hidden" id="orderDetailModal" role="dialog" aria-modal="true" aria-label="অর্ডার বিস্তারিত">
+        <div class="modal-box">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="font-bold text-lg text-emerald-300">অর্ডার বিস্তারিত</h3>
+                <button onclick="document.getElementById('orderDetailModal').classList.add('hidden')" class="text-2xl text-gray-400 hover:text-red-400" aria-label="বন্ধ করুন">&times;</button>
+            </div>
+            <div id="orderDetailContent"></div>
+            <div class="flex gap-3 mt-4 pt-4 border-t border-emerald-900 flex-wrap">
+                <button onclick="updateOrderStatus('approved')" class="btn-g flex-1">✅ অনুমোদন করুন</button>
+                <button onclick="updateOrderStatus('processing')" class="btn-y flex-1">🔄 প্রসেসিং</button>
+                <button onclick="updateOrderStatus('rejected')" class="btn-r flex-1">❌ বাতিল করুন</button>
+            </div>
+            <div class="mt-3">
+                <label class="block text-xs text-emerald-400 mb-1" for="statusStepSel">স্ট্যাটাস ধাপ আপডেট (০-৫)</label>
+                <div class="flex gap-2">
+                    <select class="fi" id="statusStepSel">
+                        <option value="0">০ - আবেদন জমা</option>
+                        <option value="1">১ - কমিটি পর্যালোচনা</option>
+                        <option value="2">২ - অনুমোদন</option>
+                        <option value="3">৩ - পণ্য সংগ্রহ</option>
+                        <option value="4">৪ - বিতরণ</option>
+                        <option value="5">৫ - সম্পন্ন</option>
+                    </select>
+                    <button onclick="saveStatusStep()" class="btn-g">আপডেট</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ════════ BADGE MODAL ════════ -->
+    <div class="modal-overlay hidden" id="badgeModal" role="dialog" aria-modal="true" aria-label="ব্যাজ ফর্ম">
+        <div class="modal-box" style="max-width:480px;">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="font-bold text-lg text-emerald-300" id="badgeModalTitle">নতুন ব্যাজ যোগ করুন</h3>
+                <button onclick="closeBadgeModal()" class="text-2xl text-gray-400 hover:text-red-400" aria-label="বন্ধ করুন">&times;</button>
+            </div>
+            <div class="grid grid-cols-2 gap-3 mb-3">
+                <div>
+                    <label class="block text-xs text-emerald-400 mb-1" for="b-icon">আইকন (ইমোজি)</label>
+                    <input class="fi" id="b-icon" placeholder="👥 💰 🤝 🌟" />
+                </div>
+                <div>
+                    <label class="block text-xs text-emerald-400 mb-1" for="b-label">নাম/লেবেল</label>
+                    <input class="fi" id="b-label" placeholder="মোট সদস্য" />
+                </div>
+                <div>
+                    <label class="block text-xs text-emerald-400 mb-1" for="b-key">ডেটা কী (key)</label>
+                    <select class="fi" id="b-key">
+                        <option value="members">members — সদস্য সংখ্যা</option>
+                        <option value="savings">savings — মোট সঞ্চয়</option>
+                        <option value="loans">loans — করজে হাসানা</option>
+                        <option value="services">services — সেবাসমূহ</option>
+                        <option value="custom">custom — কাস্টম</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs text-emerald-400 mb-1" for="b-custom-val">কাস্টম মান (key=custom হলে)</label>
+                    <input class="fi" id="b-custom-val" placeholder="যেমন: ২০+" />
+                </div>
+            </div>
+            <div class="flex gap-4 mb-4">
+                <label class="flex items-center gap-2 cursor-pointer text-sm">
+                    <input type="checkbox" id="b-show" checked class="w-4 h-4 accent-emerald-700" />দেখাবে
+                </label>
+                <label class="flex items-center gap-2 cursor-pointer text-sm">
+                    <input type="checkbox" id="b-clickable" checked class="w-4 h-4 accent-yellow-500" />ক্লিকযোগ্য
+                </label>
+            </div>
+            <input type="hidden" id="b-edit-id" />
+            <div class="flex gap-3">
+                <button onclick="saveBadge()" class="btn-g flex-1">✅ সংরক্ষণ করুন</button>
+                <button onclick="closeBadgeModal()" class="btn-r flex-1">বাতিল</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ════════ NOTICE MODAL ════════ -->
+    <div class="modal-overlay hidden" id="noticeModal" role="dialog" aria-modal="true" aria-label="নোটিশ ফর্ম">
+        <div class="modal-box" style="max-width:480px;">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="font-bold text-lg text-emerald-300" id="noticeModalTitle">নতুন নোটিশ যোগ করুন</h3>
+                <button onclick="closeNoticeModal()" class="text-2xl text-gray-400 hover:text-red-400" aria-label="বন্ধ করুন">&times;</button>
+            </div>
+            <div class="mb-3">
+                <label class="block text-xs text-emerald-400 mb-1" for="n-text">নোটিশ টেক্সট *</label>
+                <textarea class="fi" id="n-text" rows="3" placeholder="নোটিশের বিষয়বস্তু লিখুন..."></textarea>
+            </div>
+            <div class="grid grid-cols-2 gap-3 mb-3">
+                <div>
+                    <label class="block text-xs text-emerald-400 mb-1" for="n-style">ফন্ট স্টাইল</label>
+                    <select class="fi" id="n-style">
+                        <option value="normal">সাধারণ (Normal)</option>
+                        <option value="bold">মোটা (Bold)</option>
+                        <option value="italic">বাঁকা (Italic)</option>
+                        <option value="bold-italic">মোটা+বাঁকা</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs text-emerald-400 mb-1" for="n-color">টেক্সট রং</label>
+                    <div class="flex gap-2 items-center">
+                        <input type="color" id="n-color" value="#ffffff" class="w-10 h-9 rounded cursor-pointer border border-emerald-800 bg-transparent" />
+                        <input class="fi" id="n-color-hex" value="#ffffff" style="max-width:100px;" oninput="syncColor()" />
+                    </div>
+                </div>
+            </div>
+            <div class="mb-4">
+                <label class="block text-xs text-emerald-400 mb-2">দ্রুত রং নির্বাচন:</label>
+                <div class="flex gap-2 flex-wrap">
+                    <span onclick="setColor('#ffffff')" style="background:#fff;width:24px;height:24px;border-radius:50%;cursor:pointer;border:2px solid #333;" title="সাদা"></span>
+                    <span onclick="setColor('#F5D061')" style="background:#F5D061;width:24px;height:24px;border-radius:50%;cursor:pointer;" title="সোনালি"></span>
+                    <span onclick="setColor('#a7f3d0')" style="background:#a7f3d0;width:24px;height:24px;border-radius:50%;cursor:pointer;" title="সবুজ"></span>
+                    <span onclick="setColor('#fca5a5')" style="background:#fca5a5;width:24px;height:24px;border-radius:50%;cursor:pointer;" title="লাল"></span>
+                    <span onclick="setColor('#93c5fd')" style="background:#93c5fd;width:24px;height:24px;border-radius:50%;cursor:pointer;" title="নীল"></span>
+                    <span onclick="setColor('#c4b5fd')" style="background:#c4b5fd;width:24px;height:24px;border-radius:50%;cursor:pointer;" title="বেগুনি"></span>
+                </div>
+            </div>
+            <div style="background:#064E3B;padding:8px 14px;border-radius:7px;margin-bottom:14px;">
+                <span id="n-preview" style="font-size:13px;color:#fff;">পূর্বদর্শন এখানে দেখাবে...</span>
+            </div>
+            <label class="flex items-center gap-2 cursor-pointer text-sm mb-4">
+                <input type="checkbox" id="n-active" checked class="w-4 h-4 accent-emerald-700" />সক্রিয় (নোটিশবারে দেখাবে)
+            </label>
+            <input type="hidden" id="n-edit-id" />
+            <div class="flex gap-3">
+                <button onclick="saveNotice()" class="btn-g flex-1">✅ সংরক্ষণ করুন</button>
+                <button onclick="closeNoticeModal()" class="btn-r flex-1">বাতিল</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ════════ SCRIPTS ════════ -->
+    <script src="js/shop_admin.js"></script>
+
+</body>
+</html>

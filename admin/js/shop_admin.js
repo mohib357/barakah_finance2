@@ -14,14 +14,14 @@
 // 10. Added toast notifications
 // ═══════════════════════════════════════════════════════════════════
 
-(function () {
+(function() {
     'use strict';
 
     // ── Constants ──
-    const API_BASE = window.location.hostname === 'localhost'
-        ? 'http://localhost:3001/api'
+    const API_BASE = window.location.hostname === 'localhost' 
+        ? 'http://localhost:3001/api' 
         : '/api';
-
+    
     const DEBUG = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
 
     // ── State ──
@@ -864,7 +864,7 @@
     }
 
     // ── Event Listeners ──
-    document.addEventListener('input', function (e) {
+    document.addEventListener('input', function(e) {
         if (['n-text', 'n-style', 'n-color', 'n-color-hex'].includes(e.target?.id)) {
             updateNoticePreview();
         }
@@ -873,7 +873,7 @@
         }
     });
 
-    document.addEventListener('change', function (e) {
+    document.addEventListener('change', function(e) {
         if (e.target?.id === 'n-color') {
             document.getElementById('n-color-hex').value = e.target.value;
             updateNoticePreview();
@@ -881,7 +881,7 @@
     });
 
     // ── Init ──
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
         if (!checkAuth()) return;
 
         // Set up search listener
