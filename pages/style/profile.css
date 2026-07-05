@@ -1,0 +1,612 @@
+/* C:\Project\Barakah_Finance\pages\style\profile.css */
+/* FIXED & IMPROVED VERSION:
+     - Unified dark mode with .dark-mode class
+     - Added CSS variables for all colors
+     - Fixed responsive issues
+     - Added proper accessibility support
+     - Added print styles
+     - Added reduced motion support
+     - Added smooth transitions
+     - Improved avatar and badge styles
+*/
+
+/* ════════ ROOT VARIABLES ════════ */
+:root {
+    --gold: #C9A227;
+    --gold-light: #F5D061;
+    --dark-green: #064E3B;
+    --mid-green: #065F46;
+    --light-green: #D1FAE5;
+    --cream: #FDFAF3;
+    --text-dark: #1A2A1A;
+    --text-muted: #4A5A4A;
+    --card-bg: #fff;
+    --card-bg-dark: #112318;
+    --border-color: #e5e7eb;
+    --border-color-dark: #1a3a2a;
+    --input-bg: #f0fdf4;
+    --input-bg-dark: #0d2218;
+    --input-border: #d1fae5;
+    --input-border-dark: #1a4a30;
+    --shadow: rgba(0, 0, 0, 0.08);
+    --shadow-dark: rgba(0, 0, 0, 0.3);
+    --transition: 0.3s ease;
+    --radius: 12px;
+    --topbar-height: 64px;
+}
+
+/* ════════ RESET ════════ */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* ════════ BODY ════════ */
+body {
+    font-family: 'Noto Sans Bengali', sans-serif;
+    background: #f0f4f1;
+    color: var(--text-dark);
+    min-height: 100vh;
+    transition: background var(--transition), color var(--transition);
+}
+
+body.dark-mode {
+    background: #0f1a15;
+    color: #e8f5e9;
+}
+
+/* ════════ TOPBAR ════════ */
+.topbar {
+    background: linear-gradient(135deg, var(--dark-green), var(--mid-green));
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+}
+
+body.dark-mode .topbar {
+    background: linear-gradient(135deg, #022c22, #064E3B);
+}
+
+.topbar h1 {
+    color: var(--gold-light);
+    font-family: 'Noto Serif Bengali', serif;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.topbar>div {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.topbar a {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 13px;
+    text-decoration: none;
+    transition: all var(--transition);
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+
+.topbar a:hover {
+    color: var(--gold-light);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.topbar .logout-link {
+    color: #fca5a5;
+}
+
+.topbar .logout-link:hover {
+    color: #f87171;
+    background: rgba(252, 165, 165, 0.1);
+}
+
+body.dark-mode .topbar a {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+body.dark-mode .topbar a:hover {
+    color: var(--gold-light);
+}
+
+/* ════════ CONTAINER ════════ */
+.container {
+    max-width: 800px;
+    margin: 32px auto;
+    padding: 0 16px;
+}
+
+/* ════════ CARDS ════════ */
+.card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    padding: 24px;
+    border: 1px solid var(--border-color);
+    margin-bottom: 20px;
+    transition: all var(--transition);
+}
+
+body.dark-mode .card {
+    background: var(--card-bg-dark);
+    border-color: var(--border-color-dark);
+}
+
+.card-title {
+    font-family: 'Noto Serif Bengali', serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--dark-green);
+    margin-bottom: 18px;
+    transition: color var(--transition);
+}
+
+body.dark-mode .card-title {
+    color: #e8f5e9;
+}
+
+/* ════════ AVATAR ════════ */
+.avatar-wrap {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #1D9E75, var(--mid-green));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    color: #fff;
+    font-weight: 700;
+    margin: 0 auto 10px;
+    font-family: 'Noto Serif Bengali', serif;
+    border: 3px solid rgba(201, 162, 39, 0.3);
+    transition: all var(--transition);
+}
+
+body.dark-mode .avatar {
+    border-color: rgba(201, 162, 39, 0.15);
+}
+
+.user-name {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--dark-green);
+    transition: color var(--transition);
+}
+
+body.dark-mode .user-name {
+    color: #e8f5e9;
+}
+
+.user-role {
+    font-size: 12px;
+    color: #888;
+    margin-top: 4px;
+}
+
+body.dark-mode .user-role {
+    color: #888;
+}
+
+/* ════════ BADGES ════════ */
+.badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: 600;
+    transition: all var(--transition);
+}
+
+.badge-admin {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+body.dark-mode .badge-admin {
+    background: #1a1a0d;
+    color: #f5d061;
+}
+
+.badge-member {
+    background: #d1fae5;
+    color: #065F46;
+}
+
+body.dark-mode .badge-member {
+    background: #0d2218;
+    color: #6ee7b7;
+}
+
+.badge-user {
+    background: #dbeafe;
+    color: #1e40af;
+}
+
+body.dark-mode .badge-user {
+    background: #0d1a2a;
+    color: #93c5fd;
+}
+
+/* ════════ PROGRESS BAR ════════ */
+.progress-bar {
+    height: 8px;
+    background: #f0fdf4;
+    border-radius: 4px;
+    margin: 12px 0;
+    overflow: hidden;
+    transition: background var(--transition);
+}
+
+body.dark-mode .progress-bar {
+    background: #0d2218;
+}
+
+.progress-fill {
+    height: 100%;
+    border-radius: 4px;
+    background: linear-gradient(90deg, var(--dark-green), #1D9E75);
+    transition: width 0.5s ease;
+}
+
+/* ════════ PROFILE COMPLETION TEXT ════════ */
+.profile-complete-text {
+    font-size: 12px;
+    color: #555;
+    margin-bottom: 4px;
+}
+
+body.dark-mode .profile-complete-text {
+    color: #888;
+}
+
+.profile-complete-text span {
+    color: var(--mid-green);
+    font-weight: 700;
+}
+
+body.dark-mode .profile-complete-text span {
+    color: #6ee7b7;
+}
+
+/* ════════ FORM ════════ */
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.form-group {
+    margin-bottom: 14px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--mid-green);
+    margin-bottom: 4px;
+    transition: color var(--transition);
+}
+
+body.dark-mode .form-group label {
+    color: #6ee7b7;
+}
+
+.form-input {
+    width: 100%;
+    padding: 9px 12px;
+    border: 1.5px solid var(--input-border);
+    border-radius: 8px;
+    font-size: 13px;
+    font-family: inherit;
+    outline: none;
+    background: var(--input-bg);
+    transition: all var(--transition);
+}
+
+body.dark-mode .form-input {
+    background: var(--input-bg-dark);
+    border-color: var(--input-border-dark);
+    color: #e8f5e9;
+}
+
+.form-input:focus {
+    border-color: var(--gold);
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(201, 162, 39, 0.1);
+}
+
+body.dark-mode .form-input:focus {
+    background: #0f2a1c;
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px rgba(201, 162, 39, 0.15);
+}
+
+.form-input:disabled {
+    background: #f9fafb;
+    color: #888;
+    cursor: not-allowed;
+}
+
+body.dark-mode .form-input:disabled {
+    background: #1a2a1a;
+    color: #666;
+}
+
+/* ════════ BUTTONS ════════ */
+.btn {
+    background: linear-gradient(135deg, var(--dark-green), var(--mid-green));
+    color: #fff;
+    border: none;
+    padding: 10px 24px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all var(--transition);
+}
+
+.btn:hover {
+    background: linear-gradient(135deg, #047857, #059669);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(6, 78, 59, 0.3);
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none !important;
+}
+
+body.dark-mode .btn:hover {
+    box-shadow: 0 4px 12px rgba(6, 78, 59, 0.4);
+}
+
+.btn-logout {
+    background: #dc2626;
+}
+
+.btn-logout:hover {
+    background: #b91c1c;
+    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+}
+
+/* ════════ TOAST ════════ */
+.toast {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: var(--mid-green);
+    color: #fff;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 13px;
+    z-index: 9999;
+    display: none;
+    font-family: 'Noto Serif Bengali', serif;
+    max-width: 320px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    animation: slideUp 0.3s ease;
+}
+
+body.dark-mode .toast {
+    background: var(--dark-green);
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ════════ RESPONSIVE ════════ */
+@media (max-width: 600px) {
+    .topbar {
+        padding: 12px 16px;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .topbar h1 {
+        font-size: 16px;
+    }
+
+    .topbar>div {
+        gap: 8px;
+        width: 100%;
+    }
+
+    .topbar a {
+        font-size: 12px;
+        padding: 4px 6px;
+    }
+
+    .container {
+        margin: 16px auto;
+        padding: 0 12px;
+    }
+
+    .card {
+        padding: 16px;
+    }
+
+    .card-title {
+        font-size: 14px;
+        margin-bottom: 14px;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    .form-group {
+        margin-bottom: 10px;
+    }
+
+    .form-input {
+        font-size: 12px;
+        padding: 8px 10px;
+    }
+
+    .btn {
+        font-size: 13px;
+        padding: 8px 20px;
+        width: 100%;
+    }
+
+    .avatar {
+        width: 64px;
+        height: 64px;
+        font-size: 22px;
+    }
+
+    .user-name {
+        font-size: 16px;
+    }
+
+    .profile-complete-text {
+        font-size: 11px;
+    }
+
+    .container {
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 400px) {
+    .topbar h1 {
+        font-size: 14px;
+    }
+
+    .topbar a {
+        font-size: 11px;
+        padding: 3px 5px;
+    }
+
+    .card {
+        padding: 12px;
+        border-radius: 8px;
+    }
+
+    .card-title {
+        font-size: 13px;
+    }
+
+    .avatar {
+        width: 56px;
+        height: 56px;
+        font-size: 20px;
+    }
+
+    .user-name {
+        font-size: 14px;
+    }
+
+    .badge {
+        font-size: 10px;
+        padding: 2px 8px;
+    }
+
+    .form-input {
+        font-size: 11px;
+        padding: 6px 8px;
+    }
+
+    .btn {
+        font-size: 12px;
+        padding: 6px 16px;
+    }
+}
+
+/* ════════ ACCESSIBILITY ════════ */
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+
+    .toast {
+        animation: none !important;
+    }
+
+    .btn:hover {
+        transform: none !important;
+    }
+
+    .progress-fill {
+        transition: none !important;
+    }
+}
+
+/* Focus visible for keyboard users */
+.btn:focus-visible,
+.form-input:focus-visible,
+.topbar a:focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: 2px;
+}
+
+/* ════════ PRINT STYLES ════════ */
+@media print {
+    .topbar {
+        display: none !important;
+    }
+
+    .container {
+        margin: 0 auto !important;
+        padding: 0 !important;
+        max-width: 100% !important;
+    }
+
+    .card {
+        border: 1px solid #ddd !important;
+        box-shadow: none !important;
+        break-inside: avoid;
+        page-break-inside: avoid;
+    }
+
+    body {
+        background: #fff !important;
+        color: #000 !important;
+    }
+
+    .btn {
+        display: none !important;
+    }
+
+    .toast {
+        display: none !important;
+    }
+}
