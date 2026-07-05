@@ -1,0 +1,482 @@
+<!-- C:\Project\Barakah_Finance\pages\dashboard.html -->
+<!-- FIXED & IMPROVED VERSION:
+     - Fixed JS and CSS paths (using correct relative paths)
+     - Added proper script loading order: db.js → auth.js → data.js → dashboard.js
+     - Added favicon and meta tags
+     - Added dark mode class support
+     - Fixed admin panel links (corrected paths)
+     - Added proper ARIA attributes for accessibility
+     - Added loading states for better UX
+     - Fixed duplicate element IDs
+     - Improved responsive structure
+-->
+
+<!DOCTYPE html>
+<html lang="bn">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description"
+        content="বারাকাহ ফাইন্যান্স - ড্যাশবোর্ড। আপনার আর্থিক তথ্য, সঞ্চয়, করজে হাসানা ও অর্ডার ব্যবস্থাপনা।" />
+    <meta name="theme-color" content="#064E3B" />
+    <title>বারাকাহ ফাইন্যান্স — ড্যাশবোর্ড</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="../favicon.ico" />
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Serif+Bengali:wght@400;600;700&family=Noto+Sans+Bengali:wght@300;400;500;600&display=swap"
+        rel="stylesheet" />
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+
+    <!-- CSS (corrected paths) -->
+    <link rel="stylesheet" href="style/dashboard.css" />
+</head>
+
+<body>
+
+    <div class="overlay-bg" id="overlayBg" onclick="closeSidebar()" role="presentation"></div>
+
+    <!-- ════════ SIDEBAR ════════ -->
+    <aside class="sidebar" id="sidebar" role="navigation" aria-label="প্রধান নেভিগেশন">
+        <div class="sb-logo">
+            <div class="circle" aria-hidden="true">ব</div>
+            <span>বারাকাহ<br />ফাইন্যান্স</span>
+        </div>
+
+        <div class="sb-user">
+            <div class="sb-avatar" id="sb-avatar" aria-hidden="true">ব</div>
+            <div class="sb-name" id="sb-name">লোড হচ্ছে...</div>
+            <span class="sb-role" id="sb-role-badge">ব্যবহারকারী</span>
+            <div class="sb-complete">
+                <div style="display:flex;justify-content:space-between;">
+                    <span style="font-size:10px;color:rgba(255,255,255,0.4);">প্রোফাইল সম্পন্নতা</span>
+                    <span style="font-size:10px;color:#F5D061;" id="sb-complete-pct">—</span>
+                </div>
+                <div class="sb-complete-bar">
+                    <div class="sb-complete-fill" id="sb-complete-fill" style="width:0%"></div>
+                </div>
+            </div>
+        </div>
+
+        <nav class="sb-nav" id="sb-nav" aria-label="ড্যাশবোর্ড মেনু"></nav>
+
+        <div class="sb-footer">
+            <button class="sb-logout" onclick="doLogout()" aria-label="লগআউট করুন">
+                🚪 লগআউট করুন
+            </button>
+        </div>
+    </aside>
+
+    <!-- ════════ MAIN CONTENT ════════ -->
+    <main class="main" role="main">
+        <!-- Topbar -->
+        <header class="topbar" role="banner">
+            <div style="display:flex;align-items:center;gap:12px;">
+                <button class="hamburger-btn" onclick="toggleSidebar()" aria-label="মেনু খুলুন/বন্ধ করুন">
+                    ☰
+                </button>
+                <div class="topbar-title" id="topbar-title">ড্যাশবোর্ড</div>
+            </div>
+            <div class="topbar-right">
+                <a href="../index.html" style="font-size:12px;color:var(--text-muted);text-decoration:none;"
+                    aria-label="হোমপেজে যান">
+                    🏠 হোম
+                </a>
+                <button class="notif-btn" title="নোটিফিকেশন" aria-label="নোটিফিকেশন দেখুন">
+                    🔔<span class="notif-dot" aria-hidden="true"></span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Content -->
+        <div class="content">
+
+            <!-- ═══ OVERVIEW PANEL ═══ -->
+            <section class="panel" id="panel-overview" role="tabpanel" aria-label="ওভারভিউ">
+                <div class="stat-row" id="overview-stats"></div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+                    <div class="card">
+                        <div class="card-title">📊 মাসিক সঞ্চয় (শেষ ৬ মাস)</div>
+                        <div class="savings-chart" id="savings-chart" role="img" aria-label="সঞ্চয় চার্ট"></div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">📋 সাম্প্রতিক কার্যক্রম</div>
+                        <div id="recent-activity" style="font-size:13px;"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ═══ SAVINGS PANEL ═══ -->
+            <section class="panel" id="panel-savings" role="tabpanel" aria-label="সঞ্চয় বিবরণ">
+                <div class="card">
+                    <div class="card-title">
+                        💰 আমার সঞ্চয় বিবরণ
+                        <span class="badge tag-ok" id="savings-total-badge">মোট: ৳০</span>
+                    </div>
+                    <div class="tbl-wrap">
+                        <table aria-label="সঞ্চয় তালিকা">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>মাস</th>
+                                    <th>পরিমাণ</th>
+                                    <th>তারিখ</th>
+                                    <th>অবস্থা</th>
+                                </tr>
+                            </thead>
+                            <tbody id="savings-table"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ═══ LOANS PANEL ═══ -->
+            <section class="panel" id="panel-loans" role="tabpanel" aria-label="করজে হাসানা">
+                <div class="card">
+                    <div class="card-title">🤝 করজে হাসানা আবেদন</div>
+                    <div
+                        style="background:#fffbeb;border:1px solid rgba(201,162,39,0.3);border-radius:8px;padding:12px;margin-bottom:16px;font-size:13px;color:#92400e;">
+                        ⚠️ সর্বোচ্চ ১৫,০০০ টাকা। ৩ মাসে পরিশোধযোগ্য।
+                    </div>
+                    <div class="pf-grid">
+                        <div class="pf-group">
+                            <label class="pf-label" for="loan-amount">পরিমাণ (সর্বোচ্চ ১৫,০০০) *</label>
+                            <input class="pf-input" id="loan-amount" type="number" max="15000" placeholder="৳ পরিমাণ" />
+                        </div>
+                        <div class="pf-group">
+                            <label class="pf-label" for="loan-reason">কারণ *</label>
+                            <input class="pf-input" id="loan-reason" placeholder="প্রয়োজনের কারণ" />
+                        </div>
+                        <div class="pf-group">
+                            <label class="pf-label" for="loan-start">পরিশোধ শুরুর মাস *</label>
+                            <input class="pf-input" id="loan-start" type="month" />
+                        </div>
+                        <div class="pf-group">
+                            <label class="pf-label" for="loan-guarantor">জামিনদার</label>
+                            <input class="pf-input" id="loan-guarantor" placeholder="জামিনদারের নাম" />
+                        </div>
+                    </div>
+                    <button class="btn-save" onclick="submitLoan()">📩 আবেদন জমা দিন</button>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">📋 আমার করজ ইতিহাস</div>
+                    <div class="tbl-wrap">
+                        <table aria-label="করজ ইতিহাস">
+                            <thead>
+                                <tr>
+                                    <th>আইডি</th>
+                                    <th>পরিমাণ</th>
+                                    <th>বাকি</th>
+                                    <th>কারণ</th>
+                                    <th>অবস্থা</th>
+                                    <th>তারিখ</th>
+                                </tr>
+                            </thead>
+                            <tbody id="loans-table"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ═══ ORDERS PANEL ═══ -->
+            <section class="panel" id="panel-orders" role="tabpanel" aria-label="আমার অর্ডার">
+                <div class="card">
+                    <div class="card-title">🛒 আমার পণ্য অর্ডার</div>
+                    <div class="tbl-wrap">
+                        <table aria-label="অর্ডার তালিকা">
+                            <thead>
+                                <tr>
+                                    <th>আইডি</th>
+                                    <th>পণ্য</th>
+                                    <th>মূল্য</th>
+                                    <th>কিস্তি</th>
+                                    <th>ধাপ</th>
+                                    <th>অবস্থা</th>
+                                    <th>তারিখ</th>
+                                </tr>
+                            </thead>
+                            <tbody id="orders-table"></tbody>
+                        </table>
+                    </div>
+                    <div style="margin-top:14px;">
+                        <a href="shop.html"
+                            style="display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,#064E3B,#065F46);color:#fff;padding:9px 20px;border-radius:8px;text-decoration:none;font-size:13px;font-weight:700;">
+                            🛒 নতুন পণ্য দেখুন
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ═══ PROFILE PANEL ═══ -->
+            <section class="panel" id="panel-profile" role="tabpanel" aria-label="আমার প্রোফাইল">
+                <div style="display:grid;grid-template-columns:280px 1fr;gap:20px;">
+                    <!-- Left: Avatar + Completion -->
+                    <div>
+                        <div class="card" style="text-align:center;">
+                            <div class="profile-complete-ring">
+                                <svg width="100" height="100" viewBox="0 0 100 100" role="img"
+                                    aria-label="প্রোফাইল সম্পন্নতা রিং">
+                                    <circle cx="50" cy="50" r="40" fill="none" stroke="#e5e7eb" stroke-width="8" />
+                                    <circle cx="50" cy="50" r="40" fill="none" stroke="#064E3B" stroke-width="8"
+                                        stroke-linecap="round" stroke-dasharray="251.2" id="ring-progress"
+                                        stroke-dashoffset="251.2" />
+                                </svg>
+                                <div class="ring-num" id="ring-num">0%</div>
+                            </div>
+                            <div style="font-size:13px;color:var(--text-muted);margin-bottom:16px;">প্রোফাইল সম্পন্নতা
+                            </div>
+                            <div style="font-size:14px;font-weight:700;color:var(--dark-green);"
+                                id="profile-name-display">—</div>
+                            <div style="font-size:12px;color:var(--text-muted);margin-top:4px;"
+                                id="profile-role-display">—</div>
+                            <div style="font-size:12px;color:var(--text-muted);margin-top:4px;" id="profile-id-display">
+                                —</div>
+                        </div>
+                        <div class="card">
+                            <div class="card-title" style="font-size:13px;">✅ সম্পন্ন করতে হবে</div>
+                            <div id="completion-checklist" style="font-size:12px;"></div>
+                        </div>
+                    </div>
+
+                    <!-- Right: Edit Form -->
+                    <div class="card">
+                        <div class="card-title">✏️ প্রোফাইল সম্পাদনা</div>
+                        <div class="pf-grid">
+                            <div class="pf-group">
+                                <label class="pf-label" for="pf-name">নাম *</label>
+                                <input class="pf-input" id="pf-name" />
+                            </div>
+                            <div class="pf-group">
+                                <label class="pf-label" for="pf-uname">ইউজারনেম</label>
+                                <input class="pf-input" id="pf-uname" disabled />
+                            </div>
+                            <div class="pf-group">
+                                <label class="pf-label" for="pf-phone">মোবাইল</label>
+                                <input class="pf-input" id="pf-phone" disabled />
+                            </div>
+                            <div class="pf-group">
+                                <label class="pf-label" for="pf-email">ইমেইল</label>
+                                <input class="pf-input" id="pf-email" type="email" />
+                            </div>
+                            <div class="pf-group">
+                                <label class="pf-label" for="pf-dob">জন্ম তারিখ</label>
+                                <input class="pf-input" id="pf-dob" type="date" />
+                            </div>
+                            <div class="pf-group">
+                                <label class="pf-label" for="pf-job">পেশা</label>
+                                <input class="pf-input" id="pf-job" placeholder="পেশা" />
+                            </div>
+                            <div class="pf-group" style="grid-column:span 2">
+                                <label class="pf-label" for="pf-address">ঠিকানা</label>
+                                <input class="pf-input" id="pf-address" placeholder="বিস্তারিত ঠিকানা" />
+                            </div>
+                            <div class="pf-group">
+                                <label class="pf-label" for="pf-nid">এনআইডি নম্বর</label>
+                                <input class="pf-input" id="pf-nid" placeholder="NID" />
+                            </div>
+                            <div class="pf-group">
+                                <label class="pf-label" for="pf-referral">রেফার করেছেন</label>
+                                <input class="pf-input" id="pf-referral" disabled />
+                            </div>
+                        </div>
+                        <div class="pf-group">
+                            <label class="pf-label" for="pf-pass">নতুন পাসওয়ার্ড (পরিবর্তন করতে চাইলে)</label>
+                            <input class="pf-input" id="pf-pass" type="password"
+                                placeholder="নতুন পাসওয়ার্ড (ঐচ্ছিক)" />
+                        </div>
+                        <button class="btn-save" onclick="saveProfile()">✅ সংরক্ষণ করুন</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ═══ ADMIN PANEL ═══ -->
+            <section class="panel" id="panel-admin" role="tabpanel" aria-label="অ্যাডমিন প্যানেল">
+                <div class="admin-quick-grid">
+                    <a href="../admin/admin.html" class="admin-quick-card" aria-label="সদস্য আবেদন দেখুন">
+                        <div class="aqc-icon">👥</div>
+                        <div class="aqc-title">সদস্য আবেদন</div>
+                        <div class="aqc-sub" id="aq-apps">লোড হচ্ছে...</div>
+                    </a>
+                    <a href="../admin/shop_admin.html" class="admin-quick-card" aria-label="পণ্য ম্যানেজমেন্ট">
+                        <div class="aqc-icon">📦</div>
+                        <div class="aqc-title">পণ্য ম্যানেজমেন্ট</div>
+                        <div class="aqc-sub" id="aq-products">লোড হচ্ছে...</div>
+                    </a>
+                    <a href="../admin/shop_admin.html" class="admin-quick-card" aria-label="অর্ডার ব্যবস্থাপনা">
+                        <div class="aqc-icon">🛒</div>
+                        <div class="aqc-title">অর্ডার ব্যবস্থাপনা</div>
+                        <div class="aqc-sub" id="aq-orders">লোড হচ্ছে...</div>
+                    </a>
+                    <a href="../admin/shop_admin.html" class="admin-quick-card" aria-label="ব্যাজ কন্ট্রোল">
+                        <div class="aqc-icon">🏅</div>
+                        <div class="aqc-title">ব্যাজ কন্ট্রোল</div>
+                        <div class="aqc-sub">হোমপেজ ব্যাজ</div>
+                    </a>
+                    <a href="../admin/shop_admin.html" class="admin-quick-card" aria-label="নোটিশ ম্যানেজমেন্ট">
+                        <div class="aqc-icon">📢</div>
+                        <div class="aqc-title">নোটিশ ম্যানেজমেন্ট</div>
+                        <div class="aqc-sub">নোটিশবার কন্ট্রোল</div>
+                    </a>
+                    <div class="admin-quick-card" onclick="showPanel('panel-all-users')" role="button" tabindex="0"
+                        aria-label="সকল ব্যবহারকারী দেখুন">
+                        <div class="aqc-icon">🔑</div>
+                        <div class="aqc-title">সকল ব্যবহারকারী</div>
+                        <div class="aqc-sub" id="aq-users">লোড হচ্ছে...</div>
+                    </div>
+                    <div class="admin-quick-card" onclick="showPanel('panel-all-savings')" role="button" tabindex="0"
+                        aria-label="সঞ্চয় হিসাব দেখুন">
+                        <div class="aqc-icon">💰</div>
+                        <div class="aqc-title">সঞ্চয় হিসাব</div>
+                        <div class="aqc-sub" id="aq-savings">লোড হচ্ছে...</div>
+                    </div>
+                    <div class="admin-quick-card" onclick="showPanel('panel-all-loans')" role="button" tabindex="0"
+                        aria-label="করজে হাসানা দেখুন">
+                        <div class="aqc-icon">🤝</div>
+                        <div class="aqc-title">করজে হাসানা</div>
+                        <div class="aqc-sub" id="aq-loans">লোড হচ্ছে...</div>
+                    </div>
+                </div>
+
+                <div class="stat-row" id="admin-stats"></div>
+
+                <div class="card">
+                    <div class="card-title">📋 সাম্প্রতিক আবেদন</div>
+                    <div class="tbl-wrap">
+                        <table aria-label="সাম্প্রতিক আবেদন তালিকা">
+                            <thead>
+                                <tr>
+                                    <th>নাম</th>
+                                    <th>NID</th>
+                                    <th>মোবাইল</th>
+                                    <th>অবস্থা</th>
+                                    <th>তারিখ</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admin-recent-apps"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ═══ ALL USERS PANEL ═══ -->
+            <section class="panel" id="panel-all-users" role="tabpanel" aria-label="সকল ব্যবহারকারী">
+                <div class="card">
+                    <div class="card-title">
+                        👥 সকল ব্যবহারকারী
+                        <input type="text" id="user-search" class="pf-input" style="max-width:200px;font-size:12px;"
+                            placeholder="🔍 খুঁজুন..." oninput="renderAllUsers()" aria-label="ব্যবহারকারী খুঁজুন" />
+                    </div>
+                    <div class="tbl-wrap">
+                        <table aria-label="ব্যবহারকারী তালিকা">
+                            <thead>
+                                <tr>
+                                    <th>নাম</th>
+                                    <th>ইউজারনেম</th>
+                                    <th>মোবাইল</th>
+                                    <th>ইমেইল</th>
+                                    <th>ভূমিকা</th>
+                                    <th>প্রোফাইল</th>
+                                    <th>কার্যক্রম</th>
+                                </tr>
+                            </thead>
+                            <tbody id="all-users-table"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ═══ ALL SAVINGS PANEL ═══ -->
+            <section class="panel" id="panel-all-savings" role="tabpanel" aria-label="সঞ্চয় হিসাব">
+                <div class="card">
+                    <div class="card-title">💰 মাসিক সঞ্চয় যোগ করুন</div>
+                    <div class="pf-grid">
+                        <div class="pf-group">
+                            <label class="pf-label" for="sv-user">সদস্য নির্বাচন করুন *</label>
+                            <select class="pf-input" id="sv-user">
+                                <option value="">-- সদস্য নির্বাচন --</option>
+                            </select>
+                        </div>
+                        <div class="pf-group">
+                            <label class="pf-label" for="sv-month">মাস *</label>
+                            <input class="pf-input" id="sv-month" type="month" />
+                        </div>
+                        <div class="pf-group">
+                            <label class="pf-label" for="sv-amount">পরিমাণ *</label>
+                            <input class="pf-input" id="sv-amount" type="number" value="2000" />
+                        </div>
+                        <div class="pf-group">
+                            <label class="pf-label" for="sv-note">মন্তব্য</label>
+                            <input class="pf-input" id="sv-note" placeholder="ঐচ্ছিক" />
+                        </div>
+                    </div>
+                    <button class="btn-save" onclick="addSavingEntry()">+ সঞ্চয় এন্ট্রি যোগ করুন</button>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">
+                        📊 সঞ্চয় তালিকা
+                        <span class="badge tag-ok" id="total-savings-badge">মোট: ৳০</span>
+                    </div>
+                    <div class="tbl-wrap">
+                        <table aria-label="সঞ্চয় তালিকা">
+                            <thead>
+                                <tr>
+                                    <th>সদস্য</th>
+                                    <th>মাস</th>
+                                    <th>পরিমাণ</th>
+                                    <th>মন্তব্য</th>
+                                    <th>তারিখ</th>
+                                    <th>কার্যক্রম</th>
+                                </tr>
+                            </thead>
+                            <tbody id="all-savings-table"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ═══ ALL LOANS PANEL ═══ -->
+            <section class="panel" id="panel-all-loans" role="tabpanel" aria-label="করজে হাসানা ব্যবস্থাপনা">
+                <div class="card">
+                    <div class="card-title">🤝 করজে হাসানা ব্যবস্থাপনা</div>
+                    <div class="tbl-wrap">
+                        <table aria-label="করজে হাসানা তালিকা">
+                            <thead>
+                                <tr>
+                                    <th>আইডি</th>
+                                    <th>সদস্য</th>
+                                    <th>পরিমাণ</th>
+                                    <th>বাকি</th>
+                                    <th>কারণ</th>
+                                    <th>অবস্থা</th>
+                                    <th>কার্যক্রম</th>
+                                </tr>
+                            </thead>
+                            <tbody id="all-loans-table"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+        </div><!-- /content -->
+    </main><!-- /main -->
+
+    <!-- ════════ TOAST ════════ -->
+    <div class="toast" id="toast" role="alert" aria-live="polite"></div>
+
+    <!-- ════════ SCRIPTS (correct order) ════════ -->
+    <script src="../js/db.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/data.js"></script>
+    <script src="js/dashboard.js"></script>
+
+</body>
+
+</html>
