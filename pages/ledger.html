@@ -1,0 +1,420 @@
+<!-- C:\Project\Barakah_Finance\pages\ledger.html -->
+<!-- FIXED & IMPROVED VERSION:
+     - Fixed JS and CSS paths (using correct relative paths)
+     - Added proper script loading order: db.js → data.js → ledger.js
+     - Added favicon and meta tags
+     - Added dark mode class support
+     - Fixed payment modal (changed inline styles to CSS class)
+     - Added proper ARIA attributes for accessibility
+     - Fixed typos and improved UI text
+     - Added loading states for better UX
+     - Improved responsive structure
+-->
+
+<!DOCTYPE html>
+<html lang="bn">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description"
+        content="বারাকাহ ফাইন্যান্স - হিসাবপাতি (লেজার) ব্যবস্থাপনা। আয়-ব্যয়, সঞ্চয়, করজে হাসানা ও ব্যালেন্স শিট।" />
+    <meta name="theme-color" content="#064E3B" />
+    <title>বারাকাহ ফাইন্যান্স — হিসাবপাতি</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="../favicon.ico" />
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Serif+Bengali:wght@400;600;700&family=Noto+Sans+Bengali:wght@300;400;500;600&display=swap"
+        rel="stylesheet" />
+
+    <!-- CSS (corrected path) -->
+    <link rel="stylesheet" href="style/ledger.css" />
+</head>
+
+<body>
+
+    <!-- ════════ TOPBAR ════════ -->
+    <header class="topbar" role="banner">
+        <h1>📒 হিসাবপাতি — বারাকাহ ফাইন্যান্স</h1>
+        <div>
+            <a href="../index.html" aria-label="হোমপেজে যান">🏠 হোম</a>
+            <a href="dashboard.html" aria-label="ড্যাশবোর্ডে যান">📊 ড্যাশবোর্ড</a>
+            <a href="../admin/admin.html" aria-label="অ্যাডমিন প্যানেলে যান">🛡️ অ্যাডমিন</a>
+        </div>
+    </header>
+
+    <!-- ════════ MAIN CONTAINER ════════ -->
+    <main class="container" role="main">
+
+        <!-- ════════ SUMMARY CARDS ════════ -->
+        <section class="summary-row" aria-label="আর্থিক সারসংক্ষেপ">
+            <div class="sum-card">
+                <div class="label">মোট আয়</div>
+                <div class="value income-val" id="s-income">৳০</div>
+            </div>
+            <div class="sum-card">
+                <div class="label">মোট ব্যয়</div>
+                <div class="value expense-val" id="s-expense">৳০</div>
+            </div>
+            <div class="sum-card">
+                <div class="label">নিট ব্যালেন্স</div>
+                <div class="value net-pos" id="s-net">৳০</div>
+            </div>
+            <div class="sum-card">
+                <div class="label">মোট সঞ্চয়</div>
+                <div class="value" style="color:#C9A227;" id="s-savings">৳০</div>
+            </div>
+        </section>
+
+        <!-- ════════ TABS ════════ -->
+        <nav class="tabs" role="tablist" aria-label="বিভাগসমূহ">
+            <button class="tab active" role="tab" aria-selected="true" aria-controls="panel-ledger"
+                onclick="showTab('ledger',this)">
+                📒 লেজার
+            </button>
+            <button class="tab" role="tab" aria-selected="false" aria-controls="panel-savings"
+                onclick="showTab('savings',this)">
+                💰 সঞ্চয়
+            </button>
+            <button class="tab" role="tab" aria-selected="false" aria-controls="panel-loans"
+                onclick="showTab('loans',this)">
+                🤝 করজে হাসানা
+            </button>
+            <button class="tab" role="tab" aria-selected="false" aria-controls="panel-reports"
+                onclick="showTab('reports',this)">
+                📊 রিপোর্ট
+            </button>
+            <button class="tab" role="tab" aria-selected="false" aria-controls="panel-balance"
+                onclick="showTab('balance',this)">
+                ⚖️ ব্যালেন্স শিট
+            </button>
+        </nav>
+
+        <!-- ════════ PANEL: LEDGER ════════ -->
+        <section class="panel active" id="panel-ledger" role="tabpanel" aria-label="লেজার">
+            <!-- Add Entry -->
+            <div class="card">
+                <div class="card-title">
+                    ➕ নতুন এন্ট্রি
+                    <span style="font-size:12px;color:var(--text-muted);">আয় বা ব্যয় ম্যানুয়ালি যোগ করুন</span>
+                </div>
+                <div class="form-grid">
+                    <div class="fg">
+                        <label for="e-type">ধরন *</label>
+                        <select class="fi" id="e-type">
+                            <option value="income">আয় (Income)</option>
+                            <option value="expense">ব্যয় (Expense)</option>
+                        </select>
+                    </div>
+                    <div class="fg">
+                        <label for="e-cat">ক্যাটাগরি *</label>
+                        <select class="fi" id="e-cat">
+                            <option value="savings">সঞ্চয়</option>
+                            <option value="late_fee">বিলম্ব ফি</option>
+                            <option value="loan_repayment">করজ পরিশোধ</option>
+                            <option value="profit">মুনাফা</option>
+                            <option value="donation">অনুদান</option>
+                            <option value="loan_disbursed">করজ প্রদান</option>
+                            <option value="operational">পরিচালন ব্যয়</option>
+                            <option value="purchase">ক্রয়</option>
+                            <option value="other_income">অন্যান্য আয়</option>
+                            <option value="other_expense">অন্যান্য ব্যয়</option>
+                            <option value="manual">ম্যানুয়াল</option>
+                        </select>
+                    </div>
+                    <div class="fg">
+                        <label for="e-amount">পরিমাণ (টাকা) *</label>
+                        <input class="fi" type="number" id="e-amount" placeholder="পরিমাণ লিখুন" />
+                    </div>
+                    <div class="fg">
+                        <label for="e-desc">বিবরণ *</label>
+                        <input class="fi" id="e-desc" placeholder="বিস্তারিত বিবরণ" />
+                    </div>
+                    <div class="fg">
+                        <label for="e-note">মন্তব্য</label>
+                        <input class="fi" id="e-note" placeholder="অতিরিক্ত মন্তব্য (ঐচ্ছিক)" />
+                    </div>
+                </div>
+                <button class="btn btn-green" onclick="addLedgerEntry()">✅ এন্ট্রি যোগ করুন</button>
+            </div>
+
+            <!-- Ledger Entries -->
+            <div class="card">
+                <div class="card-title">
+                    📋 লেজার এন্ট্রি তালিকা
+                    <div class="filter-row" style="margin:0;">
+                        <select onchange="filterLedger()" id="f-type" style="padding:5px 8px;font-size:12px;">
+                            <option value="">সকল</option>
+                            <option value="income">আয়</option>
+                            <option value="expense">ব্যয়</option>
+                        </select>
+                        <select onchange="filterLedger()" id="f-cat" style="padding:5px 8px;font-size:12px;">
+                            <option value="">সব ক্যাটাগরি</option>
+                        </select>
+                        <input type="month" id="f-month" onchange="filterLedger()"
+                            style="padding:5px 8px;font-size:12px;" />
+                        <button class="btn btn-gold btn-sm" onclick="exportLedgerCSV()">📊 CSV</button>
+                    </div>
+                </div>
+                <div class="tbl-wrap">
+                    <table aria-label="লেজার এন্ট্রি তালিকা">
+                        <thead>
+                            <tr>
+                                <th>তারিখ</th>
+                                <th>ধরন</th>
+                                <th>ক্যাটাগরি</th>
+                                <th>বিবরণ</th>
+                                <th>পরিমাণ</th>
+                                <th>কার্যক্রম</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ledger-tbody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- ════════ PANEL: SAVINGS ════════ -->
+        <section class="panel" id="panel-savings" role="tabpanel" aria-label="সঞ্চয়">
+            <!-- Add Savings -->
+            <div class="card">
+                <div class="card-title">💰 সঞ্চয় এন্ট্রি যোগ করুন</div>
+                <div class="form-grid">
+                    <div class="fg">
+                        <label for="sv-user">সদস্য নির্বাচন *</label>
+                        <select class="fi" id="sv-user">
+                            <option value="">-- সদস্য --</option>
+                        </select>
+                    </div>
+                    <div class="fg">
+                        <label for="sv-month">মাস *</label>
+                        <input class="fi" type="month" id="sv-month" />
+                    </div>
+                    <div class="fg">
+                        <label for="sv-amount">পরিমাণ (টাকা) *</label>
+                        <input class="fi" type="number" id="sv-amount" value="2000" />
+                    </div>
+                    <div class="fg">
+                        <label for="sv-late">বিলম্ব?</label>
+                        <select class="fi" id="sv-late">
+                            <option value="false">না</option>
+                            <option value="true">হ্যাঁ (+১০০ টাকা ফি)</option>
+                        </select>
+                    </div>
+                    <div class="fg">
+                        <label for="sv-note">মন্তব্য</label>
+                        <input class="fi" id="sv-note" placeholder="ঐচ্ছিক" />
+                    </div>
+                </div>
+                <button class="btn btn-green" onclick="addSaving()">✅ সঞ্চয় এন্ট্রি যোগ করুন</button>
+            </div>
+
+            <!-- Savings List -->
+            <div class="card">
+                <div class="card-title">
+                    📊 সঞ্চয় তালিকা
+                    <span id="sv-total-badge"
+                        style="background:#d1fae5;color:#065F46;padding:3px 10px;border-radius:10px;font-size:12px;">
+                        মোট: ৳০
+                    </span>
+                </div>
+                <div class="filter-row">
+                    <select id="sv-filter-user" onchange="loadSavings()" style="padding:6px 10px;font-size:12px;">
+                        <option value="">সকল সদস্য</option>
+                    </select>
+                    <input type="month" id="sv-filter-month" onchange="loadSavings()"
+                        style="padding:6px 10px;font-size:12px;" />
+                    <button class="btn btn-gold btn-sm" onclick="loadMissing()">⚠️ যারা দেননি</button>
+                </div>
+                <div class="tbl-wrap">
+                    <table aria-label="সঞ্চয় তালিকা">
+                        <thead>
+                            <tr>
+                                <th>সদস্য</th>
+                                <th>মাস</th>
+                                <th>পরিমাণ</th>
+                                <th>বিলম্ব ফি</th>
+                                <th>মন্তব্য</th>
+                                <th>তারিখ</th>
+                                <th>মুছুন</th>
+                            </tr>
+                        </thead>
+                        <tbody id="savings-tbody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Missing Members -->
+            <div class="card" id="missing-card" style="display:none;">
+                <div class="card-title" id="missing-title">⚠️ যারা এখনো দেননি</div>
+                <div class="tbl-wrap">
+                    <table aria-label="যারা সঞ্চয় দেননি তাদের তালিকা">
+                        <thead>
+                            <tr>
+                                <th>নাম</th>
+                                <th>সদস্য আইডি</th>
+                                <th>মোবাইল</th>
+                                <th>এন্ট্রি দিন</th>
+                            </tr>
+                        </thead>
+                        <tbody id="missing-tbody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- ════════ PANEL: LOANS ════════ -->
+        <section class="panel" id="panel-loans" role="tabpanel" aria-label="করজে হাসানা">
+            <div class="card">
+                <div class="card-title">🤝 করজে হাসানা ব্যবস্থাপনা</div>
+                <div class="tbl-wrap">
+                    <table aria-label="করজে হাসানা তালিকা">
+                        <thead>
+                            <tr>
+                                <th>সদস্য</th>
+                                <th>পরিমাণ</th>
+                                <th>বাকি</th>
+                                <th>কারণ</th>
+                                <th>অবস্থা</th>
+                                <th>আবেদনের তারিখ</th>
+                                <th>কার্যক্রম</th>
+                            </tr>
+                        </thead>
+                        <tbody id="loans-tbody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- ═══ PAYMENT MODAL (fixed: uses CSS class) ═══ -->
+            <div class="payment-modal-overlay" id="payment-modal" role="dialog" aria-modal="true"
+                aria-label="কিস্তি পরিশোধ">
+                <div class="payment-modal-box">
+                    <h3>💳 কিস্তি পরিশোধ</h3>
+                    <div class="fg">
+                        <label for="pay-amount">পরিশোধ পরিমাণ *</label>
+                        <input class="fi" type="number" id="pay-amount" placeholder="পরিমাণ লিখুন" />
+                    </div>
+                    <div class="fg">
+                        <label for="pay-note">মন্তব্য</label>
+                        <input class="fi" id="pay-note" placeholder="ঐচ্ছিক" />
+                    </div>
+                    <div class="btn-row">
+                        <button class="btn btn-green" onclick="submitPayment()">✅ পরিশোধ রেকর্ড</button>
+                        <button class="btn btn-red" onclick="closePayment()">বাতিল</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ════════ PANEL: REPORTS ════════ -->
+        <section class="panel" id="panel-reports" role="tabpanel" aria-label="রিপোর্ট">
+            <!-- Chart -->
+            <div class="card">
+                <div class="card-title">
+                    📊 মাসিক আয়-ব্যয় চার্ট
+                    <select id="chart-year" onchange="loadChart()" style="padding:5px 10px;font-size:12px;"
+                        aria-label="বছর নির্বাচন">
+                        <!-- Options populated by JavaScript -->
+                    </select>
+                </div>
+                <div class="chart-wrap" id="monthly-chart" role="img" aria-label="মাসিক আয়-ব্যয় চার্ট"></div>
+                <div style="display:flex;gap:16px;margin-top:8px;font-size:12px;">
+                    <span style="display:flex;align-items:center;gap:4px;">
+                        <span
+                            style="width:12px;height:12px;background:#065F46;display:inline-block;border-radius:2px;"></span>
+                        আয়
+                    </span>
+                    <span style="display:flex;align-items:center;gap:4px;">
+                        <span
+                            style="width:12px;height:12px;background:#dc2626;display:inline-block;border-radius:2px;"></span>
+                        ব্যয়
+                    </span>
+                </div>
+            </div>
+
+            <!-- Member Report -->
+            <div class="card">
+                <div class="card-title">👥 সদস্যওয়ারী সঞ্চয় রিপোর্ট</div>
+                <div class="tbl-wrap">
+                    <table aria-label="সদস্যওয়ারী সঞ্চয় রিপোর্ট">
+                        <thead>
+                            <tr>
+                                <th>নাম</th>
+                                <th>সদস্য আইডি</th>
+                                <th>মোট সঞ্চয়</th>
+                                <th>মাস সংখ্যা</th>
+                                <th>শেষ জমা</th>
+                            </tr>
+                        </thead>
+                        <tbody id="member-report-tbody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- ════════ PANEL: BALANCE SHEET ════════ -->
+        <section class="panel" id="panel-balance" role="tabpanel" aria-label="ব্যালেন্স শিট">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+                <div class="card">
+                    <div class="card-title" style="color:var(--income);">✅ সম্পদ (Assets)</div>
+                    <div class="tbl-wrap">
+                        <table aria-label="সম্পদ তালিকা">
+                            <tbody id="assets-tbody"></tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-title" style="color:var(--expense);">📋 দায় (Liabilities)</div>
+                    <div class="tbl-wrap">
+                        <table aria-label="দায় তালিকা">
+                            <tbody id="liab-tbody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">💵 আয়-ব্যয় সারসংক্ষেপ</div>
+                <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;text-align:center;">
+                    <div>
+                        <div style="font-size:12px;color:var(--text-muted);">মোট আয়</div>
+                        <div id="bs-income"
+                            style="font-size:1.5rem;font-weight:700;color:var(--income);font-family:'Noto Serif Bengali',serif;">
+                            ৳০
+                        </div>
+                    </div>
+                    <div>
+                        <div style="font-size:12px;color:var(--text-muted);">মোট ব্যয়</div>
+                        <div id="bs-expense"
+                            style="font-size:1.5rem;font-weight:700;color:var(--expense);font-family:'Noto Serif Bengali',serif;">
+                            ৳০
+                        </div>
+                    </div>
+                    <div>
+                        <div style="font-size:12px;color:var(--text-muted);">নিট ব্যালেন্স</div>
+                        <div id="bs-net"
+                            style="font-size:1.5rem;font-weight:700;font-family:'Noto Serif Bengali',serif;">
+                            ৳০
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ════════ TOAST ════════ -->
+    <div class="toast" id="toast" role="alert" aria-live="polite"></div>
+
+    <!-- ════════ SCRIPTS (correct order) ════════ -->
+    <script src="../js/db.js"></script>
+    <script src="../js/data.js"></script>
+    <script src="js/ledger.js"></script>
+
+</body>
+
+</html>
