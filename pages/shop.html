@@ -1,0 +1,221 @@
+<!-- C:\Project\Barakah_Finance\pages\shop.html -->
+<!-- FIXED & IMPROVED VERSION:
+     - Fixed JS and CSS paths (using correct relative paths)
+     - Added proper script loading: db.js → shop.js
+     - Added favicon and meta tags
+     - Added dark mode class support
+     - Added proper ARIA attributes for accessibility
+     - Added proper form labels with for attributes
+     - Improved responsive structure
+     - Added loading states for better UX
+     - Fixed cart toggle with proper event handling
+-->
+
+<!DOCTYPE html>
+<html lang="bn">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="বারাকাহ ফাইন্যান্স - পণ্য কিনুন। সুদমুক্ত ১০% লাভে ৬ কিস্তিতে পণ্য ক্রয় করুন।" />
+    <meta name="theme-color" content="#064E3B" />
+    <title>বারাকাহ ফাইন্যান্স — পণ্য কিনুন</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="../favicon.ico" />
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Serif+Bengali:wght@400;600;700&family=Noto+Sans+Bengali:wght@300;400;500;600&display=swap"
+        rel="stylesheet" />
+
+    <!-- CSS (corrected path) -->
+    <link rel="stylesheet" href="style/shop.css" />
+</head>
+
+<body>
+
+    <!-- ════════ NAV ════════ -->
+    <nav class="top-nav" role="navigation" aria-label="প্রধান নেভিগেশন">
+        <a href="../index.html" class="nav-brand" aria-label="হোমপেজে যান">
+            <div class="logo-circle" aria-hidden="true">ব</div>
+            <span>বারাকাহ ফাইন্যান্স</span>
+        </a>
+        <div class="nav-actions">
+            <a href="../index.html" aria-label="হোমপেজে যান">🏠 হোম</a>
+            <a href="../form.html" aria-label="আবেদন ফরমে যান">📋 আবেদন</a>
+            <a href="#" class="btn-cart" onclick="toggleCart(event)" aria-label="কার্ট দেখুন"
+                style="position:relative;">
+                🛒 কার্ট
+                <span class="cart-count" id="cartCount" aria-label="কার্টে আইটেম সংখ্যা">0</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- ════════ HERO ════════ -->
+    <section class="shop-hero" aria-label="শপ হিরো">
+        <h1>🛒 কিস্তিতে পণ্য কিনুন — <em>১০% লাভে সহজ কিস্তি</em></h1>
+        <p>শরিয়াহসম্মত উপায়ে পণ্য ক্রয় করুন। মাত্র ১০% লাভে ৬ সমান কিস্তিতে পরিশোধ করুন।</p>
+        <div class="hero-chips">
+            <span class="hero-chip">✅ সুদমুক্ত</span>
+            <span class="hero-chip">📦 ৬ কিস্তি সুবিধা</span>
+            <span class="hero-chip">🤝 শরিয়াহসম্মত</span>
+            <span class="hero-chip">💳 বিনা জামানতে (সদস্যদের জন্য)</span>
+        </div>
+    </section>
+
+    <!-- ════════ MY ORDERS STATUS ════════ -->
+    <div id="myOrdersBar" class="hidden" style="margin:16px 5% 0; max-width:1280px;" aria-label="আমার অর্ডার স্ট্যাটাস">
+        <div class="status-track">
+            <h4>📦 আপনার সর্বশেষ অর্ডার</h4>
+            <div id="latestOrderInfo" style="font-size:13px; color:var(--text-muted); margin-bottom:12px;"></div>
+            <div class="track-steps" id="trackSteps" role="img" aria-label="অর্ডার ট্র্যাকিং ধাপসমূহ"></div>
+        </div>
+    </div>
+
+    <!-- ════════ FILTER BAR ════════ -->
+    <div class="filter-bar" role="search" aria-label="পণ্য ফিল্টার">
+        <span class="filter-label">ক্যাটাগরি:</span>
+        <button class="fcat active" onclick="setFilter('all',this)" aria-label="সকল পণ্য দেখান">সকল</button>
+        <div id="catFilters" role="group" aria-label="ক্যাটাগরি ফিল্টার"></div>
+        <input type="text" class="search-box" placeholder="🔍 পণ্য খুঁজুন..." id="searchInput"
+            oninput="renderProducts()" aria-label="পণ্য খুঁজুন" />
+    </div>
+
+    <!-- ════════ MAIN CONTENT ════════ -->
+    <main class="shop-main" role="main">
+
+        <!-- Sort Row -->
+        <div class="sort-row">
+            <span id="productCount">লোড হচ্ছে...</span>
+            <select class="sort-sel" id="sortSel" onchange="renderProducts()" aria-label="পণ্য সাজানোর উপায়">
+                <option value="default">সাজান: ডিফল্ট</option>
+                <option value="price-asc">মূল্য: কম থেকে বেশি</option>
+                <option value="price-desc">মূল্য: বেশি থেকে কম</option>
+                <option value="name">নাম অনুযায়ী</option>
+            </select>
+        </div>
+
+        <!-- Products Grid -->
+        <div class="products-grid" id="productsGrid" role="list" aria-label="পণ্য তালিকা"></div>
+
+    </main>
+
+    <!-- ════════ FOOTER ════════ -->
+    <footer class="shop-footer">
+        বারাকাহ ফাইন্যান্স © ২০২৬ | আদিতমারী, লালমনিরহাট |
+        <a href="../index.html" aria-label="হোমপেজে ফিরুন">হোমে ফিরুন</a>
+    </footer>
+
+    <!-- ════════ PRODUCT DETAIL MODAL ════════ -->
+    <div class="overlay" id="detailModal" onclick="if(event.target===this)closeDetail()" role="dialog" aria-modal="true"
+        aria-label="পণ্যের বিস্তারিত">
+        <div class="modal-box" style="max-width:800px;">
+            <div style="display:flex;justify-content:flex-end;padding:14px 14px 0;">
+                <button onclick="closeDetail()" aria-label="বন্ধ করুন"
+                    style="background:none;border:none;font-size:22px;cursor:pointer;color:#888;">✕</button>
+            </div>
+            <div class="detail-head">
+                <div class="detail-imgs">
+                    <div class="main-img" id="mainImgBox">
+                        <span id="mainImgEmoji">📦</span>
+                    </div>
+                    <div class="thumb-row" id="thumbRow"></div>
+                </div>
+                <div class="detail-info">
+                    <div class="detail-cat" id="detailCat"></div>
+                    <div class="detail-name" id="detailName"></div>
+                    <div class="detail-price-box">
+                        <div class="detail-price" id="detailPrice"></div>
+                        <div class="emi-breakdown" id="emiBreakdown"></div>
+                    </div>
+                    <div class="detail-desc" id="detailDesc"></div>
+                    <div style="font-size:12px; color:var(--text-muted);" id="detailStock"></div>
+                </div>
+            </div>
+            <div class="detail-actions">
+                <button class="btn-detail" onclick="closeDetail()">← ফিরে যান</button>
+                <button class="btn-order" id="detailOrderBtn" onclick="openOrderFromDetail()">🛒 অর্ডার করুন</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ════════ ORDER MODAL ════════ -->
+    <div class="overlay" id="orderModal" onclick="if(event.target===this)closeOrder()" role="dialog" aria-modal="true"
+        aria-label="অর্ডার ফর্ম">
+        <div class="modal-box" style="max-width:560px;">
+            <div class="order-head">
+                <h3>📝 পণ্য ক্রয়ের আবেদন</h3>
+                <button class="close-btn" onclick="closeOrder()" aria-label="বন্ধ করুন">✕</button>
+            </div>
+            <div class="order-body">
+                <div class="aalert hidden" id="orderAlert" role="alert"></div>
+
+                <!-- Order Summary -->
+                <div class="order-summary" id="orderSummary"></div>
+
+                <form id="orderForm" onsubmit="event.preventDefault(); submitOrder();">
+                    <div class="of">
+                        <label for="ord-name">আপনার নাম *</label>
+                        <input class="oi" id="ord-name" placeholder="পূর্ণ নাম বাংলায়" />
+                    </div>
+                    <div class="o2col">
+                        <div class="of">
+                            <label for="ord-phone">মোবাইল নম্বর *</label>
+                            <input class="oi" id="ord-phone" placeholder="01XXXXXXXXX" inputmode="numeric" />
+                        </div>
+                        <div class="of">
+                            <label for="ord-nid">এনআইডি নম্বর *</label>
+                            <input class="oi" id="ord-nid" placeholder="NID নম্বর" />
+                        </div>
+                    </div>
+                    <div class="of">
+                        <label for="ord-address">ঠিকানা *</label>
+                        <input class="oi" id="ord-address" placeholder="গ্রাম, পোস্ট, উপজেলা, জেলা" />
+                    </div>
+                    <div class="of">
+                        <label for="ord-witness">স্বাক্ষী / জামিনদারের নাম ও মোবাইল</label>
+                        <input class="oi" id="ord-witness" placeholder="স্বাক্ষীর নাম ও নম্বর (ঐচ্ছিক)" />
+                    </div>
+                    <div class="of">
+                        <label for="ord-note">অতিরিক্ত মন্তব্য / প্রয়োজনীয় তথ্য</label>
+                        <textarea class="oi" id="ord-note" rows="2"
+                            placeholder="বিশেষ রং, সাইজ বা অন্য তথ্য..."></textarea>
+                    </div>
+
+                    <div
+                        style="background:#fffbeb;border:1px solid rgba(201,162,39,0.3);border-radius:8px;padding:10px;font-size:12px;color:#92400e;margin-bottom:14px;">
+                        ⚠️ কোষাধ্যক্ষের কাছে নথিপত্র জমা দিতে হবে। পণ্যের সত্যতা যাচাইয়ের জন্য প্রতিনিধির যাতায়াত খরচ
+                        ক্রেতা বহন করবেন। কমিটির সর্বসম্মত সিদ্ধান্তে অনুমোদন দেওয়া হবে।
+                    </div>
+
+                    <button type="submit" class="submit-btn">✅ আবেদন জমা দিন</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- ════════ CART SIDEBAR ════════ -->
+    <aside class="cart-sidebar" id="cartSidebar" role="dialog" aria-modal="true" aria-label="কার্ট">
+        <div class="cart-header">
+            <h3>🛒 আমার কার্ট</h3>
+            <button class="close-btn" onclick="toggleCart(event)" aria-label="কার্ট বন্ধ করুন">✕</button>
+        </div>
+        <div class="cart-items" id="cartItems"></div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>মোট:</span>
+                <span id="cartTotal">৳০</span>
+            </div>
+            <button class="checkout-btn" onclick="checkoutCart()">✅ চেকআউট করুন</button>
+        </div>
+    </aside>
+
+    <!-- ════════ SCRIPTS (correct order) ════════ -->
+    <script src="../js/db.js"></script>
+    <script src="js/shop.js"></script>
+
+</body>
+
+</html>
