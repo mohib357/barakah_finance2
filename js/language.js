@@ -1,12 +1,11 @@
-// language.js - Language switcher for Barakah Finance
-// Handles language switching and UI updates
+// C:\Project\barakah_finance2\js\language.js
 
 (function () {
     'use strict';
 
     const DEFAULT_LANG = 'en';
     const STORAGE_KEY = 'bf_language';
-    
+
     // Current language
     let currentLang = localStorage.getItem(STORAGE_KEY) || DEFAULT_LANG;
 
@@ -16,7 +15,7 @@
             console.warn('[Language] Translations not loaded');
             return key;
         }
-        
+
         const translation = window.translations[currentLang][key];
         return translation !== undefined ? translation : key;
     }
@@ -25,11 +24,11 @@
     function updatePageLanguage() {
         // Update all elements with data-i18n attribute
         const elements = document.querySelectorAll('[data-i18n]');
-        
+
         elements.forEach(el => {
             const key = el.getAttribute('data-i18n');
             const translation = t(key);
-            
+
             // Check if it's an input placeholder
             if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
                 if (el.hasAttribute('placeholder')) {
@@ -47,7 +46,7 @@
 
         // Update HTML lang attribute
         document.documentElement.lang = currentLang;
-        
+
         // Update direction for Arabic
         if (currentLang === 'ar') {
             document.documentElement.dir = 'rtl';
@@ -67,7 +66,7 @@
             bn: '🇧🇩 বাং',
             ar: '🇸🇦 ع'
         };
-        
+
         if (langBtn) {
             langBtn.textContent = langFlags[currentLang] || '🌐';
         }
@@ -96,8 +95,8 @@
         updatePageLanguage();
 
         // Dispatch custom event for other scripts to listen
-        window.dispatchEvent(new CustomEvent('languageChanged', { 
-            detail: { language: lang } 
+        window.dispatchEvent(new CustomEvent('languageChanged', {
+            detail: { language: lang }
         }));
     }
 
@@ -107,7 +106,7 @@
         updatePageLanguage();
 
         // Add click handlers to language options
-        document.addEventListener('click', function(e) {
+        document.addEventListener('click', function (e) {
             const langOption = e.target.closest('.lang-option');
             if (langOption) {
                 const lang = langOption.getAttribute('data-lang');

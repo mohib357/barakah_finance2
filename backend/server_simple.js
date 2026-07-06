@@ -1,3 +1,5 @@
+// C:\Project\barakah_finance2\backend\server_simple.js
+
 const express = require('express');
 const cors = require('cors');
 const path = require('path');

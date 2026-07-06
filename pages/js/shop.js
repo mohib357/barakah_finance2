@@ -1,18 +1,4 @@
-// C:\Project\Barakah_Finance\pages\js\shop.js
-// ══════════════════════════════════════════════════════════
-// SHOP HANDLER — FIXED & IMPROVED VERSION
-// FIXES:
-// 1. Removed duplicate ShopDB (uses global DB from db.js)
-// 2. Added proper DB availability check
-// 3. Added proper error handling with try-catch
-// 4. Fixed multi-item cart checkout
-// 5. Added Bengali number formatting
-// 6. Fixed toast function (unified)
-// 7. Added cart persistence across sessions
-// 8. Added order tracking with proper status steps
-// 9. Added proper form validation
-// 10. Added search and filter functionality improvements
-// ══════════════════════════════════════════════════════════
+// C:\Project\barakah_finance2\pages\js\shop.js
 
 (function () {
     'use strict';

@@ -1,18 +1,4 @@
-// C:\Project\Barakah_Finance\backend\db\database.js
-// ═══════════════════════════════════════════════════════════════════
-// JSON ফাইল-ভিত্তিক ডেটাবেস (lowdb) — FIXED & IMPROVED VERSION
-// FIXES:
-// 1. Updated to lowdb v6+ syntax (LowSync, JSONFileSync)
-// 2. Added data validation schemas
-// 3. Added OTP expiration cleanup
-// 4. Added database backup and restore functions
-// 5. Added data size monitoring
-// 6. Added transaction support
-// 7. Added database migration system
-// 8. Added default admin creation with proper error handling
-// 9. Added environment-aware logging
-// 10. Added data seeding with checks
-// ═══════════════════════════════════════════════════════════════════
+// C:\Project\barakah_finance2\backend\db\database.js
 
 const { LowSync } = require('lowdb');
 const { JSONFileSync } = require('lowdb/node');

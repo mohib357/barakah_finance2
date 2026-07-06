@@ -1,18 +1,4 @@
-// C:\Project\Barakah_Finance\js\auth.js
-// ════════ AUTH SYSTEM — FIXED & IMPROVED VERSION ════════
-// FIXES:
-// 1. Added DB availability check before using DB
-// 2. Added proper error handling for all functions
-// 3. Added password hashing (basic) for local storage
-// 4. Added environment-aware OTP logging
-// 5. Fixed duplicate function definitions
-// 6. Added proper session management with JWT token support
-// 7. Added auto-login with remember me
-// 8. Added logout event dispatch
-// 9. Added profile update badge section function
-// 10. Added proper form validation with feedback
-// 11. Added referral system improvements
-// 12. Added dark mode persistence
+// C:\Project\barakah_finance2\js\auth.js
 
 (function () {
     'use strict';

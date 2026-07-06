@@ -1,15 +1,4 @@
-/* C:\Project\Barakah_Finance\style\form.css */
-/* FIXED & IMPROVED VERSION:
-     - Unified dark mode class: now uses .dark-mode (consistent with other files)
-     - Added complete dark mode support for all elements
-     - Added CSS variables for all colors
-     - Improved responsive design for mobile
-     - Fixed phone input responsiveness
-     - Added proper focus states for accessibility
-     - Added reduced motion support
-     - Improved cropper container styling
-     - Added print styles for PDF generation
-*/
+/* C:\Project\barakah_finance2\style\form.css */
 
 /* ════════ ROOT VARIABLES ════════ */
 :root {

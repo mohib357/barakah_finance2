@@ -1,18 +1,4 @@
-// C:\Project\Barakah_Finance\backend\routes\auth.js
-// ═══════════════════════════════════════════════════════════════════
-// অথেনটিকেশন রাউট — FIXED & IMPROVED VERSION
-// FIXES:
-// 1. Added rate limiting for login and signup
-// 2. Added input validation with express-validator
-// 3. Removed demo_otp from production responses
-// 4. Added referral validation
-// 5. Added proper error handling with try-catch
-// 6. Added last login tracking
-// 7. Added account lockout after failed attempts
-// 8. Added password strength validation
-// 9. Added email validation for optional email field
-// 10. Added environment-aware OTP logging
-// ═══════════════════════════════════════════════════════════════════
+// C:\Project\barakah_finance2\backend\routes\auth.js
 
 const express = require('express');
 const router = express.Router();

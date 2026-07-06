@@ -1,15 +1,4 @@
-/* C:\Project\Barakah_Finance\style\notice_bar.css */
-/* FIXED & IMPROVED VERSION:
-     - Added proper animation with @keyframes noticeScroll
-     - Added animation to #notice-track (was missing before!)
-     - Fixed mobile top position (70px for mobile, 80px for desktop)
-     - Added dark mode support with .dark-mode class
-     - Added reduced motion support
-     - Improved responsive design
-     - Added pause on hover/focus for accessibility
-     - Added smooth scrolling with proper timing
-     - Added CSS variables for easy customization
-*/
+/* C:\Project\barakah_finance2\style\notice_bar.css */
 
 /* ════════ ROOT VARIABLES ════════ */
 :root {

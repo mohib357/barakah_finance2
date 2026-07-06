@@ -1,18 +1,4 @@
-// C:\Project\Barakah_Finance\backend\routes\ledger.js
-// ═══════════════════════════════════════════════════════════════════
-// লেজার রাউট — সম্পূর্ণ হিসাবপাতি — FIXED & IMPROVED VERSION
-// FIXES:
-// 1. Fixed GET / filter bug (totalIncome/Expense now calculated after filter)
-// 2. Added pagination for ledger entries
-// 3. Added input validation with express-validator
-// 4. Added category validation
-// 5. Added proper error handling with try-catch
-// 6. Added logging for audit trail
-// 7. Added export functionality (CSV/JSON)
-// 8. Added balance sheet improvements
-// 9. Added monthly summary with trends
-// 10. Added transaction rollback simulation
-// ═══════════════════════════════════════════════════════════════════
+// C:\Project\barakah_finance2\backend\routes\ledger.js
 
 const express = require('express');
 const router = express.Router();

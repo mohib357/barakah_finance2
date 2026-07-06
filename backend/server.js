@@ -1,18 +1,4 @@
-// C:\Project\Barakah_Finance\backend\server.js
-// ═══════════════════════════════════════════════════════════════════
-// বারাকাহ ফাইন্যান্স — Node.js ব্যাকএন্ড সার্ভার (FIXED & IMPROVED)
-// FIXES:
-// 1. Added environment-based CORS configuration (no more wildcard *)
-// 2. Added Helmet for security headers
-// 3. Added rate limiting to prevent abuse
-// 4. Added proper error handling middleware
-// 5. Added request logging (morgan)
-// 6. Added environment-aware configuration
-// 7. Added graceful shutdown handling
-// 8. Added health check with detailed status
-// 9. Fixed static file serving path
-// 10. Added compression for better performance
-// ═══════════════════════════════════════════════════════════════════
+// C:\Project\barakah_finance2\backend\server.js
 
 const express = require('express');
 const cors = require('cors');

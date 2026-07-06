@@ -1,16 +1,4 @@
-// C:\Project\Barakah_Finance\js\notice.js
-// ════════ NOTICE BAR & BADGE SECTION — FIXED & IMPROVED VERSION ════════
-// FIXES:
-// 1. Added proper DB availability check
-// 2. Fixed animation with duplicate content for seamless scrolling
-// 3. Added dynamic notice item rendering with proper styles
-// 4. Fixed badge detail modal with member profile view
-// 5. Added proper error handling for missing elements
-// 6. Added viewMemberProfile function
-// 7. Added Bengali number formatting
-// 8. Added auto-refresh on data change
-// 9. Added proper toast notification system
-// 10. Added performance optimizations with requestAnimationFrame
+// C:\Project\barakah_finance2\js\notice.js
 
 (function () {
     'use strict';

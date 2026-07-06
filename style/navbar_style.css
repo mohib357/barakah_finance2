@@ -1,15 +1,4 @@
-/* C:\Project\Barakah_Finance\style\navbar_style.css */
-/* FIXED & IMPROVED VERSION:
-     - Removed all duplicate style blocks (merged into single definitions)
-     - Fixed :has() selector with fallback for cross-browser support
-     - Unified dark mode with .dark-mode class
-     - Fixed mobile responsive issues
-     - Added proper touch device support for dropdown
-     - Added aria support for accessibility
-     - Improved hamburger menu animation
-     - Added reduced motion support
-     - Consolidated logo styles
-*/
+/* C:\Project\barakah_finance2\style\navbar_style.css */
 
 /* ════════ ROOT VARIABLES ════════ */
 :root {

@@ -1,18 +1,4 @@
-// C:\Project\Barakah_Finance\backend\routes\users.js
-// ═══════════════════════════════════════════════════════════════════
-// ব্যবহারকারী রাউট — FIXED & IMPROVED VERSION
-// FIXES:
-// 1. Added input validation with express-validator
-// 2. Added pagination for GET requests
-// 3. Added search and filter functionality
-// 4. Added proper error handling with try-catch
-// 5. Added logging for audit trail
-// 6. Added profile completion calculation
-// 7. Added user activity tracking
-// 8. Added bulk operations
-// 9. Added user statistics with trends
-// 10. Added user export functionality
-// ═══════════════════════════════════════════════════════════════════
+// C:\Project\barakah_finance2\backend\routes\users.js
 
 const express = require('express');
 const router = express.Router();

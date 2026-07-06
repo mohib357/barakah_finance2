@@ -1,18 +1,4 @@
-// C:\Project\Barakah_Finance\backend\routes\applications.js
-// ═══════════════════════════════════════════════════════════════════
-// অ্যাপ্লিকেশন রাউট — FIXED & IMPROVED VERSION
-// FIXES:
-// 1. Added input validation with express-validator
-// 2. Added pagination for GET requests
-// 3. Added rate limiting for POST requests
-// 4. Added allowed fields whitelist for PATCH
-// 5. Added proper error handling with try-catch
-// 6. Added logging for audit trail
-// 7. Added application status tracking
-// 8. Added approval history
-// 9. Added notification trigger on status change
-// 10. Added member ID generation on approval
-// ═══════════════════════════════════════════════════════════════════
+// C:\Project\barakah_finance2\backend\routes\applications.js
 
 const express = require('express');
 const router = express.Router();

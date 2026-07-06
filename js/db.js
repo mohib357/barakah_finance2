@@ -1,16 +1,4 @@
-// C:\Project\Barakah_Finance\js\db.js
-// ════════ DB MODULE — FIXED & IMPROVED VERSION ════════
-// FIXES:
-// 1. Added password hashing (basic) for local storage
-// 2. Added seed check to prevent duplicate seeding
-// 3. Added missing methods: getApplications, addApplication, updateApplication
-// 4. Added data validation before saving
-// 5. Added error handling with try-catch
-// 6. Added export/import functionality
-// 7. Added data backup and restore functions
-// 8. Added data migration from older versions
-// 9. Improved ID generation to be more unique
-// 10. Added data size monitoring
+// C:\Project\barakah_finance2\js\db.js
 
 (function () {
     'use strict';

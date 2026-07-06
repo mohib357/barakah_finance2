@@ -1,18 +1,4 @@
-// C:\Project\Barakah_Finance\backend\routes\orders.js
-// ═══════════════════════════════════════════════════════════════════
-// অর্ডার রাউট — FIXED & IMPROVED VERSION
-// FIXES:
-// 1. Added rate limiting for POST (public order submission)
-// 2. Added input validation with express-validator
-// 3. Added allowed fields whitelist for PATCH
-// 4. Added proper error handling with try-catch
-// 5. Added logging for audit trail
-// 6. Added pagination for GET requests
-// 7. Added order status tracking with steps
-// 8. Added user permission checks for GET /user/:phone
-// 9. Added order history and notes
-// 10. Added order status transition validation
-// ═══════════════════════════════════════════════════════════════════
+// C:\Project\barakah_finance2\backend\routes\orders.js
 
 const express = require('express');
 const router = express.Router();

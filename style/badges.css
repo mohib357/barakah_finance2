@@ -1,14 +1,4 @@
-/* C:\Project\Barakah_Finance\style\badges.css */
-/* FIXED & IMPROVED VERSION:
-     - Added root CSS variables for all neumorphism values
-     - Fixed height: 80% issue — now uses min-height with proper flex
-     - Unified dark mode with .dark-mode class
-     - Removed !important from color declarations
-     - Improved responsive design for all screen sizes
-     - Added proper focus states for accessibility
-     - Added reduced motion support
-     - Added hover animations with smooth transitions
-*/
+/* C:\Project\barakah_finance2\style\badges.css */
 
 /* ════════ ROOT VARIABLES ════════ */
 :root {

@@ -1,7 +1,4 @@
-/**
- * Simple Authentication System for Barakah Finance
- * Uses LocalStorage for now, will be replaced with MongoDB later
- */
+// C:\Project\barakah_finance2\js\simple-auth.js
 
 class AuthSystem {
     constructor() {
@@ -32,8 +29,8 @@ class AuthSystem {
 
             // Check if user exists
             const users = this.getAllUsers();
-            const exists = users.find(u => 
-                u.username === userData.username || 
+            const exists = users.find(u =>
+                u.username === userData.username ||
                 u.mobile === userData.mobile
             );
 
@@ -64,9 +61,9 @@ class AuthSystem {
             // Auto login
             this.currentUser = newUser;
             localStorage.setItem('bf_current_user', JSON.stringify(newUser));
-            
+
             this.updateUI();
-            
+
             return {
                 success: true,
                 message: 'নিবন্ধন সফল হয়েছে!',
@@ -89,8 +86,8 @@ class AuthSystem {
             }
 
             const users = this.getAllUsers();
-            const user = users.find(u => 
-                u.username === identifier || 
+            const user = users.find(u =>
+                u.username === identifier ||
                 u.mobile === identifier ||
                 u.email === identifier
             );
@@ -119,7 +116,7 @@ class AuthSystem {
             // Set current user
             this.currentUser = user;
             localStorage.setItem('bf_current_user', JSON.stringify(user));
-            
+
             this.updateUI();
 
             return {
@@ -141,7 +138,7 @@ class AuthSystem {
         this.currentUser = null;
         localStorage.removeItem('bf_current_user');
         this.updateUI();
-        
+
         // Redirect to home
         if (window.location.pathname !== '/' && window.location.pathname !== '/index.html') {
             window.location.href = '/';
@@ -204,7 +201,7 @@ async function doLogin() {
     }
 
     const result = await window.Auth.login(identifier, password);
-    
+
     if (result.success) {
         showAlert('al-login', result.message, 'success');
         setTimeout(() => {

@@ -1,18 +1,4 @@
-// C:\Project\Barakah_Finance\backend\middleware\auth.js
-// ═══════════════════════════════════════════════════════════════════
-// JWT যাচাই মিডলওয়্যার — FIXED & IMPROVED VERSION
-// FIXES:
-// 1. Removed hardcoded JWT_SECRET — now uses environment variable with fallback
-// 2. Added token blacklist for logout functionality
-// 3. Added refresh token support
-// 4. Added rate limiting for login attempts
-// 5. Added proper error handling
-// 6. Added token expiry checking
-// 7. Added role-based authorization helpers
-// 8. Added environment-aware logging
-// 9. Added token refresh endpoint support
-// 10. Added secure token generation with proper options
-// ═══════════════════════════════════════════════════════════════════
+// C:\Project\barakah_finance2\backend\middleware\auth.js
 
 const jwt = require('jsonwebtoken');
 const { v4: uuidv4 } = require('uuid');

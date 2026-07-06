@@ -1,15 +1,4 @@
-/* C:\Project\Barakah_Finance\style\hero_style.css */
-/* FIXED & IMPROVED VERSION:
-     - Unified root variables (moved to main style.css or kept here as fallback)
-     - Fixed duplicate .hero-content class definitions (merged)
-     - Removed duplicate .badges-section (now only in badges.css)
-     - Fixed ::before pseudo-element z-index with proper relative positioning
-     - Added proper dark mode support with .dark-mode class
-     - Improved responsive design
-     - Added reduced motion support
-     - Fixed rainbow animation default (now disabled by default)
-     - Cleaned up duplicate code
-*/
+/* C:\Project\barakah_finance2\style\hero_style.css */
 
 /* ════════ ROOT VARIABLES ════════ */
 :root {

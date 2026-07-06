@@ -1,18 +1,4 @@
-// C:\Project\Barakah_Finance\pages\js\profile.js
-// ══════════════════════════════════════════════════════════
-// PROFILE HANDLER — FIXED & IMPROVED VERSION
-// FIXES:
-// 1. Removed duplicate DB definition (uses global DB from db.js)
-// 2. Added proper DB availability check
-// 3. Fixed profile completion calculation (uses occupation)
-// 4. Added proper error handling with try-catch
-// 5. Added toast function with proper styling
-// 6. Added Bengali number formatting
-// 7. Fixed doLogout (uses auth.js version or provides fallback)
-// 8. Added password hashing for local storage
-// 9. Added auto-save on input change
-// 10. Added proper form validation
-// ══════════════════════════════════════════════════════════
+// C:\Project\barakah_finance2\pages\js\profile.js
 
 (function () {
     'use strict';

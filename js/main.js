@@ -1,16 +1,4 @@
-// C:\Project\Barakah_Finance\js\main.js
-// ════════ MAIN — HOMEPAGE FUNCTIONALITY ════════
-// FIXES:
-// 1. Removed duplicate functions (smScroll, toggleMob, toggleDark, quickSubmit, pCalc, showToast)
-// 2. Added proper DOM ready check before executing
-// 3. Added members rendering with proper error handling
-// 4. Fixed calculator function with proper formatting
-// 5. Added scroll reveal animation with IntersectionObserver
-// 6. Added dark mode persistence check
-// 7. Fixed duplicate member entries
-// 8. Added proper initialization sequence
-// 9. Added event delegation for dynamic elements
-// 10. Added performance optimizations
+// C:\Project\barakah_finance2\js\main.js
 
 (function () {
     'use strict';

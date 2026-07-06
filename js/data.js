@@ -1,18 +1,6 @@
-// C:\Project\Barakah_Finance\js\data.js
-// ════════ DATA STRUCTURE — FIXED & IMPROVED VERSION ════════
-// FIXES:
-// 1. Added complete Bangladesh division/district/thana data
-// 2. Added missing districts for all divisions
-// 3. Added post office data for all thanas
-// 4. Created helper functions for address dropdowns
-// 5. Added translation system with all required keys
-// 6. Added phone validation helper
-// 7. Added country codes with proper validation
-// 8. Added RTL support for Arabic
-// 9. Added proper data structure with validation
-// 10. Added getAllDivisions, getDistricts, getThanas, getPostOffices functions
+// C:\Project\barakah_finance2\js\data.js
 
-(function() {
+(function () {
     'use strict';
 
     // ════════ BANGLADESH GEO DATA ════════
@@ -691,7 +679,7 @@
 
     // ════════ AUTO-INIT ════════
 
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
         // Restore language preference
         try {
             const savedLang = localStorage.getItem('bf_lang');

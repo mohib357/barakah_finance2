@@ -1,16 +1,4 @@
-<!-- C:\Project\Barakah_Finance\admin\admin.html -->
-<!-- FIXED & IMPROVED VERSION:
-     - Fixed JS and CSS paths (using correct relative paths)
-     - Added proper script loading order
-     - Added favicon and meta tags
-     - Added dark mode class support
-     - Removed hardcoded demo password
-     - Added proper ARIA attributes for accessibility
-     - Added pagination controls
-     - Fixed admin-settings.js path
-     - Added proper form labels with for attributes
-     - Improved responsive structure
--->
+<!-- C:\Project\barakah_finance2\admin\admin.html -->
 
 <!DOCTYPE html>
 <html lang="bn" dir="ltr">
@@ -35,7 +23,9 @@
     </script>
 
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Bengali:wght@400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Serif+Bengali:wght@400;600;700&family=Playfair+Display:wght@700&display=swap"
+        rel="stylesheet" />
 
     <!-- PDF Libraries -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -48,19 +38,25 @@
 <body class="min-h-screen admin-panel">
 
     <!-- ════════ HEADER ════════ -->
-    <header style="background:linear-gradient(135deg,#022c22,#064E3B);" class="py-4 px-6 flex flex-wrap items-center justify-between gap-3">
+    <header style="background:linear-gradient(135deg,#022c22,#064E3B);"
+        class="py-4 px-6 flex flex-wrap items-center justify-between gap-3">
         <div>
             <h1 class="text-xl font-bold text-white">বারাকাহ ফাইন্যান্স — অ্যাডমিন প্যানেল</h1>
             <p class="text-xs text-emerald-400">সদস্য আবেদন ব্যবস্থাপনা</p>
         </div>
         <div class="flex items-center gap-3 flex-wrap">
-            <div id="adminBadge" class="text-xs bg-emerald-900/60 border border-emerald-700 px-3 py-1.5 rounded-lg text-emerald-300 hidden">
+            <div id="adminBadge"
+                class="text-xs bg-emerald-900/60 border border-emerald-700 px-3 py-1.5 rounded-lg text-emerald-300 hidden">
                 লগইন: <span id="adminRoleLabel">—</span>
             </div>
-            <button onclick="showLoginModal()" id="loginBtn" class="btn-primary text-xs py-1.5 px-4" aria-label="লগইন করুন">🔑 লগইন</button>
-            <button onclick="adminLogout()" id="logoutBtn" class="btn-danger text-xs py-1.5 px-4 hidden" aria-label="লগআউট করুন">লগআউট</button>
-            <a href="../form.html" class="text-emerald-400 text-xs hover:text-emerald-300" aria-label="ফরমে ফিরুন">← ফরমে ফিরুন</a>
-            <a href="../index.html" class="text-emerald-400 text-xs hover:text-emerald-300" aria-label="হোমপেজে যান">🏠 হোম</a>
+            <button onclick="showLoginModal()" id="loginBtn" class="btn-primary text-xs py-1.5 px-4"
+                aria-label="লগইন করুন">🔑 লগইন</button>
+            <button onclick="adminLogout()" id="logoutBtn" class="btn-danger text-xs py-1.5 px-4 hidden"
+                aria-label="লগআউট করুন">লগআউট</button>
+            <a href="../form.html" class="text-emerald-400 text-xs hover:text-emerald-300" aria-label="ফরমে ফিরুন">←
+                ফরমে ফিরুন</a>
+            <a href="../index.html" class="text-emerald-400 text-xs hover:text-emerald-300" aria-label="হোমপেজে যান">🏠
+                হোম</a>
         </div>
     </header>
 
@@ -89,14 +85,20 @@
 
         <!-- ── SEARCH & FILTER ── -->
         <section class="card p-4 mb-4 flex flex-wrap gap-3 items-center">
-            <input type="text" class="form-input flex-1 min-w-48" placeholder="🔍 নাম, NID বা ID দিয়ে খুঁজুন..." id="searchBox" oninput="renderTable()" aria-label="আবেদন খুঁজুন" />
+            <input type="text" class="form-input flex-1 min-w-48" placeholder="🔍 নাম, NID বা ID দিয়ে খুঁজুন..."
+                id="searchBox" oninput="renderTable()" aria-label="আবেদন খুঁজুন" />
             <div class="flex gap-2 flex-wrap" role="group" aria-label="ফিল্টার">
-                <button class="filter-btn active" onclick="setFilter('all',this)" aria-label="সকল আবেদন দেখান">সকল</button>
-                <button class="filter-btn" onclick="setFilter('pending',this)" aria-label="পেন্ডিং আবেদন দেখান">পেন্ডিং</button>
-                <button class="filter-btn" onclick="setFilter('approved',this)" aria-label="অনুমোদিত আবেদন দেখান">অনুমোদিত</button>
-                <button class="filter-btn" onclick="setFilter('rejected',this)" aria-label="প্রত্যাখ্যাত আবেদন দেখান">প্রত্যাখ্যাত</button>
+                <button class="filter-btn active" onclick="setFilter('all',this)"
+                    aria-label="সকল আবেদন দেখান">সকল</button>
+                <button class="filter-btn" onclick="setFilter('pending',this)"
+                    aria-label="পেন্ডিং আবেদন দেখান">পেন্ডিং</button>
+                <button class="filter-btn" onclick="setFilter('approved',this)"
+                    aria-label="অনুমোদিত আবেদন দেখান">অনুমোদিত</button>
+                <button class="filter-btn" onclick="setFilter('rejected',this)"
+                    aria-label="প্রত্যাখ্যাত আবেদন দেখান">প্রত্যাখ্যাত</button>
             </div>
-            <button onclick="exportCSV()" class="btn-gold text-xs py-1.5 px-4" aria-label="CSV এক্সপোর্ট করুন">📊 CSV Export</button>
+            <button onclick="exportCSV()" class="btn-gold text-xs py-1.5 px-4" aria-label="CSV এক্সপোর্ট করুন">📊 CSV
+                Export</button>
         </section>
 
         <!-- ── TABLE ── -->
@@ -144,11 +146,13 @@
             </div>
             <div class="mb-4">
                 <label class="block text-xs text-emerald-400 mb-1" for="loginPass">পাসওয়ার্ড</label>
-                <input type="password" class="form-input" id="loginPass" placeholder="পাসওয়ার্ড লিখুন" onkeydown="if(event.key==='Enter')doLogin()" />
+                <input type="password" class="form-input" id="loginPass" placeholder="পাসওয়ার্ড লিখুন"
+                    onkeydown="if(event.key==='Enter')doLogin()" />
             </div>
             <div class="flex gap-3">
                 <button onclick="doLogin()" class="btn-primary flex-1">লগইন করুন</button>
-                <button onclick="document.getElementById('loginModal').classList.add('hidden')" class="btn-danger flex-1">বাতিল</button>
+                <button onclick="document.getElementById('loginModal').classList.add('hidden')"
+                    class="btn-danger flex-1">বাতিল</button>
             </div>
         </div>
     </div>
@@ -158,7 +162,8 @@
         <div class="modal-box">
             <div class="flex justify-between items-center mb-4">
                 <h3 class="font-bold text-lg text-emerald-300">আবেদনের বিস্তারিত</h3>
-                <button onclick="document.getElementById('detailModal').classList.add('hidden')" class="text-2xl text-gray-400 hover:text-red-400" aria-label="বন্ধ করুন">&times;</button>
+                <button onclick="document.getElementById('detailModal').classList.add('hidden')"
+                    class="text-2xl text-gray-400 hover:text-red-400" aria-label="বন্ধ করুন">&times;</button>
             </div>
             <div id="detailContent"></div>
             <div class="flex flex-wrap gap-3 mt-5 pt-4 border-t border-emerald-900">
@@ -178,7 +183,8 @@
             <input type="text" class="form-input mb-4" id="memberIDInput" placeholder="যেমন: BF-2025-001" />
             <div class="flex gap-3">
                 <button onclick="saveMemberID()" class="btn-primary flex-1">সংরক্ষণ করুন</button>
-                <button onclick="document.getElementById('memberIDModal').classList.add('hidden')" class="btn-danger flex-1">বাতিল</button>
+                <button onclick="document.getElementById('memberIDModal').classList.add('hidden')"
+                    class="btn-danger flex-1">বাতিল</button>
             </div>
         </div>
     </div>
@@ -188,4 +194,5 @@
     <script src="js/admin.js"></script>
 
 </body>
+
 </html>

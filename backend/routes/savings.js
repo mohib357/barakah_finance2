@@ -1,18 +1,4 @@
-// C:\Project\Barakah_Finance\backend\routes\savings.js
-// ═══════════════════════════════════════════════════════════════════
-// সঞ্চয় রাউট — FIXED & IMPROVED VERSION
-// FIXES:
-// 1. Added input validation with express-validator
-// 2. Added duplicate month check for savings
-// 3. Added ledger entry with proper error handling
-// 4. Added pagination for GET requests
-// 5. Added proper error handling with try-catch
-// 6. Added logging for audit trail
-// 7. Added monthly report with trends
-// 8. Added missing member detection
-// 9. Added CSV export functionality
-// 10. Added bulk import functionality
-// ═══════════════════════════════════════════════════════════════════
+// C:\Project\barakah_finance2\backend\routes\savings.js
 
 const express = require('express');
 const router = express.Router();

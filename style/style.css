@@ -1,15 +1,4 @@
-/* C:\Project\Barakah_Finance\style\style.css */
-/* FIXED & IMPROVED VERSION:
-     - Unified dark mode class: now uses .dark-mode consistently
-     - Removed duplicate .nav-mobile styles (now only in navbar_style.css)
-     - Removed duplicate .modal-overlay/.modal styles (now only in auth_modal.css)
-     - Unified .toast styles (single definition)
-     - Added CSS variables for all colors
-     - Improved responsive design
-     - Added reduced motion support
-     - Added proper focus states for accessibility
-     - Cleaned up duplicate selectors
-*/
+/* C:\Project\barakah_finance2\style\style.css */
 
 /* ════════ ROOT VARIABLES ════════ */
 :root {

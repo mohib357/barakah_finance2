@@ -1,4 +1,5 @@
-// Email Service using Resend
+// C:\Project\barakah_finance2\backend\services\email.js
+
 const resend = require('resend');
 require('dotenv').config();
 
@@ -17,7 +18,7 @@ resend.api_key = RESEND_API_KEY;
  */
 async function sendOTPEmail(recipientEmail, otp, userName = 'ব্যবহারকারী') {
     const subject = 'বারাকাহ ফাইন্যান্স - আপনার OTP কোড';
-    
+
     const htmlContent = `
 <!DOCTYPE html>
 <html>
@@ -67,7 +68,7 @@ async function sendOTPEmail(recipientEmail, otp, userName = 'ব্যবহা�
 </body>
 </html>
     `;
-    
+
     try {
         const params = {
             from: SENDER_EMAIL,
@@ -75,9 +76,9 @@ async function sendOTPEmail(recipientEmail, otp, userName = 'ব্যবহা�
             subject: subject,
             html: htmlContent
         };
-        
+
         const email = await resend.emails.send(params);
-        
+
         return {
             success: true,
             emailId: email.id,
@@ -100,7 +101,7 @@ async function sendOTPEmail(recipientEmail, otp, userName = 'ব্যবহা�
  */
 async function sendWelcomeEmail(recipientEmail, userName) {
     const subject = 'বারাকাহ ফাইন্যান্সে স্বাগতম! 🕌';
-    
+
     const htmlContent = `
 <!DOCTYPE html>
 <html>
@@ -148,7 +149,7 @@ async function sendWelcomeEmail(recipientEmail, userName) {
 </body>
 </html>
     `;
-    
+
     try {
         const params = {
             from: SENDER_EMAIL,
@@ -156,9 +157,9 @@ async function sendWelcomeEmail(recipientEmail, userName) {
             subject: subject,
             html: htmlContent
         };
-        
+
         const email = await resend.emails.send(params);
-        
+
         return {
             success: true,
             emailId: email.id,

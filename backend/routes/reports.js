@@ -1,18 +1,4 @@
-// C:\Project\Barakah_Finance\backend\routes\reports.js
-// ═══════════════════════════════════════════════════════════════════
-// রিপোর্ট রাউট — FIXED & IMPROVED VERSION
-// FIXES:
-// 1. Added input validation with express-validator
-// 2. Added proper error handling with try-catch
-// 3. Added logging for audit trail
-// 4. Fixed deficit calculation in member-savings
-// 5. Added pagination for large reports
-// 6. Added date range filtering
-// 7. Added export functionality (CSV/JSON)
-// 8. Added caching headers
-// 9. Added comprehensive dashboard stats
-// 10. Added trend analysis
-// ═══════════════════════════════════════════════════════════════════
+// C:\Project\barakah_finance2\backend\routes\reports.js
 
 const express = require('express');
 const router = express.Router();

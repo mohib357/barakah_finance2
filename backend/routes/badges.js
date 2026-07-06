@@ -1,18 +1,4 @@
-// C:\Project\Barakah_Finance\backend\routes\badges.js
-// ═══════════════════════════════════════════════════════════════════
-// ব্যাজ রাউট — FIXED & IMPROVED VERSION
-// FIXES:
-// 1. Added public GET with rate limiting
-// 2. Added input validation with express-validator
-// 3. Added allowed fields whitelist for PUT/PATCH
-// 4. Added soft delete functionality
-// 5. Added proper error handling with try-catch
-// 6. Added logging for audit trail
-// 7. Added cache headers for public endpoints
-// 8. Added order/sort functionality
-// 9. Added bulk operations
-// 10. Added badge validation and sanitization
-// ═══════════════════════════════════════════════════════════════════
+// C:\Project\barakah_finance2\backend\routes\badges.js
 
 const express = require('express');
 const router = express.Router();

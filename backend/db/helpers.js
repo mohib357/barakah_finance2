@@ -1,5 +1,4 @@
-// Helper functions for working with lowdb v6
-// lowdb v6 doesn't have built-in find/push methods, so we implement them
+// C:\Project\barakah_finance2\backend\db\helpers.js
 
 function dbGet(db, collection) {
     return {

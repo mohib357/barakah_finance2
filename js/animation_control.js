@@ -1,15 +1,4 @@
-// C:\Project\Barakah_Finance\js\animation_control.js
-// ════════ Animation Control - Fixed & Improved ════════
-// FIXES:
-// 1. Removed duplicate code with admin_settings.js — now uses adminHeroSettings if available
-// 2. Changed default rainbow to false (better UX)
-// 3. Added prefers-reduced-motion support
-// 4. Added fallback if adminHeroSettings is not loaded
-// 5. Added environment-aware console logging
-// 6. Fixed rainbow speed mapping to match admin_settings.js
-// 7. Added proper event delegation for settings updates
-// 8. Added documentation for public methods
-// 9. Cleaned up code structure
+// C:\Project\barakah_finance2\js\animation_control.js
 
 (function () {
     'use strict';

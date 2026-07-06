@@ -1,14 +1,19 @@
+<!-- C:\Project\barakah_finance2\index.html -->
+
 <!DOCTYPE html>
 <html lang="bn" dir="ltr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title data-i18n="navLogo">বারাকাহ ফাইন্যান্স - সুদমুক্ত লেনদেনে সমৃদ্ধি সবার</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Bengali:wght@400;600;700&family=Noto+Sans+Bengali:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Serif+Bengali:wght@400;600;700&family=Noto+Sans+Bengali:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
-    
+
     <!-- CSS -->
     <link rel="stylesheet" href="style/style.css" />
     <link rel="stylesheet" href="style/navbar_style.css" />
@@ -36,7 +41,7 @@
                 <span>BARAKAH FINANCE</span>
             </div>
         </a>
-        
+
         <!-- Live Visitor Counter -->
         <div class="live-counter" id="liveCounter">
             <span class="pulse-dot"></span>
@@ -47,7 +52,7 @@
             <li><a href="pages/about.html" class="neu-btn" data-i18n="navAbout">আমাদের সম্পর্কে</a></li>
             <li><a href="pages/timeline.html" class="neu-btn" data-i18n="navTimeline">টাইম লাইন</a></li>
             <li><a href="pages/gallery.html" class="neu-btn" data-i18n="navGallery">গ্যালারি</a></li>
-            
+
             <!-- Logged in user menu -->
             <li class="nav-user-wrap" id="nav-user-menu" style="display:none;">
                 <button class="neu-btn nav-user-btn">👤 <span id="nav-user-name">আমি</span> ▾</button>
@@ -58,12 +63,13 @@
                     <button onclick="doLogout()">🚪 লগআউট</button>
                 </div>
             </li>
-            
+
             <!-- Login button -->
             <li id="nav-login-btn">
-                <a onclick="openAuthModal('login')" class="neu-btn neu-btn-primary nav-cta" data-i18n="navLogin">লগইন করুন</a>
+                <a onclick="openAuthModal('login')" class="neu-btn neu-btn-primary nav-cta" data-i18n="navLogin">লগইন
+                    করুন</a>
             </li>
-            
+
             <!-- Language Selector -->
             <li>
                 <div class="lang-selector">
@@ -75,14 +81,15 @@
                     </div>
                 </div>
             </li>
-            
+
             <!-- Dark Mode Toggle -->
             <li style="display:flex;align-items:center;">
-                <button class="neu-icon-btn" id="dkTog" onclick="toggleDarkMode()" title="ডার্ক/লাইট মোড" aria-label="Toggle Dark Mode">
+                <button class="neu-icon-btn" id="dkTog" onclick="toggleDarkMode()" title="ডার্ক/লাইট মোড"
+                    aria-label="Toggle Dark Mode">
                     <i class="fas fa-moon"></i>
                 </button>
             </li>
-            
+
             <!-- Live Traffic Counter - Right side of dark mode -->
             <li style="display:flex;align-items:center;margin-left:8px;">
                 <div class="live-counter-inline" id="liveCounter">
@@ -127,23 +134,26 @@
             <!-- LEFT SIDE - Main Hero Card -->
             <div class="hero-main-card neu-card reveal">
                 <div class="neu-badge" data-i18n="heroEyebrow">🕌 শরিয়াহসম্মত আর্থিক প্রতিষ্ঠান</div>
-                
+
                 <h1 class="hero-title">
                     <span data-i18n="heroTitle">সুদমুক্ত লেনদেনে</span><br>
                     <em class="gold-highlight" data-i18n="heroHighlight">সমৃদ্ধি সবার</em>
                 </h1>
-                
+
                 <div class="neu-gold-line"></div>
-                
+
                 <p class="hero-slogan" data-i18n="heroSlogan">
-                    ইসলামী অর্থনীতির আলোকে সমাজ থেকে সুদের অভিশাপ দূর করে হালাল উপায়ে আর্থিক সহায়তা ও সমৃদ্ধি নিশ্চিত করা আমাদের অঙ্গীকার।
+                    ইসলামী অর্থনীতির আলোকে সমাজ থেকে সুদের অভিশাপ দূর করে হালাল উপায়ে আর্থিক সহায়তা ও সমৃদ্ধি নিশ্চিত
+                    করা আমাদের অঙ্গীকার।
                 </p>
-                
+
                 <div class="hero-actions">
-                    <button class="neu-btn neu-btn-primary" onclick="location.href='form.html'" data-i18n="heroBtnMember">
+                    <button class="neu-btn neu-btn-primary" onclick="location.href='form.html'"
+                        data-i18n="heroBtnMember">
                         <i class="fas fa-user-plus"></i> সদস্য হতে আবেদন করুন
                     </button>
-                    <button class="neu-btn neu-btn-gold" onclick="location.href='pages/shop.html'" data-i18n="heroBtnShop">
+                    <button class="neu-btn neu-btn-gold" onclick="location.href='pages/shop.html'"
+                        data-i18n="heroBtnShop">
                         🛒 পণ্য কিনুন
                     </button>
                     <button class="neu-btn" onclick="smScroll('about')" data-i18n="heroBtnLearn">
@@ -151,7 +161,7 @@
                     </button>
                 </div>
             </div>
-            
+
             <!-- RIGHT SIDE - Stats Cards -->
             <div class="hero-stats-cards reveal">
                 <!-- Total Members Card -->
@@ -160,14 +170,14 @@
                     <div class="stat-value" id="totalMembersCount">০</div>
                     <div class="stat-label" data-i18n="cardTotalMembers">মোট সদস্য</div>
                 </div>
-                
+
                 <!-- Our Services Card -->
                 <div class="neu-stat-card" onclick="openBadgeDetailModal('services')">
                     <div class="stat-icon">🕌</div>
                     <div class="stat-value">০৬</div>
                     <div class="stat-label" data-i18n="cardOurServices">আমাদের সেবা সমূহ</div>
                 </div>
-                
+
                 <!-- Active Loans Card (shown only for members) -->
                 <div class="neu-stat-card member-only" style="display:none;" onclick="openBadgeDetailModal('loans')">
                     <div class="stat-icon">💰</div>
@@ -233,16 +243,17 @@
                 <div class="neu-panel">
                     <span class="section-eyebrow" data-i18n="howToBuyEyebrow">ক্রয় প্রক্রিয়া</span>
                     <h2 class="section-title" data-i18n="howToBuyTitle">কীভাবে কিস্তিতে পণ্য কিনবেন</h2>
-                    
+
                     <div class="process-steps">
                         <div class="process-step">
                             <div class="step-number neu-badge">১</div>
                             <div class="step-content">
                                 <h4>পণ্য নির্বাচন করুন</h4>
-                                <p>আপনার পছন্দের পণ্য নির্বাচন করে আমাদের জানান। ইলেকট্রনিক্স, আসবাবপত্র, গৃহস্থালী সামগ্রী সবকিছু পাবেন।</p>
+                                <p>আপনার পছন্দের পণ্য নির্বাচন করে আমাদের জানান। ইলেকট্রনিক্স, আসবাবপত্র, গৃহস্থালী
+                                    সামগ্রী সবকিছু পাবেন।</p>
                             </div>
                         </div>
-                        
+
                         <div class="process-step">
                             <div class="step-number neu-badge">২</div>
                             <div class="step-content">
@@ -250,7 +261,7 @@
                                 <p>অনলাইনে ফরম পূরণ করে প্রয়োজনীয় ডকুমেন্ট (NID, ছবি) আপলোড করুন।</p>
                             </div>
                         </div>
-                        
+
                         <div class="process-step">
                             <div class="step-number neu-badge">৩</div>
                             <div class="step-content">
@@ -258,7 +269,7 @@
                                 <p>আমাদের কমিটি আপনার আবেদন যাচাই করে ২৪-৪৮ ঘণ্টার মধ্যে অনুমোদন দেবেন।</p>
                             </div>
                         </div>
-                        
+
                         <div class="process-step">
                             <div class="step-number neu-badge">৪</div>
                             <div class="step-content">
@@ -266,7 +277,7 @@
                                 <p>অনুমোদনের পর আমরা বাজার থেকে পণ্য ক্রয় করে আপনার ঠিকানায় সরবরাহ করব।</p>
                             </div>
                         </div>
-                        
+
                         <div class="process-step">
                             <div class="step-number neu-badge">৫</div>
                             <div class="step-content">
@@ -274,7 +285,7 @@
                                 <p>মোট মূল্যের ১/৬ অংশ (প্রথম কিস্তি) পরিশোধ করুন।</p>
                             </div>
                         </div>
-                        
+
                         <div class="process-step">
                             <div class="step-number neu-badge">৬</div>
                             <div class="step-content">
@@ -283,24 +294,25 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="info-box neu-card-sm">
                         <i class="fas fa-info-circle"></i>
-                        <p><strong>বিশেষ দ্রষ্টব্য:</strong> সকল লেনদেন সম্পূর্ণ শরিয়াহসম্মত। কিস্তির আগে SMS রিমাইন্ডার পাবেন।</p>
+                        <p><strong>বিশেষ দ্রষ্টব্য:</strong> সকল লেনদেন সম্পূর্ণ শরিয়াহসম্মত। কিস্তির আগে SMS
+                            রিমাইন্ডার পাবেন।</p>
                     </div>
-                    
+
                     <button class="neu-btn neu-btn-gold" onclick="location.href='form.html'">
                         🛒 এখনই পণ্য কিনুন
                     </button>
                 </div>
             </div>
-            
+
             <!-- RIGHT COLUMN - Membership Requirements -->
             <div class="section-column reveal">
                 <div class="neu-panel">
                     <span class="section-eyebrow" data-i18n="membershipEyebrow">সদস্যপদের নিয়ম</span>
                     <h2 class="section-title" data-i18n="membershipTitle">সদস্য হওয়ার শর্তাবলী</h2>
-                    
+
                     <div class="requirements-list">
                         <div class="requirement-item">
                             <div class="req-icon neu-badge">✓</div>
@@ -309,7 +321,7 @@
                                 <p>১৮ বছর বা তার বেশি বয়সী মুসলিম নাগরিক হতে হবে।</p>
                             </div>
                         </div>
-                        
+
                         <div class="requirement-item">
                             <div class="req-icon neu-badge">✓</div>
                             <div class="req-content">
@@ -317,15 +329,16 @@
                                 <p>এককালীন ১০০ টাকা আবেদন ফি (অফেরতযোগ্য)।</p>
                             </div>
                         </div>
-                        
+
                         <div class="requirement-item">
                             <div class="req-icon neu-badge">✓</div>
                             <div class="req-content">
                                 <h4>মাসিক সঞ্চয়</h4>
-                                <p>প্রতি মাসে ২,০০০ টাকা সঞ্চয় বাধ্যতামূলক। প্রতি মাসের ১৫ তারিখের মধ্যে জমা দিতে হবে।</p>
+                                <p>প্রতি মাসে ২,০০০ টাকা সঞ্চয় বাধ্যতামূলক। প্রতি মাসের ১৫ তারিখের মধ্যে জমা দিতে হবে।
+                                </p>
                             </div>
                         </div>
-                        
+
                         <div class="requirement-item">
                             <div class="req-icon neu-badge">✓</div>
                             <div class="req-content">
@@ -333,7 +346,7 @@
                                 <p>প্রাথমিক ৩ বছর সক্রিয় সদস্য থাকার প্রতিশ্রুতি দিতে হবে।</p>
                             </div>
                         </div>
-                        
+
                         <div class="requirement-item">
                             <div class="req-icon neu-badge">✓</div>
                             <div class="req-content">
@@ -341,7 +354,7 @@
                                 <p>জাতীয় পরিচয়পত্র (NID), সদ্য তোলা ছবি, ঠিকানার প্রমাণপত্র।</p>
                             </div>
                         </div>
-                        
+
                         <div class="requirement-item">
                             <div class="req-icon neu-badge">✓</div>
                             <div class="req-content">
@@ -350,7 +363,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="benefits-box neu-card-sm">
                         <h4>📊 সদস্য সুবিধা সমূহ:</h4>
                         <ul>
@@ -361,7 +374,7 @@
                             <li>✓ বিশেষ ছাড় ও অফার</li>
                         </ul>
                     </div>
-                    
+
                     <button class="neu-btn neu-btn-primary" onclick="location.href='form.html'">
                         <i class="fas fa-user-plus"></i> সদস্য হতে আবেদন করুন
                     </button>
@@ -379,7 +392,8 @@
                 <!-- Brand Column -->
                 <div class="footer-brand">
                     <div class="logo">
-                        <div class="logo-icon" style="width:52px;height:52px;background:linear-gradient(135deg,#C9A227,#A67C00);color:#fff;display:flex;align-items:center;justify-content:center;border-radius:50%;font-weight:700;font-size:22px;box-shadow:var(--neu-shadow-sm);">
+                        <div class="logo-icon"
+                            style="width:52px;height:52px;background:linear-gradient(135deg,#C9A227,#A67C00);color:#fff;display:flex;align-items:center;justify-content:center;border-radius:50%;font-weight:700;font-size:22px;box-shadow:var(--neu-shadow-sm);">
                             ب
                         </div>
                         <div class="logo-text">
@@ -388,7 +402,7 @@
                         </div>
                     </div>
                     <p data-i18n="footerTagline">সুদমুক্ত লেনদেনে সমৃদ্ধি সবার।</p>
-                    
+
                     <div class="social-links">
                         <a href="#" class="neu-icon-btn" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
                         <a href="#" class="neu-icon-btn" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
@@ -396,7 +410,7 @@
                         <a href="#" class="neu-icon-btn" aria-label="Email"><i class="fas fa-envelope"></i></a>
                     </div>
                 </div>
-                
+
                 <!-- Quick Links -->
                 <div class="footer-col">
                     <h5 data-i18n="footerQuickLinks">দ্রুত লিঙ্ক</h5>
@@ -408,7 +422,7 @@
                         <li><a href="admin/admin.html">অ্যাডমিন প্যানেল</a></li>
                     </ul>
                 </div>
-                
+
                 <!-- Services -->
                 <div class="footer-col">
                     <h5 data-i18n="footerServices">সেবাসমূহ</h5>
@@ -420,7 +434,7 @@
                         <li><a href="#">ডিজিটাল KYC</a></li>
                     </ul>
                 </div>
-                
+
                 <!-- Contact -->
                 <div class="footer-col">
                     <h5 data-i18n="footerContact">যোগাযোগ</h5>
@@ -428,16 +442,18 @@
                         <li><i class="fas fa-user-tie"></i> সভাপতি: <a href="tel:01737131095">০১৭৩৭১৩১০৯৫</a></li>
                         <li><i class="fas fa-user"></i> সম্পাদক: <a href="tel:01717267005">০১৭১৭২৬৭০০৫</a></li>
                         <li><i class="fas fa-wallet"></i> কোষাধ্যক্ষ: <a href="tel:01648248006">০১৬৪৮২৪৮০০৬</a></li>
-                        <li><i class="fas fa-envelope"></i> <a href="mailto:info@barakahfinance.com">info@barakahfinance.com</a></li>
+                        <li><i class="fas fa-envelope"></i> <a
+                                href="mailto:info@barakahfinance.com">info@barakahfinance.com</a></li>
                     </ul>
                 </div>
             </div>
-            
+
             <div class="neu-divider"></div>
-            
+
             <div class="footer-bottom">
                 <span data-i18n="footerCopyright">© ২০২৬ বারাকাহ ফাইন্যান্স। সর্বস্বত্ব সংরক্ষিত।</span>
-                <span data-i18n="footerAdvisors">শরিয়াহ পরামর্শক: মাওলানা আব্দুল হান্নান | মাও. ইমরান হোসাইন কাসেমী</span>
+                <span data-i18n="footerAdvisors">শরিয়াহ পরামর্শক: মাওলানা আব্দুল হান্নান | মাও. ইমরান হোসাইন
+                    কাসেমী</span>
             </div>
         </div>
     </footer>
@@ -463,13 +479,16 @@
                 </div>
                 <div class="af">
                     <label>পাসওয়ার্ড *</label>
-                    <input class="neu-input" type="password" id="li-pw" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()" />
+                    <input class="neu-input" type="password" id="li-pw" placeholder="••••••••"
+                        onkeydown="if(event.key==='Enter')doLogin()" />
                 </div>
-                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;font-size:12px;">
+                <div
+                    style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;font-size:12px;">
                     <label style="display:flex;gap:5px;align-items:center;cursor:pointer;">
                         <input type="checkbox" id="li-rem" /> মনে রাখুন
                     </label>
-                    <span onclick="setAuthPanel('forgot')" style="color:#065F46;cursor:pointer;text-decoration:underline;">পাসওয়ার্ড ভুলে গেছেন?</span>
+                    <span onclick="setAuthPanel('forgot')"
+                        style="color:#065F46;cursor:pointer;text-decoration:underline;">পাসওয়ার্ড ভুলে গেছেন?</span>
                 </div>
                 <button class="neu-btn neu-btn-primary" style="width:100%;" onclick="doLogin()">🔑 লগইন করুন</button>
             </div>
@@ -481,7 +500,8 @@
                 </div>
                 <div class="af">
                     <label>মোবাইল নম্বর *</label>
-                    <input class="neu-input" id="su-mobile" type="tel" placeholder="01XXXXXXXXX" pattern="01[0-9]{9}" required />
+                    <input class="neu-input" id="su-mobile" type="tel" placeholder="01XXXXXXXXX" pattern="01[0-9]{9}"
+                        required />
                 </div>
                 <div class="af">
                     <label>ইউজারনেম *</label>
@@ -489,15 +509,18 @@
                 </div>
                 <div class="af">
                     <label>পাসওয়ার্ড *</label>
-                    <input class="neu-input" type="password" id="su-pw" placeholder="কমপক্ষে ৮ অক্ষর" minlength="8" required />
+                    <input class="neu-input" type="password" id="su-pw" placeholder="কমপক্ষে ৮ অক্ষর" minlength="8"
+                        required />
                 </div>
                 <div class="af">
                     <label>পাসওয়ার্ড নিশ্চিত করুন *</label>
-                    <input class="neu-input" type="password" id="su-pw-confirm" placeholder="পুনরায় পাসওয়ার্ড" minlength="8" required />
+                    <input class="neu-input" type="password" id="su-pw-confirm" placeholder="পুনরায় পাসওয়ার্ড"
+                        minlength="8" required />
                 </div>
                 <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;font-size:12px;">
                     <input type="checkbox" id="su-terms" required />
-                    <label for="su-terms" style="cursor:pointer;">আমি <a href="#" style="color:#065F46;text-decoration:underline;">শর্তাবলী</a> সম্মত</label>
+                    <label for="su-terms" style="cursor:pointer;">আমি <a href="#"
+                            style="color:#065F46;text-decoration:underline;">শর্তাবলী</a> সম্মত</label>
                 </div>
                 <button class="neu-btn neu-btn-primary" style="width:100%;" onclick="doSignup()">✅ নিবন্ধন করুন</button>
             </div>
@@ -539,7 +562,7 @@
             document.body.classList.toggle('dark-mode');
             const toggle = document.getElementById('dkTog');
             const icon = toggle ? toggle.querySelector('i') : null;
-            
+
             if (document.body.classList.contains('dark-mode')) {
                 if (icon) icon.className = 'fas fa-sun';
                 localStorage.setItem('bf_dark', '1');
@@ -582,11 +605,11 @@
         function openBadgeDetailModal(type) {
             const modal = document.getElementById('badgeDetailModal');
             const content = document.getElementById('badgeDetailContent');
-            
+
             if (!modal || !content) return;
-            
+
             let html = '';
-            
+
             if (type === 'members') {
                 html = `
                     <div class="bd-title">মোট সদস্য তথ্য</div>
@@ -632,7 +655,7 @@
                     <p>আপনার বর্তমানে কোনো সক্রিয় ঋণ নেই।</p>
                 `;
             }
-            
+
             content.innerHTML = html;
             modal.classList.remove('hidden');
         }
@@ -683,4 +706,5 @@
         }
     </script>
 </body>
+
 </html>

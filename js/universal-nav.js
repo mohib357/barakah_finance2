@@ -1,7 +1,4 @@
-/**
- * Universal Navigation Component for Barakah Finance
- * Automatically detects page location and adjusts paths
- */
+// C:\Project\barakah_finance2\js\universal-nav.js
 
 class NavigationManager {
     constructor() {
@@ -11,7 +8,7 @@ class NavigationManager {
 
     getBasePath() {
         const path = window.location.pathname;
-        
+
         // Check if in subdirectory
         if (path.includes('/pages/')) {
             return '../';
@@ -130,12 +127,12 @@ class NavigationManager {
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
         window.NavManager = new NavigationManager();
-        
+
         // Initialize Auth UI
         if (window.Auth) {
             window.Auth.updateUI();
         }
-        
+
         // Initialize Live Counter
         if (window.LiveCounter) {
             window.LiveCounter.updateDisplay();
@@ -143,11 +140,11 @@ if (document.readyState === 'loading') {
     });
 } else {
     window.NavManager = new NavigationManager();
-    
+
     if (window.Auth) {
         window.Auth.updateUI();
     }
-    
+
     if (window.LiveCounter) {
         window.LiveCounter.updateDisplay();
     }
@@ -165,7 +162,7 @@ function toggleDarkMode() {
     document.body.classList.toggle('dark-mode');
     const toggle = document.getElementById('dkTog');
     const icon = toggle ? toggle.querySelector('i') : null;
-    
+
     if (document.body.classList.contains('dark-mode')) {
         if (icon) icon.className = 'fas fa-sun';
         localStorage.setItem('bf_dark', '1');

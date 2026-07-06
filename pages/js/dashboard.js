@@ -1,18 +1,4 @@
-// C:\Project\Barakah_Finance\pages\js\dashboard.js
-// ══════════════════════════════════════════════════════════
-// DASHBOARD HANDLER — FIXED & IMPROVED VERSION
-// FIXES:
-// 1. Added proper DB availability check
-// 2. Removed duplicate doLogout function (uses auth.js version)
-// 3. Added proper error handling for all functions
-// 4. Added toast function with proper fallback
-// 5. Fixed profile completion calculation
-// 6. Added proper role-based menu building
-// 7. Fixed all panel loading functions
-// 8. Added proper data validation
-// 9. Added Bengali number formatting
-// 10. Added auto-refresh on data change
-// ══════════════════════════════════════════════════════════
+// C:\Project\barakah_finance2\pages\js\dashboard.js
 
 (function () {
     'use strict';

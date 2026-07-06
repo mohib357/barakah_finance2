@@ -1,7 +1,4 @@
-/**
- * Live Visitor Counter for Barakah Finance
- * Tracks real-time visitors using localStorage + timestamps
- */
+// C:\Project\barakah_finance2\js\live-counter.js
 
 class LiveVisitorCounter {
     constructor() {
@@ -10,7 +7,7 @@ class LiveVisitorCounter {
         this.sessionId = this.getOrCreateSession();
         this.updateInterval = 5000; // Update every 5 seconds
         this.timeoutDuration = 30000; // Consider visitor offline after 30 seconds
-        
+
         this.init();
     }
 
@@ -18,7 +15,7 @@ class LiveVisitorCounter {
         this.registerVisitor();
         this.startTracking();
         this.updateDisplay();
-        
+
         // Update on page visibility change
         document.addEventListener('visibilitychange', () => {
             if (!document.hidden) {
@@ -92,7 +89,7 @@ class LiveVisitorCounter {
     updateDisplay() {
         const count = this.getCount();
         const counterElement = document.getElementById('visitorCount');
-        
+
         if (counterElement) {
             // Animate number change
             const currentCount = parseInt(counterElement.textContent) || 0;
@@ -112,7 +109,7 @@ class LiveVisitorCounter {
         const interval = setInterval(() => {
             step++;
             current += stepValue;
-            
+
             if (step >= steps) {
                 element.textContent = to;
                 clearInterval(interval);

@@ -1,18 +1,4 @@
-// C:\Project\Barakah_Finance\backend\routes\products.js
-// ═══════════════════════════════════════════════════════════════════
-// পণ্য রাউট — FIXED & IMPROVED VERSION
-// FIXES:
-// 1. Added public GET with rate limiting and caching
-// 2. Added input validation with express-validator
-// 3. Added allowed fields whitelist for PUT/PATCH
-// 4. Added soft delete functionality
-// 5. Added proper error handling with try-catch
-// 6. Added logging for audit trail
-// 7. Added pagination for GET requests
-// 8. Added search and filter functionality
-// 9. Added image URL validation
-// 10. Added bulk operations (reorder, reset)
-// ═══════════════════════════════════════════════════════════════════
+// C:\Project\barakah_finance2\backend\routes\products.js
 
 const express = require('express');
 const router = express.Router();

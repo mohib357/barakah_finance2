@@ -1,18 +1,4 @@
-// C:\Project\Barakah_Finance\backend\routes\loans.js
-// ═══════════════════════════════════════════════════════════════════
-// করজে হাসানা রাউট — FIXED & IMPROVED VERSION
-// FIXES:
-// 1. Added input validation with express-validator
-// 2. Added active loan check (prevent multiple active loans)
-// 3. Added startMonth validation (must be current or future)
-// 4. Added ledger entry with proper error handling
-// 5. Added pagination for GET requests
-// 6. Added proper error handling with try-catch
-// 7. Added logging for audit trail
-// 8. Added loan history tracking
-// 9. Added notification triggers on status change
-// 10. Added loan repayment schedule generation
-// ═══════════════════════════════════════════════════════════════════
+// C:\Project\barakah_finance2\backend\routes\loans.js
 
 const express = require('express');
 const router = express.Router();

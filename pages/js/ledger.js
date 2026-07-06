@@ -1,16 +1,4 @@
-// C:\Project\Barakah_Finance\pages\js\ledger.js
-// ════════ LEDGER & ACCOUNTING — FIXED & IMPROVED VERSION ════════
-// FIXES:
-// 1. Added proper API_BASE with environment detection
-// 2. Added DB availability check for fallback
-// 3. Added proper error handling with try-catch
-// 4. Added toast function with proper styling
-// 5. Added Bengali number formatting
-// 6. Fixed duplicate API calls with caching
-// 7. Added loading states for async operations
-// 8. Fixed all panel loading functions
-// 9. Added proper data validation
-// 10. Added auto-refresh on data change
+// C:\Project\barakah_finance2\pages\js\ledger.js
 
 (function () {
     'use strict';

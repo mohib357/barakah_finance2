@@ -1,16 +1,4 @@
-// C:\Project\Barakah_Finance\js\api.js
-// ════════ Barakah Finance API Client - Fixed & Improved ════════
-// FIXES:
-// 1. Added dynamic API_BASE based on environment
-// 2. Added AbortSignal.timeout fallback for older browsers
-// 3. Added retry mechanism for failed requests
-// 4. Added response caching to reduce redundant calls
-// 5. Added request queue to prevent race conditions
-// 6. Fixed DB dependency issue (check before use)
-// 7. Added proper error handling and logging
-// 8. Added environment-aware console logging
-// 9. Added request/response interceptors for debugging
-// 10. Added automatic token refresh on 401
+// C:\Project\barakah_finance2\js\api.js
 
 (function () {
     'use strict';

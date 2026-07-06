@@ -1,14 +1,4 @@
-// C:\Project\Barakah_Finance\js\admin_settings.js
-// ════════ Admin Hero Settings - Fixed & Improved ════════
-// FIXES:
-// 1. Removed duplicate code with animation-control.js
-// 2. Fixed rainbow speed mapping consistency
-// 3. Added prefers-reduced-motion support
-// 4. Added resetToDefaults method
-// 5. Added debug logging only in development
-// 6. Fixed class toggling logic for multiple settings
-// 7. Added event delegation for settings updates
-// 8. Added environment-aware console logging
+// C:\Project\barakah_finance2\js\admin_settings.js
 
 (function () {
     'use strict';

@@ -1,17 +1,4 @@
-/* C:\Project\Barakah_Finance\admin\style\shop_admin.css */
-/* FIXED & IMPROVED VERSION:
-     - Added CSS variables for consistent theming
-     - Added proper dark mode with .dark-mode class
-     - Fixed responsive issues for mobile
-     - Added proper accessibility support
-     - Added print styles
-     - Added reduced motion support
-     - Improved tab and modal styles
-     - Added smooth transitions
-     - Fixed button and tag styles
-     - Added proper focus states
-     - Unified with admin.css styles
-*/
+/* C:\Project\barakah_finance2\admin\style\shop_admin.css */
 
 /* ════════ ROOT VARIABLES ════════ */
 :root {
@@ -248,6 +235,7 @@ body.dark-mode .tab-btn.active {
         opacity: 0;
         transform: translateY(8px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -298,8 +286,13 @@ tr:hover td {
 }
 
 @keyframes modalFade {
-    from { opacity: 0; }
-    to { opacity: 1; }
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
 }
 
 .modal-box {
@@ -319,6 +312,7 @@ tr:hover td {
         opacity: 0;
         transform: translateY(30px) scale(0.95);
     }
+
     to {
         opacity: 1;
         transform: translateY(0) scale(1);
@@ -435,6 +429,7 @@ body.dark-mode .toast {
         opacity: 0;
         transform: translateY(15px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -455,7 +450,8 @@ body.dark-mode .toast {
         border-radius: 12px;
     }
 
-    th, td {
+    th,
+    td {
         padding: 6px 8px;
         font-size: 0.7rem;
     }
@@ -506,7 +502,8 @@ body.dark-mode .toast {
         border-radius: 10px;
     }
 
-    th, td {
+    th,
+    td {
         padding: 4px 6px;
         font-size: 0.65rem;
     }
@@ -555,6 +552,7 @@ body.dark-mode .toast {
 
 /* ════════ ACCESSIBILITY ════════ */
 @media (prefers-reduced-motion: reduce) {
+
     *,
     *::before,
     *::after {
@@ -589,6 +587,7 @@ body.dark-mode .toast {
 
 /* High contrast mode */
 @media (prefers-contrast: high) {
+
     .btn-g,
     .btn-r,
     .btn-y {
@@ -611,6 +610,7 @@ body.dark-mode .toast {
 
 /* ════════ PRINT STYLES ════════ */
 @media print {
+
     .btn-g,
     .btn-r,
     .btn-y,

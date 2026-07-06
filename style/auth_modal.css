@@ -1,13 +1,4 @@
-/* C:\Project\Barakah_Finance\style\auth_modal.css */
-/* FIXED & IMPROVED VERSION:
-     - Unified dark mode class: now uses .dark-mode (consistent with other files)
-     - Added root CSS variables for easier theming
-     - Fixed z-index conflicts (reduced from 10000 to 1050)
-     - Improved responsive design for mobile
-     - Added focus states for accessibility
-     - Fixed tab border conflict
-     - Added proper scrollbar styling
-*/
+/* C:\Project\barakah_finance2\style\auth_modal.css */
 
 /* ════════ ROOT VARIABLES ════════ */
 :root {

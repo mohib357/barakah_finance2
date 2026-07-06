@@ -1,57 +1,53 @@
-/* neumorphism.css - Neumorphism design system for Barakah Finance */
-
-/* ══════════════════════════════════════════════════════════
-   NEUMORPHISM DESIGN TOKENS
-   ══════════════════════════════════════════════════════════ */
+/* C:\Project\barakah_finance2\style\new-sections.css */
 
 :root {
     /* Neumorphism shadows */
     --neu-shadow-sm: 4px 4px 8px rgba(59, 109, 17, 0.15),
-                     -4px -4px 8px rgba(255, 255, 255, 0.9);
-    
+        -4px -4px 8px rgba(255, 255, 255, 0.9);
+
     --neu-shadow-md: 6px 6px 12px rgba(59, 109, 17, 0.18),
-                     -6px -6px 12px rgba(255, 255, 255, 0.95);
-    
+        -6px -6px 12px rgba(255, 255, 255, 0.95);
+
     --neu-shadow-lg: 10px 10px 20px rgba(59, 109, 17, 0.2),
-                     -10px -10px 20px rgba(255, 255, 255, 1);
-    
+        -10px -10px 20px rgba(255, 255, 255, 1);
+
     --neu-shadow-inset: inset 4px 4px 8px rgba(59, 109, 17, 0.12),
-                        inset -4px -4px 8px rgba(255, 255, 255, 0.8);
-    
+        inset -4px -4px 8px rgba(255, 255, 255, 0.8);
+
     /* Neumorphism backgrounds */
     --neu-bg-light: #FDFAF3;
     --neu-bg-card: #F8F5EB;
-    
+
     /* Button states */
     --neu-btn-hover: 2px 2px 6px rgba(59, 109, 17, 0.2),
-                     -2px -2px 6px rgba(255, 255, 255, 1);
-    
+        -2px -2px 6px rgba(255, 255, 255, 1);
+
     --neu-btn-active: inset 2px 2px 4px rgba(59, 109, 17, 0.15),
-                      inset -2px -2px 4px rgba(255, 255, 255, 0.7);
+        inset -2px -2px 4px rgba(255, 255, 255, 0.7);
 }
 
 body.dark-mode {
     /* Dark mode neumorphism */
     --neu-shadow-sm: 4px 4px 8px rgba(0, 0, 0, 0.3),
-                     -4px -4px 8px rgba(255, 255, 255, 0.03);
-    
+        -4px -4px 8px rgba(255, 255, 255, 0.03);
+
     --neu-shadow-md: 6px 6px 12px rgba(0, 0, 0, 0.35),
-                     -6px -6px 12px rgba(255, 255, 255, 0.04);
-    
+        -6px -6px 12px rgba(255, 255, 255, 0.04);
+
     --neu-shadow-lg: 10px 10px 20px rgba(0, 0, 0, 0.4),
-                     -10px -10px 20px rgba(255, 255, 255, 0.05);
-    
+        -10px -10px 20px rgba(255, 255, 255, 0.05);
+
     --neu-shadow-inset: inset 4px 4px 8px rgba(0, 0, 0, 0.25),
-                        inset -4px -4px 8px rgba(255, 255, 255, 0.03);
-    
+        inset -4px -4px 8px rgba(255, 255, 255, 0.03);
+
     --neu-bg-light: #0f1a15;
     --neu-bg-card: #112318;
-    
+
     --neu-btn-hover: 2px 2px 6px rgba(0, 0, 0, 0.4),
-                     -2px -2px 6px rgba(255, 255, 255, 0.05);
-    
+        -2px -2px 6px rgba(255, 255, 255, 0.05);
+
     --neu-btn-active: inset 2px 2px 4px rgba(0, 0, 0, 0.3),
-                      inset -2px -2px 4px rgba(255, 255, 255, 0.02);
+        inset -2px -2px 4px rgba(255, 255, 255, 0.02);
 }
 
 /* ══════════════════════════════════════════════════════════
@@ -214,11 +210,10 @@ body.dark-mode .neu-input::placeholder {
 /* Neumorphism Divider */
 .neu-divider {
     height: 2px;
-    background: linear-gradient(90deg, 
-        transparent,
-        rgba(201, 162, 39, 0.3) 50%,
-        transparent
-    );
+    background: linear-gradient(90deg,
+            transparent,
+            rgba(201, 162, 39, 0.3) 50%,
+            transparent);
     margin: 2rem 0;
 }
 
@@ -373,12 +368,11 @@ body.dark-mode .lang-option.active {
 /* Neumorphism Gold Accent Line */
 .neu-gold-line {
     height: 3px;
-    background: linear-gradient(90deg, 
-        transparent,
-        var(--gold) 20%,
-        var(--gold) 80%,
-        transparent
-    );
+    background: linear-gradient(90deg,
+            transparent,
+            var(--gold) 20%,
+            var(--gold) 80%,
+            transparent);
     box-shadow: 0 2px 4px rgba(201, 162, 39, 0.3);
     margin: 1rem 0;
     border-radius: 2px;
