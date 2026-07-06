@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>অ্যাকাউন্টিং - বারাকাহ ফাইন্যান্স</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        gold: { 400: '#D4AF37', 500: '#C9A227' },
+                        emerald: { 900: '#064E3B' }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Noto Sans Bengali', sans-serif; }
+        .neu-card {
+            background: #f5f3ed;
+            border-radius: 16px;
+            box-shadow: 6px 6px 12px rgba(0,0,0,0.1), -6px -6px 12px rgba(255,255,255,0.9);
+        }
+        .dark .neu-card { background: #1a2f23; box-shadow: 6px 6px 12px rgba(0,0,0,0.3), -6px -6px 12px rgba(255,255,255,0.02); }
+    </style>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 min-h-screen">
+
+<div class="max-w-7xl mx-auto p-4">
+    <!-- Header -->
+    <header class="neu-card p-6 mb-6">
+        <div class="flex justify-between items-center flex-wrap gap-4">
+            <div>
+                <h1 class="text-2xl font-bold text-emerald-900 dark:text-emerald-300">💰 অ্যাকাউন্টিং ম্যানেজমেন্ট</h1>
+                <p class="text-sm text-gray-600 dark:text-gray-400">আয়-ব্যয় ব্যবস্থাপনা ও হিসাব-পাতি</p>
+            </div>
+            <div class="flex gap-2">
+                <a href="../admin/admin.html" class="px-4 py-2 bg-emerald-900 text-white rounded-lg text-sm">← অ্যাডমিন</a>
+                <a href="../index.html" class="px-4 py-2 bg-gray-200 dark:bg-gray-700 rounded-lg text-sm">🏠 হোম</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Stats Row -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+        <div class="neu-card p-4 text-center">
+            <div class="text-3xl font-bold text-green-600" id="totalIncome">৳০</div>
+            <div class="text-sm text-gray-600 dark:text-gray-400 mt-1">মোট আয়</div>
+        </div>
+        <div class="neu-card p-4 text-center">
+            <div class="text-3xl font-bold text-red-600" id="totalExpense">৳০</div>
+            <div class="text-sm text-gray-600 dark:text-gray-400 mt-1">মোট ব্যয়</div>
+        </div>
+        <div class="neu-card p-4 text-center">
+            <div class="text-3xl font-bold text-blue-600" id="netBalance">৳০</div>
+            <div class="text-sm text-gray-600 dark:text-gray-400 mt-1">নিট ব্যালেন্স</div>
+        </div>
+        <div class="neu-card p-4 text-center">
+            <div class="text-3xl font-bold text-gray-700 dark:text-gray-300" id="totalEntries">০</div>
+            <div class="text-sm text-gray-600 dark:text-gray-400 mt-1">মোট এন্ট্রি</div>
+        </div>
+    </div>
+
+    <!-- Add Entry Form -->
+    <div class="neu-card p-6 mb-6">
+        <h2 class="text-xl font-bold text-emerald-900 dark:text-emerald-300 mb-4">➕ নতুন এন্ট্রি যোগ করুন</h2>
+        <form id="entryForm" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+                <label class="block text-sm font-medium mb-2">ধরন *</label>
+                <select id="entryType" class="w-full px-4 py-2 rounded-lg border dark:bg-gray-800" required onchange="updateCategories()">
+                    <option value="">-- ধরন নির্বাচন --</option>
+                    <option value="income">আয়</option>
+                    <option value="expense">ব্যয়</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-sm font-medium mb-2">ক্যাটাগরি *</label>
+                <select id="entryCategory" class="w-full px-4 py-2 rounded-lg border dark:bg-gray-800" required>
+                    <option value="">-- প্রথমে ধরন নির্বাচন করুন --</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-sm font-medium mb-2">পরিমাণ (৳) *</label>
+                <input type="number" id="entryAmount" class="w-full px-4 py-2 rounded-lg border dark:bg-gray-800" placeholder="০.০০" step="0.01" min="0.01" required>
+            </div>
+            <div>
+                <label class="block text-sm font-medium mb-2">তারিখ *</label>
+                <input type="date" id="entryDate" class="w-full px-4 py-2 rounded-lg border dark:bg-gray-800" required>
+            </div>
+            <div class="md:col-span-2">
+                <label class="block text-sm font-medium mb-2">বিবরণ *</label>
+                <textarea id="entryDescription" class="w-full px-4 py-2 rounded-lg border dark:bg-gray-800" rows="2" placeholder="বিস্তারিত বিবরণ লিখুন..." required></textarea>
+            </div>
+            <div>
+                <label class="block text-sm font-medium mb-2">সদস্য/গ্রাহক আইডি (ঐচ্ছিক)</label>
+                <input type="text" id="entryUserId" class="w-full px-4 py-2 rounded-lg border dark:bg-gray-800" placeholder="USER-XXXXX">
+            </div>
+            <div>
+                <label class="block text-sm font-medium mb-2">মন্তব্য (ঐচ্ছিক)</label>
+                <input type="text" id="entryNote" class="w-full px-4 py-2 rounded-lg border dark:bg-gray-800" placeholder="অতিরিক্ত মন্তব্য">
+            </div>
+            <div class="md:col-span-2 flex gap-2">
+                <button type="submit" class="px-6 py-2 bg-emerald-900 text-white rounded-lg font-medium">✅ এন্ট্রি যোগ করুন</button>
+                <button type="reset" class="px-6 py-2 bg-gray-300 dark:bg-gray-700 rounded-lg font-medium">🔄 রিসেট</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Filter & Search -->
+    <div class="neu-card p-4 mb-6 flex flex-wrap gap-3 items-center">
+        <input type="text" id="searchBox" class="px-4 py-2 rounded-lg border dark:bg-gray-800 flex-1 min-w-[200px]" placeholder="🔍 খুঁজুন...">
+        <select id="filterType" class="px-4 py-2 rounded-lg border dark:bg-gray-800" onchange="loadEntries()">
+            <option value="">সকল ধরন</option>
+            <option value="income">আয়</option>
+            <option value="expense">ব্যয়</option>
+        </select>
+        <select id="filterCategory" class="px-4 py-2 rounded-lg border dark:bg-gray-800" onchange="loadEntries()">
+            <option value="">সকল ক্যাটাগরি</option>
+        </select>
+        <input type="date" id="filterFrom" class="px-4 py-2 rounded-lg border dark:bg-gray-800" onchange="loadEntries()">
+        <span class="text-gray-600">থেকে</span>
+        <input type="date" id="filterTo" class="px-4 py-2 rounded-lg border dark:bg-gray-800" onchange="loadEntries()">
+        <button onclick="exportToCSV()" class="px-4 py-2 bg-yellow-600 text-white rounded-lg text-sm">📊 CSV Export</button>
+    </div>
+
+    <!-- Entries Table -->
+    <div class="neu-card p-6">
+        <h2 class="text-xl font-bold text-emerald-900 dark:text-emerald-300 mb-4">📋 লেজার এন্ট্রি সমূহ</h2>
+        <div class="overflow-x-auto">
+            <table class="w-full min-w-[800px]" id="entriesTable">
+                <thead class="bg-emerald-900 text-white">
+                    <tr>
+                        <th class="p-3 text-left">তারিখ</th>
+                        <th class="p-3 text-left">ধরন</th>
+                        <th class="p-3 text-left">ক্যাটাগরি</th>
+                        <th class="p-3 text-left">বিবরণ</th>
+                        <th class="p-3 text-right">পরিমাণ</th>
+                        <th class="p-3 text-left">যোগ করেছেন</th>
+                        <th class="p-3 text-center">কার্যক্রম</th>
+                    </tr>
+                </thead>
+                <tbody id="entriesTableBody">
+                    <tr>
+                        <td colspan="7" class="p-8 text-center text-gray-500">লোড হচ্ছে...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div id="pagination" class="mt-4 flex justify-center gap-2"></div>
+    </div>
+</div>
+
+<div id="toast" class="fixed top-4 right-4 px-6 py-3 bg-emerald-900 text-white rounded-lg shadow-lg hidden"></div>
+
+<script>
+// Categories
+const CATEGORIES = {
+    income: [
+        { key: 'savings', label: 'সঞ্চয়' },
+        { key: 'late_fee', label: 'বিলম্ব ফি' },
+        { key: 'loan_repayment', label: 'করজ পরিশোধ' },
+        { key: 'profit', label: 'মুনাফা' },
+        { key: 'donation', label: 'অনুদান' },
+        { key: 'other_income', label: 'অন্যান্য আয়' },
+        { key: 'manual', label: 'ম্যানুয়াল' }
+    ],
+    expense: [
+        { key: 'loan_disbursed', label: 'করজ প্রদান' },
+        { key: 'operational', label: 'পরিচালন ব্যয়' },
+        { key: 'purchase', label: 'ক্রয়' },
+        { key: 'salary', label: 'বেতন' },
+        { key: 'other_expense', label: 'অন্যান্য ব্যয়' },
+        { key: 'manual', label: 'ম্যানুয়াল' }
+    ]
+};
+
+let allEntries = [];
+let currentPage = 1;
+const perPage = 20;
+
+// Initialize
+document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('entryDate').valueAsDate = new Date();
+    loadCategories();
+    loadEntries();
+});
+
+// Update categories based on type
+function updateCategories() {
+    const type = document.getElementById('entryType').value;
+    const categorySelect = document.getElementById('entryCategory');
+    categorySelect.innerHTML = '<option value="">-- ক্যাটাগরি নির্বাচন --</option>';
+    
+    if (type && CATEGORIES[type]) {
+        CATEGORIES[type].forEach(cat => {
+            const option = document.createElement('option');
+            option.value = cat.key;
+            option.textContent = cat.label;
+            categorySelect.appendChild(option);
+        });
+    }
+}
+
+// Load all categories for filter
+function loadCategories() {
+    const filterCategory = document.getElementById('filterCategory');
+    const allCats = [...CATEGORIES.income, ...CATEGORIES.expense];
+    const uniqueCats = [...new Map(allCats.map(c => [c.key, c])).values()];
+    
+    uniqueCats.forEach(cat => {
+        const option = document.createElement('option');
+        option.value = cat.key;
+        option.textContent = cat.label;
+        filterCategory.appendChild(option);
+    });
+}
+
+// Load entries from localStorage (simulated backend)
+function loadEntries() {
+    const ledger = JSON.parse(localStorage.getItem('ledger') || '[]');
+    
+    // Apply filters
+    const filterType = document.getElementById('filterType').value;
+    const filterCategory = document.getElementById('filterCategory').value;
+    const filterFrom = document.getElementById('filterFrom').value;
+    const filterTo = document.getElementById('filterTo').value;
+    const searchTerm = document.getElementById('searchBox').value.toLowerCase();
+    
+    allEntries = ledger.filter(entry => {
+        if (filterType && entry.type !== filterType) return false;
+        if (filterCategory && entry.category !== filterCategory) return false;
+        if (filterFrom && entry.date < filterFrom) return false;
+        if (filterTo && entry.date > filterTo) return false;
+        if (searchTerm && !entry.description.toLowerCase().includes(searchTerm)) return false;
+        return true;
+    });
+    
+    // Sort by date (newest first)
+    allEntries.sort((a, b) => new Date(b.date) - new Date(a.date));
+    
+    updateStats();
+    renderTable();
+}
+
+// Update statistics
+function updateStats() {
+    const income = allEntries.filter(e => e.type === 'income').reduce((sum, e) => sum + e.amount, 0);
+    const expense = allEntries.filter(e => e.type === 'expense').reduce((sum, e) => sum + e.amount, 0);
+    
+    document.getElementById('totalIncome').textContent = `৳${income.toLocaleString('bn-BD')}`;
+    document.getElementById('totalExpense').textContent = `৳${expense.toLocaleString('bn-BD')}`;
+    document.getElementById('netBalance').textContent = `৳${(income - expense).toLocaleString('bn-BD')}`;
+    document.getElementById('totalEntries').textContent = allEntries.length.toLocaleString('bn-BD');
+}
+
+// Render table
+function renderTable() {
+    const tbody = document.getElementById('entriesTableBody');
+    const start = (currentPage - 1) * perPage;
+    const end = start + perPage;
+    const pageEntries = allEntries.slice(start, end);
+    
+    if (pageEntries.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="7" class="p-8 text-center text-gray-500">কোনো এন্ট্রি নেই</td></tr>';
+        document.getElementById('pagination').innerHTML = '';
+        return;
+    }
+    
+    tbody.innerHTML = pageEntries.map(entry => `
+        <tr class="border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800">
+            <td class="p-3">${new Date(entry.date).toLocaleDateString('bn-BD')}</td>
+            <td class="p-3">
+                <span class="px-2 py-1 rounded text-xs ${entry.type === 'income' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}">
+                    ${entry.type === 'income' ? 'আয়' : 'ব্যয়'}
+                </span>
+            </td>
+            <td class="p-3 text-sm">${getCategoryLabel(entry.category)}</td>
+            <td class="p-3 text-sm">${entry.description}</td>
+            <td class="p-3 text-right font-bold ${entry.type === 'income' ? 'text-green-600' : 'text-red-600'}">
+                ${entry.type === 'income' ? '+' : '-'}৳${entry.amount.toLocaleString('bn-BD')}
+            </td>
+            <td class="p-3 text-sm">${entry.addedByName || 'অ্যাডমিন'}</td>
+            <td class="p-3 text-center">
+                ${entry.manual ? `<button onclick="deleteEntry('${entry.id}')" class="text-red-600 hover:text-red-800 text-sm">❌</button>` : '<span class="text-xs text-gray-400">স্বয়ংক্রিয়</span>'}
+            </td>
+        </tr>
+    `).join('');
+    
+    renderPagination();
+}
+
+// Render pagination
+function renderPagination() {
+    const totalPages = Math.ceil(allEntries.length / perPage);
+    const pagination = document.getElementById('pagination');
+    
+    if (totalPages <= 1) {
+        pagination.innerHTML = '';
+        return;
+    }
+    
+    let html = '';
+    for (let i = 1; i <= totalPages; i++) {
+        html += `<button onclick="changePage(${i})" class="px-3 py-1 rounded ${i === currentPage ? 'bg-emerald-900 text-white' : 'bg-gray-200 dark:bg-gray-700'}">${i}</button>`;
+    }
+    pagination.innerHTML = html;
+}
+
+function changePage(page) {
+    currentPage = page;
+    renderTable();
+}
+
+// Get category label
+function getCategoryLabel(key) {
+    const allCats = [...CATEGORIES.income, ...CATEGORIES.expense];
+    const cat = allCats.find(c => c.key === key);
+    return cat ? cat.label : key;
+}
+
+// Submit form
+document.getElementById('entryForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const entry = {
+        id: `LED-${Date.now().toString(36).toUpperCase()}`,
+        type: document.getElementById('entryType').value,
+        category: document.getElementById('entryCategory').value,
+        amount: parseFloat(document.getElementById('entryAmount').value),
+        date: document.getElementById('entryDate').value,
+        description: document.getElementById('entryDescription').value.trim(),
+        userId: document.getElementById('entryUserId').value.trim() || null,
+        note: document.getElementById('entryNote').value.trim(),
+        manual: true,
+        addedBy: 'ADMIN',
+        addedByName: 'অ্যাডমিন',
+        createdAt: new Date().toISOString()
+    };
+    
+    const ledger = JSON.parse(localStorage.getItem('ledger') || '[]');
+    ledger.push(entry);
+    localStorage.setItem('ledger', JSON.stringify(ledger));
+    
+    showToast('✅ এন্ট্রি সফলভাবে যোগ হয়েছে!');
+    document.getElementById('entryForm').reset();
+    document.getElementById('entryDate').valueAsDate = new Date();
+    loadEntries();
+});
+
+// Delete entry
+function deleteEntry(id) {
+    if (!confirm('এই এন্ট্রি মুছে ফেলতে চান?')) return;
+    
+    let ledger = JSON.parse(localStorage.getItem('ledger') || '[]');
+    ledger = ledger.filter(e => e.id !== id);
+    localStorage.setItem('ledger', JSON.stringify(ledger));
+    
+    showToast('🗑️ এন্ট্রি মুছে ফেলা হয়েছে');
+    loadEntries();
+}
+
+// Export to CSV
+function exportToCSV() {
+    const headers = ['তারিখ', 'ধরন', 'ক্যাটাগরি', 'বিবরণ', 'পরিমাণ', 'ইউজার আইডি', 'মন্তব্য'];
+    const rows = allEntries.map(e => [
+        e.date,
+        e.type === 'income' ? 'আয়' : 'ব্যয়',
+        getCategoryLabel(e.category),
+        e.description,
+        e.amount,
+        e.userId || '',
+        e.note || ''
+    ]);
+    
+    const csvContent = [
+        headers.join(','),
+        ...rows.map(row => row.map(v => `"${String(v).replace(/"/g, '""')}"`).join(','))
+    ].join('\n');
+    
+    const bom = '\uFEFF';
+    const blob = new Blob([bom + csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = `ledger-${new Date().toISOString().slice(0, 10)}.csv`;
+    link.click();
+    
+    showToast('📊 CSV ডাউনলোড শুরু হয়েছে');
+}
+
+// Toast notification
+function showToast(message) {
+    const toast = document.getElementById('toast');
+    toast.textContent = message;
+    toast.classList.remove('hidden');
+    setTimeout(() => toast.classList.add('hidden'), 3000);
+}
+
+// Search
+document.getElementById('searchBox').addEventListener('input', () => {
+    currentPage = 1;
+    loadEntries();
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>সদস্য/গ্রাহক ব্যবস্থাপনা - বারাকাহ ফাইন্যান্স</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: 'Noto Sans Bengali', sans-serif; }
+        .neu-card {
+            background: #f5f3ed;
+            border-radius: 16px;
+            box-shadow: 6px 6px 12px rgba(0,0,0,0.1), -6px -6px 12px rgba(255,255,255,0.9);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+
+<div class="max-w-7xl mx-auto p-4">
+    <!-- Header -->
+    <header class="neu-card p-6 mb-6">
+        <div class="flex justify-between items-center flex-wrap gap-4">
+            <div>
+                <h1 class="text-2xl font-bold text-emerald-900">👥 সদস্য/গ্রাহক ব্যবস্থাপনা</h1>
+                <p class="text-sm text-gray-600">নতুন সদস্য ও গ্রাহক যোগ করুন</p>
+            </div>
+            <div class="flex gap-2">
+                <a href="../admin/admin.html" class="px-4 py-2 bg-emerald-900 text-white rounded-lg text-sm">← অ্যাডমিন</a>
+                <a href="../index.html" class="px-4 py-2 bg-gray-200 rounded-lg text-sm">🏠 হোম</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Tabs -->
+    <div class="neu-card p-2 mb-6 flex gap-2">
+        <button onclick="showTab('add')" id="tabAdd" class="flex-1 px-4 py-2 bg-emerald-900 text-white rounded-lg font-medium">➕ নতুন যোগ করুন</button>
+        <button onclick="showTab('list')" id="tabList" class="flex-1 px-4 py-2 bg-gray-200 rounded-lg font-medium">📋 তালিকা দেখুন</button>
+    </div>
+
+    <!-- Add New Section -->
+    <div id="addSection" class="neu-card p-6">
+        <h2 class="text-xl font-bold text-emerald-900 mb-4">নতুন সদস্য/গ্রাহক যোগ করুন</h2>
+        <form id="addUserForm" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- User Type -->
+            <div class="md:col-span-2">
+                <label class="block text-sm font-medium mb-2">ব্যবহারকারীর ধরন *</label>
+                <div class="flex gap-4">
+                    <label class="flex items-center gap-2">
+                        <input type="radio" name="userType" value="member" checked onchange="updateFormForType()">
+                        <span>সদস্য (Member)</span>
+                    </label>
+                    <label class="flex items-center gap-2">
+                        <input type="radio" name="userType" value="customer" onchange="updateFormForType()">
+                        <span>গ্রাহক (Customer)</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Basic Info -->
+            <div>
+                <label class="block text-sm font-medium mb-2">সদস্য/গ্রাহক আইডি *</label>
+                <input type="text" id="userId" class="w-full px-4 py-2 rounded-lg border" placeholder="BF-2026-001" required>
+                <small class="text-xs text-gray-500">স্বয়ংক্রিয় তৈরি হবে</small>
+            </div>
+            
+            <div>
+                <label class="block text-sm font-medium mb-2">নাম (বাংলা) *</label>
+                <input type="text" id="nameBn" class="w-full px-4 py-2 rounded-lg border" placeholder="মোহাম্মদ রহিম" required>
+            </div>
+            
+            <div>
+                <label class="block text-sm font-medium mb-2">নাম (ইংরেজি) *</label>
+                <input type="text" id="nameEn" class="w-full px-4 py-2 rounded-lg border" placeholder="Mohammad Rahim" required>
+            </div>
+            
+            <div>
+                <label class="block text-sm font-medium mb-2">পিতার নাম *</label>
+                <input type="text" id="fatherName" class="w-full px-4 py-2 rounded-lg border" placeholder="পিতার নাম" required>
+            </div>
+            
+            <div>
+                <label class="block text-sm font-medium mb-2">মাতার নাম *</label>
+                <input type="text" id="motherName" class="w-full px-4 py-2 rounded-lg border" placeholder="মাতার নাম" required>
+            </div>
+            
+            <div>
+                <label class="block text-sm font-medium mb-2">এনআইডি নম্বর *</label>
+                <input type="text" id="nid" class="w-full px-4 py-2 rounded-lg border" placeholder="1234567890123" pattern="[0-9]{10,17}" required>
+            </div>
+            
+            <div>
+                <label class="block text-sm font-medium mb-2">জন্ম তারিখ *</label>
+                <input type="date" id="dob" class="w-full px-4 py-2 rounded-lg border" required>
+            </div>
+            
+            <div>
+                <label class="block text-sm font-medium mb-2">মোবাইল নম্বর *</label>
+                <input type="tel" id="mobile" class="w-full px-4 py-2 rounded-lg border" placeholder="01XXXXXXXXX" pattern="01[0-9]{9}" required>
+            </div>
+            
+            <div>
+                <label class="block text-sm font-medium mb-2">ইমেইল (ঐচ্ছিক)</label>
+                <input type="email" id="email" class="w-full px-4 py-2 rounded-lg border" placeholder="example@gmail.com">
+            </div>
+            
+            <div>
+                <label class="block text-sm font-medium mb-2">পেশা</label>
+                <select id="profession" class="w-full px-4 py-2 rounded-lg border">
+                    <option value="">-- নির্বাচন করুন --</option>
+                    <option value="ব্যবসা">ব্যবসা</option>
+                    <option value="চাকরি">চাকরি</option>
+                    <option value="শিক্ষক">শিক্ষক</option>
+                    <option value="ডাক্তার">ডাক্তার</option>
+                    <option value="ইঞ্জিনিয়ার">ইঞ্জিনিয়ার</option>
+                    <option value="কৃষক">কৃষক</option>
+                    <option value="অন্যান্য">অন্যান্য</option>
+                </select>
+            </div>
+
+            <!-- Address -->
+            <div class="md:col-span-2">
+                <label class="block text-sm font-medium mb-2">ঠিকানা *</label>
+                <textarea id="address" class="w-full px-4 py-2 rounded-lg border" rows="2" placeholder="সম্পূর্ণ ঠিকানা লিখুন..." required></textarea>
+            </div>
+
+            <!-- Member Specific Fields -->
+            <div id="memberFields" class="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-4 p-4 bg-emerald-50 rounded-lg">
+                <div>
+                    <label class="block text-sm font-medium mb-2">সদস্যপদ শুরুর তারিখ</label>
+                    <input type="date" id="membershipStartDate" class="w-full px-4 py-2 rounded-lg border">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-2">রেফারেন্স সদস্য</label>
+                    <input type="text" id="referredBy" class="w-full px-4 py-2 rounded-lg border" placeholder="রেফারেন্স সদস্যের নাম/আইডি">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-2">প্রাথমিক সঞ্চয়</label>
+                    <input type="number" id="initialSavings" class="w-full px-4 py-2 rounded-lg border" value="2000" min="0">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-2">সদস্যপদের ধরন</label>
+                    <select id="membershipType" class="w-full px-4 py-2 rounded-lg border">
+                        <option value="regular">নিয়মিত সদস্য</option>
+                        <option value="founding">প্রতিষ্ঠাতা সদস্য</option>
+                        <option value="honorary">সম্মানিত সদস্য</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Customer Specific Fields -->
+            <div id="customerFields" class="md:col-span-2 hidden grid-cols-1 md:grid-cols-2 gap-4 p-4 bg-blue-50 rounded-lg">
+                <div>
+                    <label class="block text-sm font-medium mb-2">গ্রাহক হওয়ার তারিখ</label>
+                    <input type="date" id="customerSince" class="w-full px-4 py-2 rounded-lg border">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-2">গ্রাহকের ধরন</label>
+                    <select id="customerType" class="w-full px-4 py-2 rounded-lg border">
+                        <option value="regular">নিয়মিত গ্রাহক</option>
+                        <option value="vip">ভিআইপি গ্রাহক</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Username & Password -->
+            <div>
+                <label class="block text-sm font-medium mb-2">ইউজারনেম *</label>
+                <input type="text" id="username" class="w-full px-4 py-2 rounded-lg border" placeholder="username123" required>
+                <small class="text-xs text-gray-500">মোবাইল নম্বর থেকে স্বয়ংক্রিয় তৈরি</small>
+            </div>
+            
+            <div>
+                <label class="block text-sm font-medium mb-2">পাসওয়ার্ড *</label>
+                <input type="password" id="password" class="w-full px-4 py-2 rounded-lg border" placeholder="কমপক্ষে ৮ অক্ষর" minlength="8" required>
+            </div>
+
+            <!-- Submit -->
+            <div class="md:col-span-2 flex gap-2">
+                <button type="submit" class="px-6 py-3 bg-emerald-900 text-white rounded-lg font-medium text-lg">✅ সংরক্ষণ করুন</button>
+                <button type="reset" class="px-6 py-3 bg-gray-300 rounded-lg font-medium text-lg">🔄 রিসেট</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- List Section -->
+    <div id="listSection" class="hidden">
+        <div class="neu-card p-4 mb-4 flex gap-3">
+            <input type="text" id="searchUser" class="flex-1 px-4 py-2 rounded-lg border" placeholder="🔍 নাম, আইডি, মোবাইল দিয়ে খুঁজুন...">
+            <select id="filterUserType" class="px-4 py-2 rounded-lg border" onchange="loadUsers()">
+                <option value="">সকল</option>
+                <option value="member">সদস্য</option>
+                <option value="customer">গ্রাহক</option>
+            </select>
+        </div>
+
+        <div class="neu-card p-6">
+            <h2 class="text-xl font-bold text-emerald-900 mb-4">📋 সদস্য/গ্রাহক তালিকা (<span id="totalUsers">0</span>)</h2>
+            <div class="overflow-x-auto">
+                <table class="w-full min-w-[800px]">
+                    <thead class="bg-emerald-900 text-white">
+                        <tr>
+                            <th class="p-3 text-left">আইডি</th>
+                            <th class="p-3 text-left">নাম</th>
+                            <th class="p-3 text-left">মোবাইল</th>
+                            <th class="p-3 text-left">ধরন</th>
+                            <th class="p-3 text-left">যোগদানের তারিখ</th>
+                            <th class="p-3 text-center">কার্যক্রম</th>
+                        </tr>
+                    </thead>
+                    <tbody id="usersTableBody">
+                        <tr><td colspan="6" class="p-8 text-center text-gray-500">লোড হচ্ছে...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="toast" class="fixed top-4 right-4 px-6 py-3 bg-emerald-900 text-white rounded-lg shadow-lg hidden z-50"></div>
+
+<script>
+// Initialize
+document.addEventListener('DOMContentLoaded', () => {
+    generateUserId();
+    document.getElementById('membershipStartDate').valueAsDate = new Date();
+    document.getElementById('customerSince').valueAsDate = new Date();
+    
+    // Auto-generate username from mobile
+    document.getElementById('mobile').addEventListener('input', (e) => {
+        const mobile = e.target.value.replace(/[^0-9]/g, '');
+        if (mobile.length >= 11) {
+            document.getElementById('username').value = 'user' + mobile.slice(-8);
+        }
+    });
+});
+
+// Show tab
+function showTab(tab) {
+    document.getElementById('addSection').classList.toggle('hidden', tab !== 'add');
+    document.getElementById('listSection').classList.toggle('hidden', tab !== 'list');
+    
+    document.getElementById('tabAdd').classList.toggle('bg-emerald-900', tab === 'add');
+    document.getElementById('tabAdd').classList.toggle('text-white', tab === 'add');
+    document.getElementById('tabAdd').classList.toggle('bg-gray-200', tab !== 'add');
+    document.getElementById('tabAdd').classList.toggle('text-gray-800', tab !== 'add');
+    
+    document.getElementById('tabList').classList.toggle('bg-emerald-900', tab === 'list');
+    document.getElementById('tabList').classList.toggle('text-white', tab === 'list');
+    document.getElementById('tabList').classList.toggle('bg-gray-200', tab !== 'list');
+    document.getElementById('tabList').classList.toggle('text-gray-800', tab !== 'list');
+    
+    if (tab === 'list') loadUsers();
+}
+
+// Generate User ID
+function generateUserId() {
+    const year = new Date().getFullYear();
+    const users = JSON.parse(localStorage.getItem('users') || '[]');
+    const count = users.length + 1;
+    const id = `BF-${year}-${String(count).padStart(3, '0')}`;
+    document.getElementById('userId').value = id;
+}
+
+// Update form for user type
+function updateFormForType() {
+    const type = document.querySelector('input[name="userType"]:checked').value;
+    document.getElementById('memberFields').style.display = type === 'member' ? 'grid' : 'none';
+    document.getElementById('customerFields').style.display = type === 'customer' ? 'grid' : 'none';
+}
+
+// Submit form
+document.getElementById('addUserForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    
+    const type = document.querySelector('input[name="userType"]:checked').value;
+    
+    const user = {
+        id: document.getElementById('userId').value,
+        nameBn: document.getElementById('nameBn').value,
+        nameEn: document.getElementById('nameEn').value,
+        fatherName: document.getElementById('fatherName').value,
+        motherName: document.getElementById('motherName').value,
+        nid: document.getElementById('nid').value,
+        dob: document.getElementById('dob').value,
+        mobile: document.getElementById('mobile').value,
+        email: document.getElementById('email').value,
+        profession: document.getElementById('profession').value,
+        address: document.getElementById('address').value,
+        username: document.getElementById('username').value,
+        password: document.getElementById('password').value,
+        role: type,
+        status: 'active',
+        createdAt: new Date().toISOString(),
+        createdBy: 'ADMIN'
+    };
+    
+    if (type === 'member') {
+        user.membershipStartDate = document.getElementById('membershipStartDate').value;
+        user.referredBy = document.getElementById('referredBy').value;
+        user.initialSavings = parseFloat(document.getElementById('initialSavings').value) || 0;
+        user.membershipType = document.getElementById('membershipType').value;
+    } else {
+        user.customerSince = document.getElementById('customerSince').value;
+        user.customerType = document.getElementById('customerType').value;
+    }
+    
+    // Save to localStorage
+    let users = JSON.parse(localStorage.getItem('users') || '[]');
+    
+    // Check if username/mobile exists
+    if (users.some(u => u.username === user.username)) {
+        showToast('❌ এই ইউজারনেম ইতিমধ্যে ব্যবহৃত হয়েছে!');
+        return;
+    }
+    
+    if (users.some(u => u.mobile === user.mobile)) {
+        showToast('❌ এই মোবাইল নম্বর ইতিমধ্যে নিবন্ধিত!');
+        return;
+    }
+    
+    users.push(user);
+    localStorage.setItem('users', JSON.stringify(users));
+    
+    showToast(`✅ ${type === 'member' ? 'সদস্য' : 'গ্রাহক'} সফলভাবে যোগ হয়েছে!`);
+    document.getElementById('addUserForm').reset();
+    generateUserId();
+    document.getElementById('membershipStartDate').valueAsDate = new Date();
+    updateFormForType();
+});
+
+// Load users
+function loadUsers() {
+    const users = JSON.parse(localStorage.getItem('users') || '[]');
+    const filterType = document.getElementById('filterUserType').value;
+    const searchTerm = document.getElementById('searchUser').value.toLowerCase();
+    
+    let filteredUsers = users.filter(u => {
+        if (filterType && u.role !== filterType) return false;
+        if (searchTerm && !(
+            u.nameBn.toLowerCase().includes(searchTerm) ||
+            u.id.toLowerCase().includes(searchTerm) ||
+            u.mobile.includes(searchTerm)
+        )) return false;
+        return true;
+    });
+    
+    document.getElementById('totalUsers').textContent = filteredUsers.length;
+    
+    const tbody = document.getElementById('usersTableBody');
+    if (filteredUsers.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" class="p-8 text-center text-gray-500">কোনো ডেটা নেই</td></tr>';
+        return;
+    }
+    
+    tbody.innerHTML = filteredUsers.map(u => `
+        <tr class="border-b hover:bg-gray-50">
+            <td class="p-3 font-mono text-sm">${u.id}</td>
+            <td class="p-3">${u.nameBn}</td>
+            <td class="p-3 font-mono">${u.mobile}</td>
+            <td class="p-3">
+                <span class="px-2 py-1 rounded text-xs ${u.role === 'member' ? 'bg-emerald-100 text-emerald-800' : 'bg-blue-100 text-blue-800'}">
+                    ${u.role === 'member' ? 'সদস্য' : 'গ্রাহক'}
+                </span>
+            </td>
+            <td class="p-3 text-sm">${new Date(u.createdAt).toLocaleDateString('bn-BD')}</td>
+            <td class="p-3 text-center">
+                <button onclick="viewUser('${u.id}')" class="text-blue-600 hover:text-blue-800 text-sm mr-2">👁️ দেখুন</button>
+                <button onclick="deleteUser('${u.id}')" class="text-red-600 hover:text-red-800 text-sm">❌</button>
+            </td>
+        </tr>
+    `).join('');
+}
+
+// Delete user
+function deleteUser(id) {
+    if (!confirm('এই ব্যবহারকারী মুছে ফেলতে চান?')) return;
+    
+    let users = JSON.parse(localStorage.getItem('users') || '[]');
+    users = users.filter(u => u.id !== id);
+    localStorage.setItem('users', JSON.stringify(users));
+    
+    showToast('🗑️ ব্যবহারকারী মুছে ফেলা হয়েছে');
+    loadUsers();
+}
+
+// View user
+function viewUser(id) {
+    const users = JSON.parse(localStorage.getItem('users') || '[]');
+    const user = users.find(u => u.id === id);
+    if (!user) return;
+    
+    alert(`নাম: ${user.nameBn}\nআইডি: ${user.id}\nমোবাইল: ${user.mobile}\nধরন: ${user.role === 'member' ? 'সদস্য' : 'গ্রাহক'}`);
+}
+
+// Toast
+function showToast(message) {
+    const toast = document.getElementById('toast');
+    toast.textContent = message;
+    toast.classList.remove('hidden');
+    setTimeout(() => toast.classList.add('hidden'), 3000);
+}
+
+// Search
+document.getElementById('searchUser').addEventListener('input', loadUsers);
+</script>
+
+</body>
+</html>
