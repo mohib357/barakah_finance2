@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>গ্যালারি - বারাকাহ ফাইন্যান্স</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Bengali:wght@400;600;700&family=Noto+Sans+Bengali:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <link rel="stylesheet" href="../style/style.css" />
+    <link rel="stylesheet" href="../style/navbar_style.css" />
+    <link rel="stylesheet" href="../style/neumorphism.css" />
+    <link rel="stylesheet" href="../style/new-sections.css" />
+    <style>
+        .gallery-tabs {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-bottom: 3rem;
+        }
+        .gallery-tab {
+            padding: 12px 24px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .gallery-tab.active {
+            background: linear-gradient(135deg, var(--teal-400), var(--green-400));
+            color: white;
+        }
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+        .gallery-item {
+            position: relative;
+            border-radius: 16px;
+            overflow: hidden;
+            cursor: pointer;
+            aspect-ratio: 4/3;
+            background: var(--neu-bg-card);
+        }
+        .gallery-item img,
+        .gallery-item video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .gallery-item-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0,0,0,0.7));
+            padding: 1rem;
+            color: white;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+        }
+        .gallery-item:hover .gallery-item-overlay {
+            transform: translateY(0);
+        }
+        .lightbox {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.95);
+            z-index: 9999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+        .lightbox.active {
+            display: flex;
+        }
+        .lightbox-content {
+            max-width: 90%;
+            max-height: 90%;
+        }
+        .lightbox-close {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <nav id="mainNav" class="neu-nav">
+        <a href="../index_new.html" class="logo">
+            <div class="logo-icon"><span style="font-size:22px;font-weight:700;color:#C9A227">ب</span></div>
+            <div class="logo-text"><strong>বারাকাহ ফাইন্যান্স</strong><span>BARAKAH FINANCE</span></div>
+        </a>
+        <ul class="nav-links">
+            <li><a href="../index_new.html" class="neu-btn">হোম</a></li>
+            <li><a href="about.html" class="neu-btn">আমাদের সম্পর্কে</a></li>
+            <li><a href="timeline.html" class="neu-btn">টাইম লাইন</a></li>
+            <li><a href="gallery.html" class="neu-btn neu-btn-primary">গ্যালারি</a></li>
+            <li><button class="neu-icon-btn" onclick="toggleDarkMode()"><i class="fas fa-moon"></i></button></li>
+        </ul>
+        <button class="hamburger" onclick="toggleMob()"><span></span><span></span><span></span></button>
+    </nav>
+
+    <section class="page-hero" style="background: linear-gradient(135deg, var(--cream), var(--green-50)); padding: 120px 1.5rem 4rem; text-align: center;">
+        <div class="neu-badge" style="display: inline-block; margin-bottom: 1rem;">📸 ছবি ও ভিডিও</div>
+        <h1 style="font-family: 'Noto Serif Bengali', serif; font-size: 2.5rem; color: var(--dark-green); margin-bottom: 1rem;">গ্যালারি</h1>
+        <p style="font-size: 1.1rem; color: var(--text-muted); max-width: 700px; margin: 0 auto;">আমাদের কার্যক্রম, ইভেন্ট এবং সদস্যদের মুহূর্তসমূহ</p>
+    </section>
+
+    <section style="background: white; padding: 4rem 1.5rem;">
+        <div style="max-width: 1400px; margin: 0 auto;">
+            <div class="gallery-tabs">
+                <button class="gallery-tab neu-btn active" data-tab="photos" onclick="switchTab('photos')">📸 ছবি</button>
+                <button class="gallery-tab neu-btn" data-tab="videos" onclick="switchTab('videos')">🎬 ভিডিও</button>
+                <button class="gallery-tab neu-btn" data-tab="events" onclick="switchTab('events')">📅 ইভেন্ট</button>
+            </div>
+
+            <div id="photos" class="gallery-content">
+                <div class="gallery-grid" id="photosGrid">
+                    <!-- Photos will be loaded here -->
+                    <div class="neu-card-sm" style="aspect-ratio: 4/3; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;">
+                        <i class="fas fa-image" style="font-size: 3rem; color: var(--gold); margin-bottom: 1rem;"></i>
+                        <p style="color: var(--text-muted);">ছবি শীঘ্রই যোগ করা হবে</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="videos" class="gallery-content" style="display: none;">
+                <div class="gallery-grid" id="videosGrid">
+                    <div class="neu-card-sm" style="aspect-ratio: 4/3; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;">
+                        <i class="fas fa-video" style="font-size: 3rem; color: var(--gold); margin-bottom: 1rem;"></i>
+                        <p style="color: var(--text-muted);">ভিডিও শীঘ্রই যোগ করা হবে</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="events" class="gallery-content" style="display: none;">
+                <div class="gallery-grid" id="eventsGrid">
+                    <div class="neu-card-sm" style="aspect-ratio: 4/3; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;">
+                        <i class="fas fa-calendar-alt" style="font-size: 3rem; color: var(--gold); margin-bottom: 1rem;"></i>
+                        <p style="color: var(--text-muted);">ইভেন্ট শীঘ্রই যোগ করা হবে</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+        <span class="lightbox-close">✕</span>
+        <img class="lightbox-content" id="lightboxImg" src="" alt="">
+    </div>
+
+    <footer class="neu-footer">
+        <div class="footer-container">
+            <div class="footer-bottom" style="justify-content: center;">
+                <span>© ২০২৬ বারাকাহ ফাইন্যান্স। সর্বস্বত্ব সংরক্ষিত।</span>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const icon = document.querySelector('.neu-icon-btn i');
+            if (document.body.classList.contains('dark-mode')) {
+                icon.className = 'fas fa-sun';
+                localStorage.setItem('bf_dark', '1');
+            } else {
+                icon.className = 'fas fa-moon';
+                localStorage.setItem('bf_dark', '0');
+            }
+        }
+
+        if (localStorage.getItem('bf_dark') === '1') {
+            document.body.classList.add('dark-mode');
+            const icon = document.querySelector('.neu-icon-btn i');
+            if (icon) icon.className = 'fas fa-sun';
+        }
+
+        function toggleMob() {
+            alert('Mobile menu');
+        }
+
+        function switchTab(tab) {
+            document.querySelectorAll('.gallery-content').forEach(el => el.style.display = 'none');
+            document.querySelectorAll('.gallery-tab').forEach(el => el.classList.remove('active'));
+            
+            document.getElementById(tab).style.display = 'block';
+            document.querySelector(`[data-tab="${tab}"]`).classList.add('active');
+        }
+
+        function openLightbox(src) {
+            document.getElementById('lightboxImg').src = src;
+            document.getElementById('lightbox').classList.add('active');
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightbox').classList.remove('active');
+        }
+    </script>
+</body>
+</html>
