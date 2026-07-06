@@ -14,10 +14,12 @@
 // 10. Added data seeding with checks
 // ═══════════════════════════════════════════════════════════════════
 
-const { LowSync, JSONFileSync } = require('lowdb');
+const { LowSync } = require('lowdb');
+const { JSONFileSync } = require('lowdb/node');
 const path = require('path');
 const { v4: uuidv4 } = require('uuid');
 const bcrypt = require('bcryptjs');
+const { dbGet } = require('./helpers');
 
 // ── Environment ──
 const NODE_ENV = process.env.NODE_ENV || 'development';
@@ -28,31 +30,29 @@ const DB_PATH = process.env.DB_PATH || path.join(__dirname, 'data.json');
 
 // ── Initialize Database ──
 const adapter = new JSONFileSync(DB_PATH);
-const db = new LowSync(adapter);
+const db = new LowSync(adapter, {});
 
 // ── Read database (or create if empty) ──
 db.read();
 
-if (!db.data) {
-    db.data = {
-        users: [],
-        savings: [],
-        loans: [],
-        orders: [],
-        products: [],
-        notices: [],
-        badges: [],
-        applications: [],
-        ledger: [],
-        otp_store: [],
-        _meta: {
-            version: 2,
-            initializedAt: new Date().toISOString(),
-            lastBackup: null
-        }
-    };
-    db.write();
-}
+db.data ||= {
+    users: [],
+    savings: [],
+    loans: [],
+    orders: [],
+    products: [],
+    notices: [],
+    badges: [],
+    applications: [],
+    ledger: [],
+    otp_store: [],
+    _meta: {
+        version: 2,
+        initializedAt: new Date().toISOString(),
+        lastBackup: null
+    }
+};
+db.write();
 
 // ── Database Version ──
 const DB_VERSION = 2;
@@ -134,7 +134,7 @@ setInterval(cleanExpiredOTP, 5 * 60 * 1000);
 
 // ── Default Admin ──
 function seedAdmin() {
-    const adminExists = db.data.users.some(u => u.role === 'admin');
+    const adminExists = db.data.users.some(u => u.role === 'admin' || u.role === 'super_admin');
     if (!adminExists) {
         const hashedPassword = hashPassword('admin1234');
         db.data.users.push({
@@ -144,7 +144,7 @@ function seedAdmin() {
             phone: '01700000000',
             email: 'admin@barakah.com',
             password: hashedPassword,
-            role: 'admin',
+            role: 'super_admin',
             verified: true,
             memberID: 'BF-ADMIN',
             profileComplete: 100,
@@ -212,6 +212,7 @@ seedDatabase();
 
 module.exports = {
     db,
+    dbGet,
     uuidv4,
     hashPassword,
     verifyPassword,

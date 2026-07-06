@@ -18,9 +18,9 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 const rateLimit = require('express-rate-limit');
-const { body, validationResult } = require('express-validator');
-const { db, uuidv4, generateId } = require('../db/database');
-const { generateTokens, addToBlacklist } = require('../middleware/auth');
+const { body, param, validationResult } = require('express-validator');
+const { db, dbGet, uuidv4, generateId } = require('../db/database');
+const { generateTokens, addToBlacklist, verifyToken } = require('../middleware/auth');
 
 // ── Environment ──
 const NODE_ENV = process.env.NODE_ENV || 'development';
@@ -97,12 +97,12 @@ router.post('/login',
             const q = identifier.toLowerCase().trim();
 
             // Find user
-            const user = db.get('users').find(u =>
+            const user = db.data.users.find(u =>
                 u.phone === q ||
                 u.email?.toLowerCase() === q ||
                 u.username?.toLowerCase() === q ||
                 u.memberID?.toLowerCase() === q
-            ).value();
+            );
 
             if (!user) {
                 return res.status(401).json({
@@ -131,13 +131,12 @@ router.post('/login',
             }
 
             // Update last login
-            db.get('users')
-                .find({ id: user.id })
-                .assign({
-                    lastLoginAt: new Date().toISOString(),
-                    lastLoginIP: getClientIP(req)
-                })
-                .write();
+            const userIndex = db.data.users.findIndex(u => u.id === user.id);
+            if (userIndex !== -1) {
+                db.data.users[userIndex].lastLoginAt = new Date().toISOString();
+                db.data.users[userIndex].lastLoginIP = getClientIP(req);
+                db.write();
+            }
 
             // Generate tokens
             const { accessToken, refreshToken } = generateTokens(user);
@@ -190,7 +189,7 @@ router.post('/signup',
             const { name, surname, dob, username, phone, email, password, referral } = req.body;
 
             // Check duplicate phone
-            if (db.get('users').find({ phone }).value()) {
+            if (db.data.users.find(u => u.phone === phone)) {
                 return res.status(400).json({
                     error: 'এই নম্বরে ইতিমধ্যে অ্যাকাউন্ট আছে',
                     code: 'DUPLICATE_PHONE'
@@ -198,7 +197,7 @@ router.post('/signup',
             }
 
             // Check duplicate username
-            if (db.get('users').find({ username }).value()) {
+            if (db.data.users.find(u => u.username === username)) {
                 return res.status(400).json({
                     error: 'এই ইউজারনেম নেওয়া হয়েছে',
                     code: 'DUPLICATE_USERNAME'
@@ -207,9 +206,7 @@ router.post('/signup',
 
             // Validate referral if provided
             if (referral) {
-                const referrer = db.get('users')
-                    .find({ id: referral, verified: true })
-                    .value();
+                const referrer = db.data.users.find(u => u.id === referral && u.verified === true);
 
                 if (!referrer) {
                     return res.status(400).json({
@@ -224,10 +221,10 @@ router.post('/signup',
             const expiresAt = Date.now() + 5 * 60 * 1000; // 5 minutes
 
             // Remove old OTP for this phone
-            db.get('otp_store').remove({ phone }).write();
+            db.data.otp_store = db.data.otp_store.filter(o => o.phone !== phone);
 
             // Store OTP with user data
-            db.get('otp_store').push({
+            db.data.otp_store.push({
                 phone,
                 otp,
                 expiresAt,
@@ -241,7 +238,8 @@ router.post('/signup',
                     password: hashPassword(password),
                     referral: referral || null
                 }
-            }).write();
+            });
+            db.write();
 
             // Log OTP only in development
             if (DEBUG) {
@@ -285,7 +283,7 @@ router.post('/verify-otp',
             const { phone, otp } = req.body;
 
             // Find OTP record
-            const record = db.get('otp_store').find({ phone }).value();
+            const record = db.data.otp_store.find(o => o.phone === phone);
 
             if (!record) {
                 return res.status(400).json({
@@ -296,7 +294,8 @@ router.post('/verify-otp',
 
             // Check expiry
             if (Date.now() > record.expiresAt) {
-                db.get('otp_store').remove({ phone }).write();
+                db.data.otp_store = db.data.otp_store.filter(o => o.phone !== phone);
+                db.write();
                 return res.status(400).json({
                     error: 'OTP মেয়াদ শেষ। আবার সাইনআপ করুন।',
                     code: 'OTP_EXPIRED'
@@ -322,7 +321,7 @@ router.post('/verify-otp',
                 email: userData.email || null,
                 dob: userData.dob || null,
                 password: userData.password,
-                role: 'user',
+                role: 'customer',
                 verified: true,
                 referral: userData.referral || null,
                 memberID: null,
@@ -332,10 +331,12 @@ router.post('/verify-otp',
                 lastLoginIP: null
             };
 
-            db.get('users').push(newUser).write();
+            db.data.users.push(newUser);
+            db.write();
 
             // Remove used OTP
-            db.get('otp_store').remove({ phone }).write();
+            db.data.otp_store = db.data.otp_store.filter(o => o.phone !== phone);
+            db.write();
 
             // Generate tokens
             const { accessToken, refreshToken } = generateTokens(newUser);
@@ -379,7 +380,7 @@ router.post('/resend-otp',
             const { phone } = req.body;
 
             // Check if OTP record exists
-            const record = db.get('otp_store').find({ phone }).value();
+            const record = db.data.otp_store.find(o => o.phone === phone);
 
             if (!record) {
                 return res.status(400).json({
@@ -393,10 +394,12 @@ router.post('/resend-otp',
             const expiresAt = Date.now() + 5 * 60 * 1000;
 
             // Update OTP
-            db.get('otp_store')
-                .find({ phone })
-                .assign({ otp, expiresAt })
-                .write();
+            const otpIndex = db.data.otp_store.findIndex(o => o.phone === phone);
+            if (otpIndex !== -1) {
+                db.data.otp_store[otpIndex].otp = otp;
+                db.data.otp_store[otpIndex].expiresAt = expiresAt;
+                db.write();
+            }
 
             if (DEBUG) {
                 console.log(`[OTP RESEND] ${phone} → ${otp}`);
@@ -419,29 +422,24 @@ router.post('/resend-otp',
 );
 
 // ── CHECK USERNAME ──
-router.get('/check-username/:username',
-    [
-        param('username').notEmpty().withMessage('ইউজারনেম প্রয়োজন')
-    ],
-    (req, res) => {
-        try {
-            const username = req.params.username;
-            const exists = !!db.get('users').find({ username }).value();
+router.get('/check-username/:username', (req, res) => {
+    try {
+        const username = req.params.username;
+        const exists = !!db.data.users.find(u => u.username === username);
 
-            res.json({
-                username,
-                available: !exists
-            });
+        res.json({
+            username,
+            available: !exists
+        });
 
-        } catch (error) {
-            console.error('[Auth] Check username error:', error);
-            res.status(500).json({
-                error: 'ইউজারনেম চেক করতে সমস্যা',
-                code: 'CHECK_USERNAME_ERROR'
-            });
-        }
+    } catch (error) {
+        console.error('[Auth] Check username error:', error);
+        res.status(500).json({
+            error: 'ইউজারনেম চেক করতে সমস্যা',
+            code: 'CHECK_USERNAME_ERROR'
+        });
     }
-);
+});
 
 // ── GET CURRENT USER ──
 router.get('/me',
@@ -463,7 +461,7 @@ router.get('/me',
 
             try {
                 const decoded = jwt.verify(token, JWT_SECRET);
-                const user = db.get('users').find({ id: decoded.id }).value();
+                const user = db.data.users.find(u => u.id === decoded.id);
 
                 if (!user) {
                     return res.status(404).json({
@@ -513,7 +511,7 @@ router.post('/change-password',
 
             const { currentPassword, newPassword } = req.body;
 
-            const user = db.get('users').find({ id: req.user.id }).value();
+            const user = db.data.users.find(u => u.id === req.user.id);
 
             if (!user) {
                 return res.status(404).json({
@@ -532,10 +530,11 @@ router.post('/change-password',
 
             // Update password
             const hashedPassword = hashPassword(newPassword);
-            db.get('users')
-                .find({ id: req.user.id })
-                .assign({ password: hashedPassword })
-                .write();
+            const userIndex = db.data.users.findIndex(u => u.id === req.user.id);
+            if (userIndex !== -1) {
+                db.data.users[userIndex].password = hashedPassword;
+                db.write();
+            }
 
             // Blacklist old tokens (optional)
             const authHeader = req.headers['authorization'];
