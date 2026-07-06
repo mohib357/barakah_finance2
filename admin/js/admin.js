@@ -1,18 +1,4 @@
-// C:\Project\Barakah_Finance\admin\js\admin.js
-// ═══════════════════════════════════════════════════════════════════
-// অ্যাডমিন প্যানেল — FIXED & IMPROVED VERSION
-// FIXES:
-// 1. Removed hardcoded password (now uses backend authentication)
-// 2. Added API integration for applications
-// 3. Added session management with JWT
-// 4. Added proper error handling with try-catch
-// 5. Added pagination for applications
-// 6. Added search and filter functionality
-// 7. Added approval workflow with proper validation
-// 8. Added member ID generation
-// 9. Added PDF export with proper styling
-// 10. Added activity logging
-// ═══════════════════════════════════════════════════════════════════
+// C:\Project\barakah_finance2\admin\js\admin.js
 
 (function () {
     'use strict';
