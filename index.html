@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="style/auth_modal.css" />
     <link rel="stylesheet" href="style/neumorphism.css" />
     <link rel="stylesheet" href="style/new-sections.css" />
+    <link rel="stylesheet" href="style/live-counter.css" />
 </head>
 
 <body>
@@ -25,7 +26,7 @@
          NAVIGATION BAR - REDESIGNED WITH NEUMORPHISM
          ══════════════════════════════════════════════════════════ -->
     <nav id="mainNav" class="neu-nav">
-        <a href="index_new.html" class="logo">
+        <a href="/" class="logo">
             <div class="logo-icon">
                 <img src="image/logo.png" alt="Barakah Finance Logo"
                     onerror="this.parentElement.innerHTML='<span style=font-size:22px;font-weight:700;color:#C9A227>ب</span>'" />
@@ -35,6 +36,12 @@
                 <span>BARAKAH FINANCE</span>
             </div>
         </a>
+        
+        <!-- Live Visitor Counter -->
+        <div class="live-counter" id="liveCounter">
+            <span class="pulse-dot"></span>
+            <span class="counter-text">লাইভ: <strong id="visitorCount">0</strong></span>
+        </div>
 
         <ul class="nav-links" id="navLinks">
             <li><a href="pages/about.html" class="neu-btn" data-i18n="navAbout">আমাদের সম্পর্কে</a></li>
@@ -459,10 +466,32 @@
                 <button class="neu-btn neu-btn-primary" style="width:100%;" onclick="doLogin()">🔑 লগইন করুন</button>
             </div>
             <div class="auth-body hidden" id="ap-signup">
-                <p style="text-align:center;font-size:13px;color:#888;margin-bottom:12px;">
-                    নিবন্ধন ফর্ম - বিস্তারিত তথ্য প্রয়োজন
-                </p>
-                <!-- Signup form content here -->
+                <div class="aalert aalert-err hidden" id="al-signup"></div>
+                <div class="af">
+                    <label>নাম (বাংলা) *</label>
+                    <input class="neu-input" id="su-name" placeholder="আপনার নাম" required />
+                </div>
+                <div class="af">
+                    <label>মোবাইল নম্বর *</label>
+                    <input class="neu-input" id="su-mobile" type="tel" placeholder="01XXXXXXXXX" pattern="01[0-9]{9}" required />
+                </div>
+                <div class="af">
+                    <label>ইউজারনেম *</label>
+                    <input class="neu-input" id="su-username" placeholder="ইউজারনেম (ইংরেজি)" required />
+                </div>
+                <div class="af">
+                    <label>পাসওয়ার্ড *</label>
+                    <input class="neu-input" type="password" id="su-pw" placeholder="কমপক্ষে ৮ অক্ষর" minlength="8" required />
+                </div>
+                <div class="af">
+                    <label>পাসওয়ার্ড নিশ্চিত করুন *</label>
+                    <input class="neu-input" type="password" id="su-pw-confirm" placeholder="পুনরায় পাসওয়ার্ড" minlength="8" required />
+                </div>
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;font-size:12px;">
+                    <input type="checkbox" id="su-terms" required />
+                    <label for="su-terms" style="cursor:pointer;">আমি <a href="#" style="color:#065F46;text-decoration:underline;">শর্তাবলী</a> সম্মত</label>
+                </div>
+                <button class="neu-btn neu-btn-primary" style="width:100%;" onclick="doSignup()">✅ নিবন্ধন করুন</button>
             </div>
         </div>
     </div>
@@ -486,6 +515,8 @@
          ══════════════════════════════════════════════════════════ -->
     <script src="js/translations.js"></script>
     <script src="js/language.js"></script>
+    <script src="js/simple-auth.js"></script>
+    <script src="js/live-counter.js"></script>
     <script src="js/db.js"></script>
     <script src="js/data.js"></script>
     <script src="js/auth.js"></script>
