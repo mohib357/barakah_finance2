@@ -1,16 +1,4 @@
-/* C:\Project\Barakah_Finance\admin\style\admin.css */
-/* FIXED & IMPROVED VERSION:
-     - Added CSS variables for consistent theming
-     - Added proper dark mode with .dark-mode class
-     - Fixed responsive issues for mobile
-     - Added proper accessibility support
-     - Added print styles
-     - Added reduced motion support
-     - Improved card and modal styles
-     - Added smooth transitions
-     - Fixed button and badge styles
-     - Added proper focus states
-*/
+/* C:\Project\barakah_finance2\admin\style\admin.css */
 
 /* ════════ ROOT VARIABLES ════════ */
 :root {
@@ -296,8 +284,13 @@ body.dark-mode .form-input:focus {
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
 }
 
 .modal-box {
@@ -317,6 +310,7 @@ body.dark-mode .form-input:focus {
         opacity: 0;
         transform: translateY(30px) scale(0.95);
     }
+
     to {
         opacity: 1;
         transform: translateY(0) scale(1);
@@ -463,6 +457,7 @@ body.dark-mode .toast {
         opacity: 0;
         transform: translateY(15px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -481,7 +476,8 @@ body.dark-mode .toast {
         font-size: 1.5rem;
     }
 
-    th, td {
+    th,
+    td {
         padding: 6px 8px;
         font-size: 0.75rem;
     }
@@ -529,7 +525,8 @@ body.dark-mode .toast {
         padding: 10px;
     }
 
-    th, td {
+    th,
+    td {
         padding: 4px 6px;
         font-size: 0.7rem;
     }
@@ -571,6 +568,7 @@ body.dark-mode .toast {
 
 /* ════════ ACCESSIBILITY ════════ */
 @media (prefers-reduced-motion: reduce) {
+
     *,
     *::before,
     *::after {
@@ -621,6 +619,7 @@ body.dark-mode .toast {
 
 /* ════════ PRINT STYLES ════════ */
 @media print {
+
     .btn-primary,
     .btn-danger,
     .btn-gold,

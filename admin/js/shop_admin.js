@@ -1,27 +1,13 @@
-// C:\Project\Barakah_Finance\admin\js\shop_admin.js
-// ═══════════════════════════════════════════════════════════════════
-// শপ অ্যাডমিন — FIXED & IMPROVED VERSION
-// FIXES:
-// 1. Added authentication check with JWT
-// 2. Added API integration for all CRUD operations
-// 3. Added proper error handling with try-catch
-// 4. Added pagination for products and orders
-// 5. Added search and filter functionality
-// 6. Added proper data validation
-// 7. Added image URL validation
-// 8. Added bulk operations
-// 9. Added activity logging
-// 10. Added toast notifications
-// ═══════════════════════════════════════════════════════════════════
+// C:\Project\barakah_finance2\admin\js\shop_admin.js
 
-(function() {
+(function () {
     'use strict';
 
     // ── Constants ──
-    const API_BASE = window.location.hostname === 'localhost' 
-        ? 'http://localhost:3001/api' 
+    const API_BASE = window.location.hostname === 'localhost'
+        ? 'http://localhost:3001/api'
         : '/api';
-    
+
     const DEBUG = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
 
     // ── State ──
@@ -864,7 +850,7 @@
     }
 
     // ── Event Listeners ──
-    document.addEventListener('input', function(e) {
+    document.addEventListener('input', function (e) {
         if (['n-text', 'n-style', 'n-color', 'n-color-hex'].includes(e.target?.id)) {
             updateNoticePreview();
         }
@@ -873,7 +859,7 @@
         }
     });
 
-    document.addEventListener('change', function(e) {
+    document.addEventListener('change', function (e) {
         if (e.target?.id === 'n-color') {
             document.getElementById('n-color-hex').value = e.target.value;
             updateNoticePreview();
@@ -881,7 +867,7 @@
     });
 
     // ── Init ──
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
         if (!checkAuth()) return;
 
         // Set up search listener
