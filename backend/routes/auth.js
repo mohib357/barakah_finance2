@@ -21,6 +21,7 @@ const rateLimit = require('express-rate-limit');
 const { body, param, validationResult } = require('express-validator');
 const { db, dbGet, uuidv4, generateId } = require('../db/database');
 const { generateTokens, addToBlacklist, verifyToken } = require('../middleware/auth');
+const { sendOTPEmail, sendWelcomeEmail } = require('../services/email');
 
 // ── Environment ──
 const NODE_ENV = process.env.NODE_ENV || 'development';
@@ -176,7 +177,7 @@ router.post('/signup',
         body('dob').optional().isISO8601().withMessage('সঠিক তারিখ দিন'),
         body('referral').optional().isString().trim()
     ],
-    (req, res) => {
+    async (req, res) => {
         try {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
@@ -270,7 +271,7 @@ router.post('/verify-otp',
         body('phone').notEmpty().withMessage('ফোন নম্বর প্রয়োজন'),
         body('otp').isLength({ min: 6, max: 6 }).withMessage('৬ ডিজিটের OTP দিন')
     ],
-    (req, res) => {
+    async (req, res) => {
         try {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
@@ -337,6 +338,16 @@ router.post('/verify-otp',
             // Remove used OTP
             db.data.otp_store = db.data.otp_store.filter(o => o.phone !== phone);
             db.write();
+
+            // Send welcome email if email exists
+            if (newUser.email) {
+                try {
+                    await sendWelcomeEmail(newUser.email, newUser.name);
+                } catch (emailError) {
+                    console.error('[Auth] Failed to send welcome email:', emailError);
+                    // Continue even if email fails
+                }
+            }
 
             // Generate tokens
             const { accessToken, refreshToken } = generateTokens(newUser);

@@ -1,0 +1,24 @@
+{
+  "ledger": [],
+  "otp_store": [],
+  "_meta": {
+    "version": 2
+  },
+  "users": [
+    {
+      "id": "ADMIN-001",
+      "name": "সুপার অ্যাডমিন",
+      "username": "admin",
+      "phone": "01700000000",
+      "email": "admin@barakah.com",
+      "password": "$2b$10$yEG3j.69DNHPF7nN5A4drOpAR2jcr.s/lAxoGSeSCRu464/hw3qG.",
+      "role": "super_admin",
+      "verified": true,
+      "memberID": "BF-ADMIN",
+      "profileComplete": 100,
+      "createdAt": "2026-07-06T18:50:49.056Z"
+    }
+  ],
+  "savings": [],
+  "loans": []
+}

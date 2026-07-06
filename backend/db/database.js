@@ -70,17 +70,26 @@ function runMigrations() {
         if (!db.data.ledger) db.data.ledger = [];
         if (!db.data.otp_store) db.data.otp_store = [];
         if (!db.data._meta) db.data._meta = {};
+        if (!db.data.users) db.data.users = [];
+        if (!db.data.savings) db.data.savings = [];
+        if (!db.data.loans) db.data.loans = [];
 
         // Add timestamps to existing data
-        db.data.users.forEach(user => {
-            if (!user.createdAt) user.createdAt = new Date().toISOString();
-        });
-        db.data.savings.forEach(saving => {
-            if (!saving.date) saving.date = new Date().toISOString();
-        });
-        db.data.loans.forEach(loan => {
-            if (!loan.createdAt) loan.createdAt = new Date().toISOString();
-        });
+        if (db.data.users) {
+            db.data.users.forEach(user => {
+                if (!user.createdAt) user.createdAt = new Date().toISOString();
+            });
+        }
+        if (db.data.savings) {
+            db.data.savings.forEach(saving => {
+                if (!saving.date) saving.date = new Date().toISOString();
+            });
+        }
+        if (db.data.loans) {
+            db.data.loans.forEach(loan => {
+                if (!loan.createdAt) loan.createdAt = new Date().toISOString();
+            });
+        }
 
         migrated = true;
         db.data._meta.version = 2;
