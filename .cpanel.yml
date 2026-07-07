@@ -1,0 +1,4 @@
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/barawxnp/app.barakahfinancebd.com/
+    - /bin/cp -R * $DEPLOYPATH
